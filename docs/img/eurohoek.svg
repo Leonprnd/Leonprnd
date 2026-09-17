@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Eurohoek">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <path d="M40 26h22v50h50v22H40z" fill="#DFD9C6" stroke="#17160F" stroke-width="2.5" stroke-linejoin="round"/>
+  <g fill="#A8842C"><circle cx="51" cy="44" r="5"/><circle cx="92" cy="87" r="5"/></g>
+  <path d="M74 30h34v16H74z" fill="#FBF9F3" stroke="#6E695C" stroke-width="2"/>
+</svg>

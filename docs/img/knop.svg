@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Meubelknop">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <path d="M14 84h132" stroke="#C9C2AD" stroke-width="4"/>
+  <g stroke="#17160F" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M52 44a28 20 0 0 1 56 0v18H52z" fill="#DFD9C6"/>
+    <rect x="66" y="62" width="28" height="22" rx="4" fill="#EDE9DC"/>
+  </g>
+  <ellipse cx="72" cy="42" rx="8" ry="5" fill="#FBF9F3"/>
+</svg>

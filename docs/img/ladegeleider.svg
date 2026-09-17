@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Ladegeleider">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <g stroke="#17160F" stroke-width="2.5" stroke-linejoin="round">
+    <rect x="10" y="40" width="140" height="18" rx="4" fill="#DFD9C6"/>
+    <rect x="10" y="62" width="140" height="18" rx="4" fill="#EDE9DC"/>
+  </g>
+  <g fill="#A8842C">
+    <circle cx="28" cy="49" r="4"/><circle cx="62" cy="49" r="4"/>
+    <circle cx="98" cy="49" r="4"/><circle cx="132" cy="49" r="4"/>
+  </g>
+  <g fill="#FBF9F3" stroke="#6E695C" stroke-width="1.5">
+    <circle cx="40" cy="71" r="5"/><circle cx="70" cy="71" r="5"/>
+    <circle cx="100" cy="71" r="5"/><circle cx="130" cy="71" r="5"/>
+  </g>
+  <path d="M10 88h140" stroke="#C9C2AD" stroke-width="3" stroke-dasharray="6 5"/>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Ladewand">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <path d="M16 40h128v40H16z" fill="#DFD9C6" stroke="#17160F" stroke-width="2.5"/>
+  <path d="M16 40h128v10H16z" fill="#EDE9DC" stroke="#17160F" stroke-width="2.5"/>
+  <path d="M24 62h104" stroke="#6E695C" stroke-width="2" stroke-dasharray="8 6"/>
+  <rect x="120" y="66" width="20" height="10" rx="2" fill="#A8842C"/>
+  <path d="M16 90h128" stroke="#C9C2AD" stroke-width="3" stroke-dasharray="6 5"/>
+</svg>

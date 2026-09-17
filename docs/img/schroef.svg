@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Spaanplaatschroef">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <g stroke="#17160F" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M18 44l22 16-22 16z" fill="#DFD9C6"/>
+    <path d="M38 52h78v16H38z" fill="#EDE9DC"/>
+    <path d="M116 44l30 16-30 16z" fill="#DFD9C6"/>
+  </g>
+  <g stroke="#6E695C" stroke-width="2.5" fill="none">
+    <path d="M44 52l10 16M58 52l10 16M72 52l10 16M86 52l10 16M100 52l10 16"/>
+  </g>
+  <g stroke="#17160F" stroke-width="2.5">
+    <path d="M122 52v16M132 54v12"/>
+  </g>
+</svg>

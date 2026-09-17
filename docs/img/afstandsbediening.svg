@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Afstandsbediening">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <rect x="52" y="22" width="56" height="76" rx="6" fill="#DFD9C6" stroke="#17160F" stroke-width="2.5"/>
+  <rect x="62" y="32" width="36" height="16" rx="2" fill="#FBF9F3" stroke="#6E695C" stroke-width="1.5"/>
+  <g fill="#A8842C"><circle cx="72" cy="62" r="5"/><circle cx="88" cy="62" r="5"/></g>
+  <g fill="#6E695C"><circle cx="72" cy="78" r="5"/><circle cx="88" cy="78" r="5"/></g>
+</svg>

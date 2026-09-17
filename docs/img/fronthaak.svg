@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Fronthaak">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <path d="M66 18h20v74l-16 12V30z" fill="#DFD9C6" stroke="#17160F" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M86 34h22v14H86z" fill="#EDE9DC" stroke="#17160F" stroke-width="2.5"/>
+  <circle cx="97" cy="41" r="4" fill="#A8842C"/>
+  <circle cx="76" cy="66" r="4" fill="#6E695C"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Kruis montageplaat">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <g stroke="#17160F" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M18 50h124v22H18z" fill="#DFD9C6"/>
+    <path d="M62 34h36v54H62z" fill="#EDE9DC"/>
+    <path d="M72 42h16v38H72z" fill="#FBF9F3"/>
+  </g>
+  <g fill="#A8842C" stroke="#6E695C" stroke-width="1.5">
+    <ellipse cx="36" cy="61" rx="9" ry="5"/>
+    <ellipse cx="124" cy="61" rx="9" ry="5"/>
+  </g>
+  <circle cx="80" cy="61" r="6" fill="#A8842C"/>
+</svg>

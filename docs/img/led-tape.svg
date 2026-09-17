@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="LED tape">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <rect x="12" y="48" width="136" height="24" rx="3" fill="#FBF9F3" stroke="#17160F" stroke-width="2.5"/>
+  <g fill="#A8842C">
+    <rect x="24" y="55" width="12" height="10" rx="1.5"/><rect x="50" y="55" width="12" height="10" rx="1.5"/>
+    <rect x="76" y="55" width="12" height="10" rx="1.5"/><rect x="102" y="55" width="12" height="10" rx="1.5"/>
+    <rect x="128" y="55" width="12" height="10" rx="1.5"/>
+  </g>
+  <g stroke="#C9C2AD" stroke-width="2" stroke-linecap="round">
+    <path d="M30 40v-8M56 40v-8M82 40v-8M108 40v-8M134 40v-8"/>
+  </g>
+  <path d="M12 82h136" stroke="#C9C2AD" stroke-width="3" stroke-dasharray="6 5"/>
+</svg>
