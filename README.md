@@ -1,155 +1,62 @@
 # Onderdelenbeheer PUUUR
 
-Voorraad- en picklijstprogramma voor de meubelmakerij: welke onderdelen zijn er,
-wat is er voor een kast nodig, wat is er gepakt en wat moet er besteld worden.
+Programma voor de werkplaats: Roy zet per kast op een lijst welke onderdelen
+nodig zijn, Dean pakt die kast en geeft aan of alles compleet was. Wat mist,
+komt bij Roy op de lijst met wat er besteld moet worden.
 
-Het programma start met de eigen onderdelenlijst van PUUUR (53 onderdelen, met
-leverancier, locatie en artikelnummer) en met kastlijst **14925 Mitchell** erin,
-precies zoals die op het papieren blad staat.
+De website: **https://leonprnd.github.io/Leonprnd/**
 
-De vormgeving is bewust minimaal: zwart, wit en goud, met de artikelnummers
-en aantallen in een vaste-breedte letter zodat kolommen recht onder elkaar
-staan.
+## Wie ziet wat
 
-Het programma is gemaakt voor twee manieren van werken:
+Linksboven kies je wie er achter het scherm zit. Het programma ziet er voor
+allebei anders uit.
 
-* **Roy (inkoop)** maakt per kast een lijst met onderdelen, ziet welke onderdelen
-  onder het bestelpunt zakken en bestelt op tijd bij.
-* **Dean (werkplaats)** kiest op de laptop bij de kast het kastnummer, pakt de
-  onderdelen, vinkt ze af en geeft aan het eind aan of alles compleet was. Wat
-  mist gaat meteen naar de bestellijst van Roy.
+**Roy** heeft twee tabbladen:
 
-## De website
+* **Kastlijst maken** – kastnummer en omschrijving invullen, onderdelen erbij
+  zoeken (op naam, nummer, locatie of leverancier) en het aantal instellen.
+  Onderaan staan alle eerder gemaakte kastlijsten. Hier voeg je ook nieuwe
+  onderdelen toe of pas je een bestaand onderdeel aan.
+* **Te bestellen** – alles wat Dean tekort kwam, met het aantal, de locatie,
+  de leverancier en bij welke kast het miste. Bestellen zelf gebeurt (nog)
+  buiten het programma; met *afgehandeld* haal je een regel van de lijst.
 
-De website staat in `docs/` en wordt door GitHub Pages uitgeserveerd op
+**Dean** ziet één scherm: de kasten die klaarstaan. Hij kiest de kast die hij
+gaat maken en krijgt dan de complete lijst onderdelen te zien, op volgorde van
+locatienummer. Onderaan staat één vraag: *Heb je alle onderdelen?*
 
-    https://leonprnd.github.io/Leonprnd/
+* **Ja, alles compleet** – de kast is afgerond.
+* **Nee, er mist iets** – hij vinkt aan wat er mist en hoeveel; dat gaat naar
+  de lijst van Roy.
 
-Deze versie heeft geen server nodig: hij bewaart de gegevens in de browser van
-het apparaat waarop je hem opent, en leest de onderdelenlijst de eerste keer
-uit `docs/gegevens.json`. Met *Gegevens opslaan als bestand* en *Bestand
-inlezen* (op het overzicht) verhuis je de gegevens naar een ander apparaat.
+De onderdelenlijst zelf komt van het papieren blad: naam, artikelnummer,
+locatie, leverancier en een foto. Overal waar onderdelen in een lijst staan,
+staan ze op volgorde van locatienummer, van laag naar hoog.
 
-Aanpassen doe je in `site/index.html`; daarna:
+## De website aanpassen
+
+`site/index.html` is de hele website. Na een wijziging:
 
 ```bash
 npm run build:site
 ```
 
-Dat zet de pagina met de tekeningen klaar in `docs/`. Bij elke push naar de
-branch staat de nieuwe versie vanzelf online.
+Dat zet de pagina met de tekeningen klaar in `docs/`; GitHub Pages publiceert
+die map bij elke push. `docs/gegevens.json` is de onderdelenlijst waarmee een
+apparaat begint.
 
-## Zelfde programma met één gedeelde voorraad
+De website bewaart de gegevens in de browser van het apparaat waarop je hem
+opent. Met *Gegevens opslaan als bestand* en *Bestand inlezen* verhuis je ze
+naar een ander apparaat.
 
-Wil je dat Roy en Dean dezelfde voorraad zien in plaats van ieder zijn eigen,
-draai dan de serverversie uit deze map op een computer in de werkplaats:
+## Serverversie (ouder)
 
-```bash
-npm start
-```
-
-Daarna in de browser openen:
-
-* op deze computer: `http://localhost:4000`
-* op de laptop bij de kast: het netwerkadres dat bij het starten in beeld komt,
-  bijvoorbeeld `http://192.168.1.20:4000`
-
-Er is geen installatie of database nodig; Node.js 20 of nieuwer is genoeg.
-Alle gegevens staan in één bestand: `data/db.json`. Bewaar een kopie van dat
-bestand als back-up. De eerste keer vult het programma zichzelf met een
-voorbeeldlijst onderdelen, die je kunt aanpassen of verwijderen.
-
-De poort en de plek van de gegevens zijn in te stellen:
+In `public/`, `src/` en `server.js` staat een oudere opzet met een eigen
+server: die houdt één gedeelde voorraad bij voor iedereen, inclusief
+voorraadaantallen, bestelpunten en bestellingen. Die opzet is nog niet
+meegegaan met de indeling hierboven.
 
 ```bash
-PORT=8080 DATA_DIR=/pad/naar/gegevens npm start
-```
-
-## Zo werkt het
-
-### 1. Onderdelen
-
-Alle onderdelen staan met **foto, naam en artikelnummer** in de lijst, plus
-categorie, leverancier, locatie in het magazijn en de voorraad. Zoeken kan op
-naam, nummer, leverancier of locatie, en filteren op status of categorie.
-
-Bij elk onderdeel staan drie aantallen:
-
-| Aantal | Betekenis |
-| --- | --- |
-| **Voorraad** | wat er werkelijk in het magazijn ligt |
-| **Gereserveerd** | wat al op openstaande kastlijsten staat |
-| **Vrij** | voorraad min gereserveerd: wat je echt nog kunt gebruiken |
-
-De status volgt uit het **vrije** aantal, zodat Roy bestelt vóórdat de
-scharnieren op zijn:
-
-* **Nog niet geteld** – de voorraad is nog niet ingevuld; zo'n onderdeel telt
-  nog niet mee op de bestellijst. Vul het aantal in met *Tellen…* of met de
-  knoppen −1 / +1 / +10, dan rekent het programma vanaf dat moment mee.
-* **Op voorraad** – ruim boven het bestelpunt
-* **Bestellen** – op of onder het bestelpunt
-* **Besteld** – onder het bestelpunt, maar er is al een bestelling onderweg
-* **Op** – niets meer vrij
-
-Een foto toevoegen of vervangen kan bij *Nieuw onderdeel* en *Wijzigen*; de
-foto's komen in `data/uploads/` te staan.
-
-### 2. Kastlijsten (Roy)
-
-*Kastlijsten → Nieuwe kastlijst*: zoek de onderdelen bij elkaar, zet het aantal
-erbij en vul het kastnummer in (bijvoorbeeld 14925). Staat er meer op de lijst
-dan er vrij is, dan waarschuwt het scherm meteen. De lijst is ook af te drukken.
-
-### 3. Pakken (Dean)
-
-*Pakken*: kies het kastnummer, loop de lijst langs en vink elk onderdeel af
-(of zet met − en + het aantal dat je echt gepakt hebt). Tussendoor wordt alles
-bewaard, dus je kunt de laptop gerust even wegleggen.
-
-Aan het eind zijn er twee knoppen:
-
-* **Alles gepakt** – de lijst is compleet; alle aantallen gaan van de voorraad af.
-* **Er mist iets** – je ziet per onderdeel wat er mist, en na bevestigen gaat het
-  tekort naar Roy. Wat wél gepakt is gaat gewoon van de voorraad af.
-
-### 4. Bestellen (Roy)
-
-*Bestellen* laat in één scherm zien wat er moet gebeuren: de tekorten uit de
-werkplaats bovenaan, daarna alles wat onder het bestelpunt zit, gegroepeerd per
-leverancier met een knop om de bestellijst te kopiëren. Het programma stelt een
-aantal voor (aanvullen tot twee keer het bestelpunt, minimaal de standaard
-bestelhoeveelheid, plus het gemelde tekort).
-
-Zodra een bestelling binnen is, klik je op **Ontvangen**: de voorraad gaat
-omhoog en het bijbehorende tekort is afgehandeld.
-
-### 5. Historie
-
-Alles wat er gebeurt – gepakte kastlijsten, gemelde tekorten, bestellingen en
-voorraadcorrecties – komt in *Historie* te staan, met wie het gedaan heeft.
-
-Linksonder kies je wie er achter het scherm zit (Roy, Dean of Werkplaats); die
-naam komt bij alle gebeurtenissen te staan. Er is bewust geen wachtwoord, zodat
-er in de werkplaats niet ingelogd hoeft te worden.
-
-## Onder de motorkap
-
-```
-server.js          start de webserver
-src/http.js        levert de schermen en de API uit
-src/api.js         alle acties: onderdelen, kastlijsten, bestellingen, foto's
-src/store.js       opslag in data/db.json
-src/derive.js      rekenregels: reservering, status, besteladvies
-src/seed.js        de onderdelenlijst van PUUUR bij de eerste start
-public/            de schermen (geen bouwstap, gewoon HTML, CSS en JavaScript)
-test/              tests van de rekenregels en de complete werkwijze
-```
-
-Geen externe pakketten nodig – alles draait op Node.js zelf.
-
-Tests draaien:
-
-```bash
+npm start     # http://localhost:4000
 npm test
 ```
