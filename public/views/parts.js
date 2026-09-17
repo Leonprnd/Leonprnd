@@ -16,9 +16,9 @@ const ui = { query: '', filter: 'alle', category: '', layout: localStorage.getIt
 const FILTERS = [
   { key: 'alle', label: 'Alles' },
   { key: 'order', label: 'Bestellen' },
-  { key: 'out', label: 'Op' },
   { key: 'ordered', label: 'Besteld' },
   { key: 'ok', label: 'Op voorraad' },
+  { key: 'onbekend', label: 'Nog te tellen' },
 ];
 
 export function render(params) {
@@ -117,7 +117,7 @@ function partGrid(list) {
         el('span', { class: 'name', text: part.name }),
         el('span', { class: 'number', text: `${part.number} · ${part.category || 'geen categorie'}` }),
         el('div', { class: 'foot' },
-          el('span', { class: 'num-strong', text: `${part.available} ${part.unit}` }),
+          el('span', { class: 'num-strong muted', text: part.status === 'onbekend' ? '–' : `${part.available} ${part.unit} vrij` }),
           statusPill(part),
         ),
         stockBar(part),
@@ -141,9 +141,9 @@ function partTable(list) {
       el('td', {}, partCell(part)),
       el('td', { class: 'small muted', text: part.category || '–' }),
       el('td', { class: 'small muted', text: part.location || '–' }),
-      el('td', { class: 'num num-strong', text: String(part.stock) }),
+      el('td', { class: 'num num-strong', text: part.status === 'onbekend' ? '–' : String(part.stock) }),
       el('td', { class: 'num muted', text: part.reserved ? String(part.reserved) : '–' }),
-      el('td', { class: 'num num-strong', text: String(part.available) }),
+      el('td', { class: 'num num-strong', text: part.status === 'onbekend' ? '–' : String(part.available) }),
       el('td', { class: 'num muted', text: String(part.minStock) }),
       el('td', {}, statusPill(part)),
     ))),
@@ -182,9 +182,11 @@ function detailView(id) {
       el('div', { class: 'card-head' }, el('h2', { text: 'Voorraad' })),
       el('div', { class: 'card-body' },
         el('div', { class: 'kpi-grid', style: { marginBottom: '16px' } },
-          kpi('Op voorraad', part.stock, `${part.unit}`),
+          kpi('Op voorraad', part.status === 'onbekend' ? '–' : part.stock, part.status === 'onbekend' ? 'nog niet geteld' : `${part.unit}`),
           kpi('Gereserveerd', part.reserved, 'voor open kastlijsten'),
-          kpi('Vrij te gebruiken', part.available, part.available <= part.minStock ? 'onder het bestelpunt' : 'ruim voldoende', part.available <= 0 ? 'danger' : part.available <= part.minStock ? 'warn' : 'ok'),
+          part.status === 'onbekend'
+            ? kpi('Vrij te gebruiken', '–', 'tel dit onderdeel eerst')
+            : kpi('Vrij te gebruiken', part.available, part.available <= part.minStock ? 'onder het bestelpunt' : 'ruim voldoende', part.available <= 0 ? 'danger' : part.available <= part.minStock ? 'warn' : 'ok'),
           kpi('Bestelpunt', part.minStock, `bestel per ${part.orderQty || 1}`),
         ),
         el('div', { class: 'toolbar', style: { marginBottom: 0 } },

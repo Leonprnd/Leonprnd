@@ -202,6 +202,7 @@ export function confirmDialog({ title, text, confirmLabel = 'Ja, doorgaan', tone
 /* ------------------------------------------------------------------ onderdeel */
 
 export const PART_TONES = {
+  onbekend: { label: 'Nog niet geteld', tone: '' },
   out: { label: 'Op', tone: 'danger' },
   order: { label: 'Bestellen', tone: 'warn' },
   ordered: { label: 'Besteld', tone: 'info' },
@@ -234,6 +235,7 @@ export function partCell(part) {
 }
 
 export function stockBar(part) {
+  if (part.status === 'onbekend') return el('div', { class: 'stock-bar' });
   const reference = Math.max(part.minStock * 2, part.stock, 1);
   const ratio = Math.max(0, Math.min(1, part.available / reference));
   const tone = part.status === 'out' ? 'danger' : part.status === 'ok' ? '' : 'warn';

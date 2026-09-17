@@ -74,6 +74,7 @@ function partFields(body, base = {}) {
     location: text(body.location ?? base.location),
     photo: text(body.photo ?? base.photo),
     notes: text(body.notes ?? base.notes),
+    geteld: body.geteld === undefined ? true : Boolean(body.geteld),
   };
   assert(part.name, 'Geef een naam op voor het onderdeel.');
   assert(part.number, 'Geef een artikelnummer op.');
@@ -135,6 +136,7 @@ function adjustStock({ store, body, params }) {
     } else {
       part.stock = Math.max(0, part.stock + int(body.delta));
     }
+    part.geteld = true;
     const reason = text(body.reason) || 'handmatige correctie';
     logEvent(
       db,
@@ -343,6 +345,7 @@ function receiveOrder({ store, params, body }) {
     const qty = body.qty === undefined || body.qty === '' ? order.qty : int(body.qty);
     assert(qty > 0, 'Vul in hoeveel er binnengekomen is.');
     part.stock += qty;
+    part.geteld = true;
     order.status = 'received';
     order.receivedQty = qty;
     order.receivedAt = new Date().toISOString();

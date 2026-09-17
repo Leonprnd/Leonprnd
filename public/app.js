@@ -73,7 +73,7 @@ function renderView() {
     el('h1', { text: result.title || page.label }),
     result.subtitle ? el('span', { text: result.subtitle }) : null,
   );
-  document.title = `${result.title || page.label} · Onderdelenbeheer`;
+  document.title = `${result.title || page.label} · Onderdelenbeheer Puuur`;
   clear(viewHost).append(result.node);
   renderNav();
   sidebar.classList.remove('open');

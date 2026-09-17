@@ -1,7 +1,11 @@
-# Onderdelenbeheer
+# Onderdelenbeheer PUUUR
 
 Voorraad- en picklijstprogramma voor de meubelmakerij: welke onderdelen zijn er,
 wat is er voor een kast nodig, wat is er gepakt en wat moet er besteld worden.
+
+Het programma start met de eigen onderdelenlijst van PUUUR (53 onderdelen, met
+leverancier, locatie en artikelnummer) en met kastlijst **14925 Mitchell** erin,
+precies zoals die op het papieren blad staat.
 
 De vormgeving is bewust minimaal: zwart, wit en goud, met de artikelnummers
 en aantallen in een vaste-breedte letter zodat kolommen recht onder elkaar
@@ -57,6 +61,9 @@ Bij elk onderdeel staan drie aantallen:
 De status volgt uit het **vrije** aantal, zodat Roy bestelt vóórdat de
 scharnieren op zijn:
 
+* **Nog niet geteld** – de voorraad is nog niet ingevuld; zo'n onderdeel telt
+  nog niet mee op de bestellijst. Vul het aantal in met *Tellen…* of met de
+  knoppen −1 / +1 / +10, dan rekent het programma vanaf dat moment mee.
 * **Op voorraad** – ruim boven het bestelpunt
 * **Bestellen** – op of onder het bestelpunt
 * **Besteld** – onder het bestelpunt, maar er is al een bestelling onderweg
@@ -68,7 +75,7 @@ foto's komen in `data/uploads/` te staan.
 ### 2. Kastlijsten (Roy)
 
 *Kastlijsten → Nieuwe kastlijst*: zoek de onderdelen bij elkaar, zet het aantal
-erbij en vul het kastnummer in (bijvoorbeeld 51436). Staat er meer op de lijst
+erbij en vul het kastnummer in (bijvoorbeeld 14925). Staat er meer op de lijst
 dan er vrij is, dan waarschuwt het scherm meteen. De lijst is ook af te drukken.
 
 ### 3. Pakken (Dean)
@@ -111,7 +118,7 @@ src/http.js        levert de schermen en de API uit
 src/api.js         alle acties: onderdelen, kastlijsten, bestellingen, foto's
 src/store.js       opslag in data/db.json
 src/derive.js      rekenregels: reservering, status, besteladvies
-src/seed.js        voorbeeldgegevens bij de eerste start
+src/seed.js        de onderdelenlijst van PUUUR bij de eerste start
 public/            de schermen (geen bouwstap, gewoon HTML, CSS en JavaScript)
 test/              tests van de rekenregels en de complete werkwijze
 ```

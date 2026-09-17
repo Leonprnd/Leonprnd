@@ -1,86 +1,296 @@
-// Startgegevens: een realistische onderdelenlijst zodat het programma
-// meteen bruikbaar is. Pas aan of verwijder via het scherm "Onderdelen".
+// Startgegevens: de onderdelenlijst van PUUUR, zoals die op het papieren
+// blad staat. De voorraad staat nog op nul: elk onderdeel blijft "nog niet
+// geteld" totdat iemand het aantal invult via het scherm "Onderdelen".
 
 const day = 24 * 60 * 60 * 1000;
 const ago = (days) => new Date(Date.now() - days * day).toISOString();
 
 export function seedDatabase() {
   const parts = [
-    part('SCH-1101', 'Potscharnier 110° opdek', 'Scharnieren', {
-      stock: 246, minStock: 120, orderQty: 200, supplier: 'Van Dijk Beslag',
-      location: 'A1-01', photo: '/img/parts/scharnier-opdek.svg',
-      notes: 'Standaard scharnier voor opdek deuren, softclose.',
+    part("doos", "", "Doos t.b.v. onderdelen", "Verpakking", {
+      supplier: "Raja",
+      location: "",
+      photo: "/img/parts/doos.svg",
     }),
-    part('SCH-1102', 'Potscharnier 165° binnenliggend', 'Scharnieren', {
-      stock: 38, minStock: 40, orderQty: 100, supplier: 'Van Dijk Beslag',
-      location: 'A1-02', photo: '/img/parts/scharnier-165.svg',
-      notes: 'Voor hoekkasten en deuren die ver open moeten.',
+    part("puuur-label", "", "PUUUR Label Meubel", "Labels", {
+      supplier: "FOCKS",
+      location: "11-2",
+      photo: "/img/parts/label.svg",
     }),
-    part('SCH-1150', 'Montageplaat kruis 0 mm', 'Scharnieren', {
-      stock: 410, minStock: 150, orderQty: 300, supplier: 'Van Dijk Beslag',
-      location: 'A1-03', photo: '/img/parts/montageplaat.svg',
+    part("voetplaat-stelpoot", "", "Voetplaat stelpoot schroef", "Stelpoten", {
+      supplier: "Maclean",
+      location: "29",
+      photo: "/img/parts/kastpoot.svg",
     }),
-    part('GEL-2201', 'Ladegeleider softclose 450 mm', 'Geleiders', {
-      stock: 24, minStock: 20, orderQty: 40, unit: 'set', supplier: 'Hettich NL',
-      location: 'B2-01', photo: '/img/parts/ladegeleider.svg',
-      notes: 'Set = links + rechts.',
+    part("stelpoot-80", "", "Stelpoot 80mm", "Stelpoten", {
+      supplier: "Maclean",
+      location: "31",
+      photo: "/img/parts/kastpoot.svg",
     }),
-    part('GEL-2210', 'Push-to-open geleider 500 mm', 'Geleiders', {
-      stock: 6, minStock: 10, orderQty: 20, unit: 'set', supplier: 'Hettich NL',
-      location: 'B2-02', photo: '/img/parts/push-to-open.svg',
+    part("axilo-80", "", "AXILO Stelpoot 80mm (70-100mm)", "Stelpoten", {
+      supplier: "Hafele",
+      location: "32",
+      photo: "/img/parts/kastpoot.svg",
     }),
-    part('PLK-3301', 'Plankdrager verstelbaar 5 mm', 'Planksteunen', {
-      stock: 820, minStock: 300, orderQty: 500, supplier: 'Beslagcentrum',
-      location: 'B3-04', photo: '/img/parts/plankdrager.svg',
+    part("axilo-60", "", "AXILO Stelpoot 60mm (53-70mm)", "Stelpoten", {
+      supplier: "Hafele",
+      location: "30",
+      photo: "/img/parts/kastpoot.svg",
     }),
-    part('SCR-4401', 'Spaanplaatschroef 4,0 x 30 mm', 'Schroeven', {
-      stock: 14, minStock: 6, orderQty: 12, unit: 'doos', supplier: 'Bouwmaat',
-      location: 'C1-01', photo: '/img/parts/schroef.svg',
-      notes: 'Doos van 200 stuks.',
+    part("plintklem", "", "Plintklem drukveer", "Stelpoten", {
+      supplier: "Maclean",
+      location: "9",
+      photo: "/img/parts/plintklem.svg",
     }),
-    part('SCR-4410', 'Systeemschroef 6,3 x 13 mm', 'Schroeven', {
-      stock: 9, minStock: 8, orderQty: 10, unit: 'doos', supplier: 'Bouwmaat',
-      location: 'C1-02', photo: '/img/parts/systeemschroef.svg',
+    part("kabeldoorvoerdop-60", "", "Kabeldoorvoerdop 60mm", "Elektra", {
+      supplier: "STS Elektra",
+      location: "19",
+      photo: "/img/parts/kabeldop.svg",
     }),
-    part('GRP-5501', 'Greep RVS 128 mm', 'Grepen', {
-      stock: 72, minStock: 30, orderQty: 50, supplier: 'Beslagcentrum',
-      location: 'C2-01', photo: '/img/parts/greep.svg',
+    part("eurohoek", "", "Eurohoek met afdekkap zwart", "Verbindingen", {
+      supplier: "Ostermann",
+      location: "23+24",
+      photo: "/img/parts/eurohoek.svg",
     }),
-    part('GRP-5510', 'Knop zwart mat 30 mm', 'Grepen', {
-      stock: 18, minStock: 25, orderQty: 50, supplier: 'Beslagcentrum',
-      location: 'C2-02', photo: '/img/parts/knop.svg',
+    part("tip-on-lang", "", "Tip-on lang", "Openen en sluiten", {
+      supplier: "Hoecke",
+      location: "18",
+      photo: "/img/parts/push-to-open.svg",
     }),
-    part('VBD-6601', 'Houten deuvel 8 x 30 mm', 'Verbindingen', {
-      stock: 1400, minStock: 400, orderQty: 1000, supplier: 'Bouwmaat',
-      location: 'C3-01', photo: '/img/parts/deuvel.svg',
+    part("miniwinch", "", "Miniwinch", "Verbindingen", {
+      supplier: "Wurth",
+      location: "20/21/22",
+      photo: "/img/parts/miniwinch.svg",
     }),
-    part('VBD-6610', 'Excenter verbinder 15 mm', 'Verbindingen', {
-      stock: 260, minStock: 200, orderQty: 300, supplier: 'Beslagcentrum',
-      location: 'C3-02', photo: '/img/parts/excenter.svg',
+    part("kruisplaat-lang", "174H7100E DUEPL", "Kruisplaat lange plug (hoekaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "17",
+      photo: "/img/parts/montageplaat.svg",
     }),
-    part('OPH-7701', 'Kastophangbeugel verstelbaar', 'Ophangen', {
-      stock: 48, minStock: 30, orderQty: 50, supplier: 'Van Dijk Beslag',
-      location: 'D1-01', photo: '/img/parts/ophangbeugel.svg',
+    part("kruisplaat-kort", "174H710ZE DUEPL", "Kruisplaat korte plug (middenaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "16",
+      photo: "/img/parts/montageplaat.svg",
     }),
-    part('OPH-7710', 'Kastpoot 100 mm verstelbaar', 'Ophangen', {
-      stock: 96, minStock: 60, orderQty: 100, supplier: 'Van Dijk Beslag',
-      location: 'D1-02', photo: '/img/parts/kastpoot.svg',
+    part("cliptop-blumotion-hoek", "71B3590 MB", "Clip-top BLUMOTION (hoekaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "3",
+      photo: "/img/parts/scharnier-opdek.svg",
     }),
-    part('SLT-8801', 'Magneetsluiting wit', 'Sluitingen', {
-      stock: 0, minStock: 20, orderQty: 50, supplier: 'Beslagcentrum',
-      location: 'D2-01', photo: '/img/parts/magneetsluiting.svg',
-      notes: 'Alleen nog voor oude series.',
+    part("cliptop-zelfsluitend-hoek", "71T3590 MB V250 NI", "Clip-top Zelfsluitend (hoekaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "4",
+      photo: "/img/parts/scharnier-opdek.svg",
+    }),
+    part("cliptop-nietzelfsluitend-hoek", "70T3590.TLMB V50 NI", "Clip-top Niet-Zelfsluitend (hoekaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "1",
+      photo: "/img/parts/scharnier-opdek.svg",
+    }),
+    part("puuur-scharnier-logo", "", "PUUUR Scharnier logo", "Labels", {
+      supplier: "Hoecke",
+      location: "11-2",
+      photo: "/img/parts/label.svg",
+    }),
+    part("cliptop-blumotion-midden", "71B3690 MB V250 NI", "Clip-top BLUMOTION (middenaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "2",
+      photo: "/img/parts/scharnier-opdek.svg",
+    }),
+    part("cliptop-zelfsluitend-midden", "71T3690 MB V50 NI", "Clip-top Zelfsluitend (middenaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "15",
+      photo: "/img/parts/scharnier-opdek.svg",
+    }),
+    part("cliptop-nietzelfsluitend-midden", "70T3690.TLMB V50 NI", "Clip-top Niet-Zelfsluitend (middenaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "14",
+      photo: "/img/parts/scharnier-opdek.svg",
+    }),
+    part("scharnier-logo-links", "", "Scharnier logo LINKS (middenaanslag)", "Labels", {
+      supplier: "Hoecke",
+      location: "10",
+      photo: "/img/parts/label.svg",
+    }),
+    part("scharnier-logo-rechts", "", "Scharnier logo RECHTS (middenaanslag)", "Labels", {
+      supplier: "Hoecke",
+      location: "11",
+      photo: "/img/parts/label.svg",
+    }),
+    part("cliptop-blumotion-155-hoek", "71B7590 MB V125 NI", "Clip-top BLUMOTION 155° (hoekaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "25",
+      photo: "/img/parts/scharnier-165.svg",
+    }),
+    part("cliptop-nietzelfsluitend-155-hoek", "70T7590.TLMB V25 NI", "Clip-top Niet-Zelfsluitend 155° (hoekaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "8",
+      photo: "/img/parts/scharnier-165.svg",
+    }),
+    part("cliptop-blumotion-155-midden", "71B7690 MB V25 NI", "Clip-top BLUMOTION 155° (middenaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "27",
+      photo: "/img/parts/scharnier-165.svg",
+    }),
+    part("cliptop-nietzelfsluitend-155-midden", "70T7690.TLMB V25 NI", "Clip-top Niet-Zelfsluitend 155° (middenaanslag)", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "26",
+      photo: "/img/parts/scharnier-165.svg",
+    }),
+    part("openingsbegrenzer", "", "Openingsbegrenzer", "Scharnieren", {
+      supplier: "Ostermann",
+      location: "",
+      photo: "/img/parts/openingsbegrenzer.svg",
+    }),
+    part("afstandsbediening", "61500050603", "Afstandsbediening Creditcard", "Verlichting", {
+      supplier: "Maclean",
+      location: "65",
+      photo: "/img/parts/afstandsbediening.svg",
+    }),
+    part("ontvanger", "", "Ontvanger t.b.v. afstandsbediening", "Verlichting", {
+      supplier: "Maclean",
+      location: "69",
+      photo: "/img/parts/module.svg",
+    }),
+    part("hue-zigbee", "61500052201", "HUE/ZIGBEE Module", "Verlichting", {
+      supplier: "Maclean",
+      location: "68",
+      photo: "/img/parts/module.svg",
+    }),
+    part("ir-schakelaar", "21703220103", "IR Schakelaar", "Verlichting", {
+      supplier: "Maclean",
+      location: "72",
+      photo: "/img/parts/module.svg",
+    }),
+    part("led-spot-ar35", "20202532802", "LED Spot AR35 2,2w ww", "Verlichting", {
+      supplier: "Maclean",
+      location: "70",
+      photo: "/img/parts/led-spot.svg",
+    }),
+    part("voedingsverlengkabel", "21530062501", "Voedingsverlengkabel 2500mm", "Verlichting", {
+      supplier: "Maclean",
+      location: "60",
+      photo: "/img/parts/kabel.svg",
+    }),
+    part("led-cob-tape", "", "LED COB tape ww 8w pm1", "Verlichting", {
+      supplier: "LED GIGANT",
+      location: "74",
+      photo: "/img/parts/led-tape.svg",
+      unit: "m1",
+      notes: "Artikelnummer nog invullen.",
+    }),
+    part("cob-voedingskabel", "21528308102", "COB Voedingskabel 2500mm", "Verlichting", {
+      supplier: "Maclean",
+      location: "61",
+      photo: "/img/parts/kabel.svg",
+    }),
+    part("cob-hoekclip", "", "COB Hoekverbindingsclip", "Verlichting", {
+      supplier: "Maclean",
+      location: "",
+      photo: "/img/parts/kabel.svg",
+    }),
+    part("led-eco-tape", "20202962102", "LED Eco Tape 8w pm1", "Verlichting", {
+      supplier: "Maclean",
+      location: "",
+      photo: "/img/parts/led-tape.svg",
+      unit: "m1",
+    }),
+    part("trafo-15", "20604001101", "Trafo 15Watt", "Verlichting", {
+      supplier: "Maclean",
+      location: "63",
+      photo: "/img/parts/trafo.svg",
+    }),
+    part("trafo-30", "20604001201", "Trafo 30Watt", "Verlichting", {
+      supplier: "Maclean",
+      location: "64",
+      photo: "/img/parts/trafo.svg",
+    }),
+    part("trafo-60", "20604003101", "Trafo 60Watt", "Verlichting", {
+      supplier: "Maclean",
+      location: "66",
+      photo: "/img/parts/trafo.svg",
+    }),
+    part("trafo-100", "20604003301", "Trafo 100Watt", "Verlichting", {
+      supplier: "Maclean",
+      location: "67",
+      photo: "/img/parts/trafo.svg",
+    }),
+    part("led-fn-tape", "", "LED FN Tape 10W pm1", "Verlichting", {
+      supplier: "Maclean",
+      location: "",
+      photo: "/img/parts/led-tape.svg",
+      unit: "m1",
+    }),
+    part("novapro-scala-afstandhouder", "", "Nova Pro Scala afstandhouder", "Ladesystemen", {
+      supplier: "Maclean",
+      location: "",
+      photo: "/img/parts/ladewand.svg",
+    }),
+    part("novapro-h63", "", "Nova Pro H63", "Ladesystemen", {
+      supplier: "",
+      location: "44",
+      photo: "/img/parts/ladewand.svg",
+      notes: "Lengte per kast opgeven in mm.",
+    }),
+    part("novapro-h90", "", "Nova Pro H90", "Ladesystemen", {
+      supplier: "",
+      location: "44",
+      photo: "/img/parts/ladewand.svg",
+      notes: "Lengte per kast opgeven in mm.",
+    }),
+    part("novapro-h122", "", "Nova Pro H122", "Ladesystemen", {
+      supplier: "",
+      location: "44",
+      photo: "/img/parts/ladewand.svg",
+      notes: "Lengte per kast opgeven in mm.",
+    }),
+    part("novapro-h186", "", "Nova Pro H186", "Ladesystemen", {
+      supplier: "",
+      location: "44",
+      photo: "/img/parts/ladewand.svg",
+      notes: "Lengte per kast opgeven in mm.",
+    }),
+    part("fronthaak-63", "", "Fronthaak 63mm", "Ladesystemen", {
+      supplier: "",
+      location: "",
+      photo: "/img/parts/fronthaak.svg",
+    }),
+    part("fronthaak-90-122-186", "", "Fronthaak 90/122/186mm", "Ladesystemen", {
+      supplier: "",
+      location: "41",
+      photo: "/img/parts/fronthaak.svg",
+    }),
+    part("fronthaak-186", "", "Fronthaak 186mm", "Ladesystemen", {
+      supplier: "",
+      location: "40",
+      photo: "/img/parts/fronthaak.svg",
+    }),
+    part("tipmatic-push-to-open", "", "Tip-Matic Push-to-open", "Openen en sluiten", {
+      supplier: "",
+      location: "45",
+      photo: "/img/parts/push-to-open.svg",
+    }),
+    part("novapro-tipmatic-stangsteun", "", "Nova Pro Tip-matic Stangsteun", "Openen en sluiten", {
+      supplier: "",
+      location: "43-2",
+      photo: "/img/parts/stang.svg",
+    }),
+    part("tipmatic-stang", "", "Tip-Matic Stang", "Openen en sluiten", {
+      supplier: "",
+      location: "46",
+      photo: "/img/parts/stang.svg",
     }),
   ];
 
-  const byNumber = Object.fromEntries(parts.map((p) => [p.number, p.id]));
+  const byId = Object.fromEntries(parts.map((p) => [p.id.replace(/^on_/, ''), p.id]));
 
+  // Kastlijst 14925 Mitchell, met de aantallen van het papieren blad.
   const picklists = [
     {
-      id: 'kl_51436',
-      cabinetNumber: '51436',
-      title: 'Keukenkast onderbouw 600 mm',
-      note: 'Twee deuren, één vaste plank.',
+      id: 'kl_14925',
+      cabinetNumber: '14925',
+      title: 'Mitchell',
+      note: "Lengtes: Nova Pro H90 = 500 mm (was 550), H122 = 600 mm, H186 = 600 mm (nog controleren). PUUUR Label Meubel: nee.",
       status: 'open',
       createdBy: 'Roy',
       createdAt: ago(0),
@@ -89,82 +299,38 @@ export function seedDatabase() {
       completedBy: null,
       completedAt: null,
       lines: [
-        line(byNumber['SCH-1101'], 4),
-        line(byNumber['SCH-1150'], 4),
-        line(byNumber['PLK-3301'], 4),
-        line(byNumber['GRP-5501'], 2),
-        line(byNumber['OPH-7710'], 4),
-        line(byNumber['SCR-4401'], 1),
+        line(byId["doos"], 1),
+        line(byId["voetplaat-stelpoot"], 11),
+        line(byId["axilo-80"], 11),
+        line(byId["plintklem"], 6),
+        line(byId["kruisplaat-lang"], 4),
+        line(byId["kruisplaat-kort"], 2),
+        line(byId["cliptop-blumotion-hoek"], 2),
+        line(byId["cliptop-zelfsluitend-hoek"], 2),
+        line(byId["puuur-scharnier-logo"], 4),
+        line(byId["cliptop-blumotion-midden"], 1),
+        line(byId["cliptop-zelfsluitend-midden"], 1),
+        line(byId["scharnier-logo-rechts"], 2),
+        line(byId["novapro-h90"], 4),
+        line(byId["novapro-h122"], 2),
+        line(byId["novapro-h186"], 2),
+        line(byId["fronthaak-90-122-186"], 16),
+        line(byId["fronthaak-186"], 4),
       ],
-    },
-    {
-      id: 'kl_51431',
-      cabinetNumber: '51431',
-      title: 'Ladekast 3 laden',
-      note: '',
-      status: 'incomplete',
-      createdBy: 'Roy',
-      createdAt: ago(1),
-      startedBy: 'Dean',
-      startedAt: ago(1),
-      completedBy: 'Dean',
-      completedAt: ago(1),
-      lines: [
-        { ...line(byNumber['GEL-2201'], 3), pickedQty: 3, picked: true },
-        { ...line(byNumber['GRP-5510'], 3), pickedQty: 1, picked: true, missingQty: 2 },
-        { ...line(byNumber['SCR-4410'], 1), pickedQty: 1, picked: true },
-        { ...line(byNumber['VBD-6610'], 12), pickedQty: 12, picked: true },
-      ],
-    },
-    {
-      id: 'kl_51428',
-      cabinetNumber: '51428',
-      title: 'Bovenkast 800 mm met glasdeur',
-      note: '',
-      status: 'done',
-      createdBy: 'Roy',
-      createdAt: ago(3),
-      startedBy: 'Dean',
-      startedAt: ago(2),
-      completedBy: 'Dean',
-      completedAt: ago(2),
-      lines: [
-        { ...line(byNumber['SCH-1102'], 2), pickedQty: 2, picked: true },
-        { ...line(byNumber['SCH-1150'], 2), pickedQty: 2, picked: true },
-        { ...line(byNumber['OPH-7701'], 2), pickedQty: 2, picked: true },
-        { ...line(byNumber['PLK-3301'], 4), pickedQty: 4, picked: true },
-      ],
-    },
-  ];
-
-  const orders = [
-    {
-      id: 'bs_1001',
-      partId: byNumber['SCH-1102'],
-      qty: 100,
-      supplier: 'Van Dijk Beslag',
-      status: 'open',
-      note: 'Verwacht komende week.',
-      orderedBy: 'Roy',
-      createdAt: ago(2),
-      receivedAt: null,
-      receivedQty: 0,
     },
   ];
 
   const activity = [
-    event('picklist', 'Kastlijst 51428 compleet gepakt door Dean', ago(2)),
-    event('shortage', 'Tekort gemeld op kastlijst 51431: 2 x Knop zwart mat 30 mm', ago(1)),
-    event('order', '100 x Potscharnier 165° binnenliggend besteld bij Van Dijk Beslag', ago(2)),
-    event('picklist', 'Kastlijst 51436 aangemaakt door Roy', ago(0)),
+    event('picklist', 'Kastlijst 14925 Mitchell aangemaakt (17 onderdelen)', ago(0)),
+    event('part', 'Onderdelenlijst van PUUUR ingelezen: 53 onderdelen', ago(0)),
   ];
 
-  return { version: 1, parts, picklists, orders, activity };
+  return { version: 1, parts, picklists, orders: [], activity };
 }
 
-function part(number, name, category, extra = {}) {
+function part(id, number, name, category, extra = {}) {
   return {
-    id: `on_${number.toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+    id: 'on_' + id,
     number,
     name,
     category,
@@ -172,11 +338,12 @@ function part(number, name, category, extra = {}) {
     stock: 0,
     minStock: 0,
     orderQty: 0,
+    geteld: false,
     supplier: '',
     location: '',
     photo: '',
     notes: '',
-    createdAt: ago(30),
+    createdAt: ago(0),
     ...extra,
   };
 }
@@ -186,5 +353,5 @@ function line(partId, qty) {
 }
 
 function event(type, text, at) {
-  return { id: `ev_${Math.random().toString(36).slice(2, 10)}`, type, text, at, user: '' };
+  return { id: 'ev_' + Math.random().toString(36).slice(2, 10), type, text, at, user: 'Roy' };
 }

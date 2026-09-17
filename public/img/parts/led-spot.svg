@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="LED spot">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <ellipse cx="80" cy="54" rx="30" ry="14" fill="#DFD9C6" stroke="#17160F" stroke-width="2.5"/>
+  <path d="M50 54v10a30 14 0 0 0 60 0V54" fill="#EDE9DC" stroke="#17160F" stroke-width="2.5"/>
+  <ellipse cx="80" cy="64" rx="18" ry="8" fill="#A8842C"/>
+  <g stroke="#C9C2AD" stroke-width="2.5" stroke-linecap="round">
+    <path d="M56 84l-8 10M80 88v12M104 84l8 10"/>
+  </g>
+</svg>

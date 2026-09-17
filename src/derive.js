@@ -2,6 +2,7 @@
 // Deze module bevat geen I/O zodat de rekenregels los te testen zijn.
 
 export const PART_STATUS = {
+  onbekend: { label: 'Nog niet geteld', tone: 'muted' },
   out: { label: 'Op', tone: 'danger' },
   order: { label: 'Bestellen', tone: 'warn' },
   ordered: { label: 'Besteld', tone: 'info' },
@@ -54,7 +55,8 @@ export function onOrderByPart(orders) {
   return map;
 }
 
-export function partStatus({ available, minStock, onOrder }) {
+export function partStatus({ available, minStock, onOrder, geteld }) {
+  if (geteld === false) return 'onbekend';
   if (available <= 0) return 'out';
   if (available <= minStock) return onOrder > 0 ? 'ordered' : 'order';
   return 'ok';
@@ -87,9 +89,11 @@ export function enrichParts(db) {
       minStock: num(part.minStock),
       onOrder: ordered,
       shortage: short ? short.qty : 0,
+      geteld: part.geteld !== false,
     };
     return {
       ...part,
+      geteld: part.geteld !== false,
       stock,
       reserved: res,
       available,
@@ -105,8 +109,9 @@ export function enrichParts(db) {
 /** Alles wat Roy moet bestellen, met de dringendste bovenaan. */
 export function orderAdvice(parts) {
   const rank = { out: 0, order: 1, ordered: 2 };
+  // Wat nog niet geteld is, kan het programma niet beoordelen.
   return parts
-    .filter((p) => p.status !== 'ok' || p.shortage > 0)
+    .filter((p) => (p.status !== 'ok' && p.status !== 'onbekend') || p.shortage > 0)
     .sort((a, b) => (rank[a.status] ?? 3) - (rank[b.status] ?? 3) || a.available - b.available);
 }
 

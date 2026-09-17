@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Trafo">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <rect x="38" y="42" width="84" height="36" rx="4" fill="#DFD9C6" stroke="#17160F" stroke-width="2.5"/>
+  <rect x="50" y="52" width="40" height="8" rx="2" fill="#FBF9F3" stroke="#6E695C" stroke-width="1.5"/>
+  <g stroke="#17160F" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <path d="M38 60H16M16 52v16"/>
+    <path d="M122 60h20M142 54v12"/>
+  </g>
+  <circle cx="104" cy="66" r="4" fill="#A8842C"/>
+</svg>

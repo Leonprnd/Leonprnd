@@ -46,6 +46,15 @@ test('status volgt de vrije voorraad', () => {
   assert.equal(partStatus({ available: 0, minStock: 5, onOrder: 25 }), 'out');
 });
 
+test('een onderdeel dat nog niet geteld is krijgt geen voorraadoordeel', () => {
+  assert.equal(partStatus({ available: 0, minStock: 0, onOrder: 0, geteld: false }), 'onbekend');
+  const data = db();
+  data.parts.push({ id: 'p4', number: 'NIEUW-1', name: 'Nog te tellen', stock: 0, minStock: 0, orderQty: 0, geteld: false });
+  const nieuw = enrichParts(data).find((p) => p.id === 'p4');
+  assert.equal(nieuw.status, 'onbekend');
+  assert.ok(!orderAdvice(enrichParts(data)).some((p) => p.id === 'p4'), 'staat niet op de bestellijst');
+});
+
 test('onderdelen krijgen reservering, vrije voorraad en status', () => {
   const [scharnier, greep, sluiting] = enrichParts(db());
   assert.equal(scharnier.reserved, 36);

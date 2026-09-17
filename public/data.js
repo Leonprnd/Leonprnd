@@ -79,6 +79,10 @@ export function toOrder() {
   return parts().filter((part) => part.status === 'order' || part.status === 'out' || part.shortage > 0);
 }
 
+export function nogTeTellen() {
+  return parts().filter((part) => part.status === 'onbekend');
+}
+
 export function openOrders() {
   return orders().filter((order) => order.status === 'open');
 }

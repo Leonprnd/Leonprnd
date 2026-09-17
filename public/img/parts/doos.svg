@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Doos">
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <path d="M30 46l50-18 50 18-50 18z" fill="#EDE9DC" stroke="#17160F" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M30 46v40l50 18V64z" fill="#DFD9C6" stroke="#17160F" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M130 46v40l-50 18V64z" fill="#FBF9F3" stroke="#17160F" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M80 28v36" stroke="#A8842C" stroke-width="2.5"/>
+</svg>
