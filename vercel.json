@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run build:site",
+  "outputDirectory": "docs",
+  "installCommand": "echo geen pakketten nodig",
+  "cleanUrls": true
+}
