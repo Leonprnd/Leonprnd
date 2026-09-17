@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Houten deuvel">
-  <rect width="160" height="120" fill="#eef1f6"/>
-  <g stroke="#8a6a44" stroke-width="2.5" stroke-linejoin="round">
-    <rect x="24" y="46" width="112" height="28" rx="14" fill="#d8bb92"/>
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <g stroke="#6B5A2C" stroke-width="2.5" stroke-linejoin="round">
+    <rect x="24" y="46" width="112" height="28" rx="14" fill="#E0CFA4"/>
   </g>
-  <g stroke="#b08e60" stroke-width="3">
+  <g stroke="#A8842C" stroke-width="3">
     <path d="M44 50v20M60 50v20M76 50v20M92 50v20M108 50v20"/>
   </g>
-  <ellipse cx="38" cy="60" rx="6" ry="13" fill="#e6d0af" stroke="#8a6a44" stroke-width="2"/>
+  <ellipse cx="38" cy="60" rx="6" ry="13" fill="#F0E6CB" stroke="#6B5A2C" stroke-width="2"/>
 </svg>

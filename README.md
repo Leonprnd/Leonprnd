@@ -3,6 +3,10 @@
 Voorraad- en picklijstprogramma voor de meubelmakerij: welke onderdelen zijn er,
 wat is er voor een kast nodig, wat is er gepakt en wat moet er besteld worden.
 
+De vormgeving is bewust minimaal: zwart, wit en goud, met de artikelnummers
+en aantallen in een vaste-breedte letter zodat kolommen recht onder elkaar
+staan.
+
 Het programma is gemaakt voor twee manieren van werken:
 
 * **Roy (inkoop)** maakt per kast een lijst met onderdelen, ziet welke onderdelen

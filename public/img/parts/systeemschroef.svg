@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Systeemschroef">
-  <rect width="160" height="120" fill="#eef1f6"/>
-  <g stroke="#5b6579" stroke-width="2.5" stroke-linejoin="round">
-    <rect x="22" y="34" width="20" height="52" rx="4" fill="#cfd6e3"/>
-    <path d="M42 44h56v32H42z" fill="#dfe4ee"/>
-    <path d="M98 48l26 12-26 12z" fill="#cfd6e3"/>
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <g stroke="#17160F" stroke-width="2.5" stroke-linejoin="round">
+    <rect x="22" y="34" width="20" height="52" rx="4" fill="#DFD9C6"/>
+    <path d="M42 44h56v32H42z" fill="#EDE9DC"/>
+    <path d="M98 48l26 12-26 12z" fill="#DFD9C6"/>
   </g>
-  <g stroke="#7c8699" stroke-width="3" fill="none">
+  <g stroke="#6E695C" stroke-width="3" fill="none">
     <path d="M48 44l12 32M64 44l12 32M80 44l12 32"/>
   </g>
-  <circle cx="32" cy="60" r="6" fill="#9aa5bb"/>
+  <circle cx="32" cy="60" r="6" fill="#A8842C"/>
 </svg>

@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Greep RVS">
-  <rect width="160" height="120" fill="#eef1f6"/>
-  <path d="M14 82h132" stroke="#b9c2d2" stroke-width="4"/>
-  <g stroke="#5b6579" stroke-width="2.5" stroke-linejoin="round">
-    <rect x="18" y="34" width="124" height="16" rx="8" fill="#cfd6e3"/>
-    <rect x="30" y="50" width="14" height="30" rx="3" fill="#dfe4ee"/>
-    <rect x="116" y="50" width="14" height="30" rx="3" fill="#dfe4ee"/>
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <path d="M14 82h132" stroke="#C9C2AD" stroke-width="4"/>
+  <g stroke="#17160F" stroke-width="2.5" stroke-linejoin="round">
+    <rect x="18" y="34" width="124" height="16" rx="8" fill="#DFD9C6"/>
+    <rect x="30" y="50" width="14" height="30" rx="3" fill="#EDE9DC"/>
+    <rect x="116" y="50" width="14" height="30" rx="3" fill="#EDE9DC"/>
   </g>
-  <g fill="#e7ebf2">
+  <g fill="#FBF9F3">
     <rect x="26" y="38" width="108" height="4" rx="2"/>
   </g>
 </svg>

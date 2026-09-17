@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Plankdrager">
-  <rect width="160" height="120" fill="#eef1f6"/>
-  <path d="M24 34h112v10H24z" fill="#dfe4ee" stroke="#b9c2d2" stroke-width="2"/>
-  <g stroke="#5b6579" stroke-width="2.5" stroke-linejoin="round">
-    <rect x="46" y="58" width="60" height="16" rx="3" fill="#cfd6e3"/>
-    <rect x="100" y="50" width="14" height="32" rx="3" fill="#dfe4ee"/>
-    <path d="M114 56h16v20h-16z" fill="#e7ebf2"/>
+  <rect width="160" height="120" fill="#F3F0E8"/>
+  <path d="M24 34h112v10H24z" fill="#EDE9DC" stroke="#C9C2AD" stroke-width="2"/>
+  <g stroke="#17160F" stroke-width="2.5" stroke-linejoin="round">
+    <rect x="46" y="58" width="60" height="16" rx="3" fill="#DFD9C6"/>
+    <rect x="100" y="50" width="14" height="32" rx="3" fill="#EDE9DC"/>
+    <path d="M114 56h16v20h-16z" fill="#FBF9F3"/>
   </g>
-  <g fill="#9aa5bb">
+  <g fill="#A8842C">
     <rect x="54" y="62" width="34" height="3" rx="1.5"/>
     <circle cx="122" cy="66" r="4"/>
   </g>
-  <path d="M24 86h112" stroke="#b9c2d2" stroke-width="3" stroke-dasharray="6 5"/>
+  <path d="M24 86h112" stroke="#C9C2AD" stroke-width="3" stroke-dasharray="6 5"/>
 </svg>
