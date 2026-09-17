@@ -273,6 +273,8 @@
   .telrij .grow { flex: 1; min-width: 150px; }
   .telrij .nm { font-weight: 500; }
   .telrij.geteld { background: var(--wash); }
+  .tekortkleur { color: var(--gold); font-weight: 600; }
+  .telrij.tekort { background: var(--gold-wash); box-shadow: inset 2px 0 0 var(--gold); }
   .telstand { font-family: var(--mono); font-size: 12px; color: var(--ink-3); text-align: right; min-width: 132px; }
   input.telveld {
     width: 92px; text-align: right; font-family: var(--mono); font-size: 16px;
@@ -519,6 +521,10 @@
   const foto = (p, klas) => `<img class="thumb ${klas || ''}" src="${esc((p && p.photo) || LEEG)}" alt="" loading="lazy">`;
   const kort = (p) => p.number || '';
   const plek = (p) => (p.location ? 'locatie ' + p.location : 'geen locatie');
+  const rest = (p) => (isGeteld(p)
+    ? (p.stock < 0 ? `${p.stock} — te weinig` : `nog ${p.stock}`)
+    : 'nog niet geteld');
+
   const cel = (p) => `<div class="cell">${foto(p)}<div><div class="name">${esc(p.name)}</div>
     <div class="code">${esc([kort(p), p.location ? 'loc. ' + p.location : ''].filter(Boolean).join(' · '))}</div></div></div>`;
 
@@ -561,9 +567,10 @@
           <div class="right faint">${c.lines.length} regels · ${totaal} stuks</div></div>
         ${c.lines.length ? `<div class="rows">${c.lines.map((r) => {
           const p = partById(r.partId) || { name: 'Onbekend onderdeel' };
+          const teweinig = isGeteld(p) && p.stock < 0;
           return `<div class="row">${foto(p)}
             <div class="grow"><div class="name">${esc(p.name)}</div>
-              <div class="code">${esc([kort(p), plek(p)].filter(Boolean).join(' · '))}</div></div>
+              <div class="code ${teweinig ? 'tekortkleur' : ''}">${esc([kort(p), plek(p), rest(p)].filter(Boolean).join(' · '))}</div></div>
             <div class="step"><button data-act="min:${r.partId}">−</button><span>${r.qty}</span>
               <button data-act="plus:${r.partId}">+</button></div>
             <button class="link" data-act="weg:${r.partId}">weg</button></div>`;
@@ -592,7 +599,8 @@
       const opLijst = S.concept.lines.find((r) => r.partId === p.id);
       return `<div class="row">${foto(p)}
         <div class="grow"><div class="name">${esc(p.name)}</div>
-          <div class="code">${esc([kort(p), plek(p), p.supplier].filter(Boolean).join(' · '))}</div></div>
+          <div class="code">${esc([kort(p), plek(p)].filter(Boolean).join(' · '))}</div></div>
+        <span class="code ${isGeteld(p) && p.stock < 0 ? 'tekortkleur' : ''}">${esc(rest(p))}</span>
         ${opLijst ? `<span class="chip">${opLijst.qty} op lijst</span>` : ''}
         <button class="btn" data-act="voeg:${p.id}">Toevoegen</button>
         <button class="link" data-act="wijzigonderdeel:${p.id}">wijzig</button></div>`;
@@ -767,8 +775,9 @@
       <section>
         <div class="head"><h2>Voorraad</h2>
           <div class="right faint">${geteld} van ${alles.length} geteld${laatste ? ' · laatst bijgewerkt ' + datum(laatste) : ''}</div></div>
-        <p class="faint" style="margin-bottom:16px">Loop de stellingen langs op volgorde van locatie en vul in hoeveel er ligt.
-          Elk aantal wordt meteen bewaard, je hoeft niets af te sluiten.</p>
+        <p class="faint" style="margin-bottom:16px">Tel aan het begin één keer alles: loop de stellingen langs op volgorde van
+          locatie en vul in hoeveel er ligt. Elk aantal wordt meteen bewaard. Daarna houdt het programma het zelf bij —
+          wat Roy op een kastlijst zet, gaat er meteen af.</p>
         <div class="search" style="max-width:420px"><span class="ico">zoek</span>
           <input id="zoekvoorraad" type="search" value="${esc(S.telZoek)}" placeholder="naam, nummer of locatie"></div>
         <div style="margin-top:14px" id="telrijen">${telRijen(lijst)}</div>
@@ -777,20 +786,22 @@
 
   function telRijen(lijst) {
     if (!lijst.length) return '<p class="empty">Niets gevonden.</p>';
-    return lijst.map((p) => `<div class="telrij ${isGeteld(p) ? 'geteld' : ''}" id="tel_${esc(p.id)}">
+    return lijst.map((p) => `<div class="telrij ${isGeteld(p) ? 'geteld' : ''}${isGeteld(p) && p.stock < 0 ? ' tekort' : ''}" id="tel_${esc(p.id)}">
       ${foto(p)}
       <div class="grow"><div class="nm">${esc(p.name)}</div>
         <div class="code">${esc([kort(p), plek(p)].filter(Boolean).join(' · '))}</div></div>
-      <div class="telstand">${telStand(p)}</div>
+      <div class="telstand ${isGeteld(p) && p.stock < 0 ? 'tekortkleur' : ''}">${telStand(p)}</div>
       <input class="telveld" type="number" min="0" inputmode="numeric" data-tel="${esc(p.id)}"
         value="${isGeteld(p) ? p.stock : ''}" aria-label="Aantal ${esc(p.name)}">
       <span class="eenheid faint">${esc(p.unit || 'stuks')}</span>
     </div>`).join('');
   }
 
-  const telStand = (p) => (p.countedAt
-    ? `geteld ${datum(p.countedAt)}${p.countedBy ? ' · ' + esc(p.countedBy) : ''}`
-    : 'nog niet geteld');
+  const telStand = (p) => {
+    if (!p.countedAt) return 'nog niet geteld';
+    const geteld = `geteld ${datum(p.countedAt)}${p.countedBy ? ' · ' + esc(p.countedBy) : ''}`;
+    return p.stock < 0 ? `te weinig · ${geteld}` : geteld;
+  };
 
   /** Eén aantal bewaren; het scherm blijft staan waar Dean gebleven was. */
   async function bewaarAantal(partId, tekst) {
@@ -806,6 +817,7 @@
     const rij = document.getElementById('tel_' + partId);
     if (rij) {
       rij.classList.toggle('geteld', !leeg);
+      rij.classList.toggle('tekort', !leeg && aantal < 0);
       const stand = rij.querySelector('.telstand');
       if (stand) stand.textContent = leeg ? 'nog niet geteld' : `geteld ${datum(nu())} · ${S.wie}`;
     }
@@ -957,6 +969,32 @@
     });
   }
 
+  /* ------------------------------------------------------------ voorraad bijwerken */
+
+  const regelsPerOnderdeel = (lines) => {
+    const map = new Map();
+    for (const r of lines || []) map.set(r.partId, (map.get(r.partId) || 0) + r.qty);
+    return map;
+  };
+
+  /**
+   * Boekt het verschil tussen twee versies van een kastlijst af of terug.
+   * Een nieuwe kastlijst gaat er meteen van de voorraad af; wordt een lijst
+   * kleiner of verwijderd, dan komt het weer terug. Onderdelen die nog niet
+   * geteld zijn hebben geen aantal, daar valt niets aan bij te werken.
+   */
+  async function boekVoorraad(oudeLines, nieuweLines) {
+    const oud = regelsPerOnderdeel(oudeLines);
+    const nieuw = regelsPerOnderdeel(nieuweLines);
+    for (const partId of new Set([...oud.keys(), ...nieuw.keys()])) {
+      const verschil = (oud.get(partId) || 0) - (nieuw.get(partId) || 0);
+      if (!verschil) continue;
+      const p = partById(partId);
+      if (!p || !isGeteld(p)) continue;
+      await partRef(partId).update({ stock: p.stock + verschil });
+    }
+  }
+
   /* ------------------------------------------------------------ afronden */
 
   async function rondAf(l, mist) {
@@ -966,6 +1004,11 @@
     });
     const tekort = lines.filter((r) => r.missingQty > 0);
     await schrijf(async () => {
+      // Wat Dean niet kon pakken lag er niet: dat onderdeel staat op nul.
+      for (const r of tekort) {
+        const p = partById(r.partId);
+        if (p && isGeteld(p) && p.stock !== 0) await partRef(r.partId).update({ stock: 0 });
+      }
       await listRef(l.id).update({
         lines,
         status: tekort.length ? 'tekort' : 'gepakt',
@@ -1028,15 +1071,18 @@
       return schrijf(async () => {
         if (c.id) {
           const oud = lijstById(c.id);
+          const nieuweRegels = c.lines.map((r) => {
+            const bestaand = ((oud && oud.lines) || []).find((x) => x.partId === r.partId) || {};
+            return { partId: r.partId, qty: r.qty, missingQty: bestaand.missingQty || 0, missingHandled: Boolean(bestaand.missingHandled) };
+          });
+          await boekVoorraad((oud && oud.lines) || [], nieuweRegels);
           await listRef(c.id).update({
             cabinetNumber: c.cabinetNumber,
             title: c.title,
-            lines: c.lines.map((r) => {
-              const bestaand = ((oud && oud.lines) || []).find((x) => x.partId === r.partId) || {};
-              return { partId: r.partId, qty: r.qty, missingQty: bestaand.missingQty || 0, missingHandled: Boolean(bestaand.missingHandled) };
-            }),
+            lines: nieuweRegels,
           });
         } else {
+          await boekVoorraad([], c.lines);
           await S.db.collection('lists').add({
             cabinetNumber: c.cabinetNumber,
             title: c.title,
@@ -1068,6 +1114,8 @@
     }
     if (naam === 'verwijderlijst') {
       return schrijf(async () => {
+        const l = lijstById(a);
+        if (l && l.status === 'open') await boekVoorraad(l.lines || [], []);
         await listRef(a).delete();
         S.lijstId = null;
         teken(true);

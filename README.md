@@ -25,9 +25,25 @@ allebei anders uit.
 
 * **Kastlijsten** – de kasten die klaarstaan.
 * **Voorraad** – alle onderdelen onder elkaar op volgorde van locatie, met per
-  onderdeel een vakje voor het aantal. Tellen doe je in één doorloop: typen,
-  Tab, typen. Elk aantal wordt meteen bewaard, met de datum en wie het telde.
-  Later is ditzelfde tabblad het overzicht van hoeveel er van alles ligt.
+  onderdeel een vakje voor het aantal. Aan het begin tel je in één doorloop
+  alles: typen, Tab, typen. Elk aantal wordt meteen bewaard, met de datum en
+  wie het telde. Daarna houdt het programma het zelf bij en is ditzelfde
+  tabblad het overzicht van hoeveel er van alles ligt.
+
+## Hoe de aantallen meelopen
+
+Tellen gebeurt één keer, aan het begin. Daarna rekent het programma mee:
+
+* Zodra Roy een kastlijst opslaat, gaan die aantallen er meteen af. Wijzigt hij
+  de lijst, dan gaat het verschil eraf of komt het terug; verwijdert hij een
+  lijst die nog niet gepakt is, dan komt alles terug.
+* Staat er meer op een kastlijst dan er ligt, dan wordt het aantal negatief.
+  Roy ziet dat tijdens het maken van de lijst (*nog 4*, of *-2 — te weinig*) en
+  bij Dean kleurt die regel in de voorraad op.
+* Meldt Dean een onderdeel als tekort, dan lag het er niet: dat onderdeel gaat
+  op nul. Ligt er later weer voorraad, dan telt Dean dat onderdeel opnieuw.
+* Onderdelen die nog nooit geteld zijn hebben geen aantal; daar rekent het
+  programma niets mee.
 
 Het kastlijstscherm van Dean: de kasten die klaarstaan. Hij kiest de kast die hij
 gaat maken en krijgt dan de complete lijst onderdelen te zien, op volgorde van
