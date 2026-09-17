@@ -2,11 +2,13 @@
 # Nodig als bij Settings → Pages de bron "GitHub Actions" is gekozen.
 name: Website publiceren
 
+# Alleen handmatig, zolang niet vaststaat of Pages op "GitHub Actions" staat.
+# Staat die bron aan, zet dan de push-regel eronder weer aan.
 on:
-  push:
-    branches: [claude/furniture-parts-inventory-afpzji]
-    paths: ['site/**', 'docs/**', 'scripts/bouw-site.mjs', '.github/workflows/pages.yml']
   workflow_dispatch:
+  # push:
+  #   branches: [claude/furniture-parts-inventory-afpzji]
+  #   paths: ['site/**', 'docs/**', 'scripts/bouw-site.mjs']
 
 permissions:
   contents: read
