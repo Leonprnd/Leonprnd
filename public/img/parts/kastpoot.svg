@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Verstelbare kastpoot">
+  <rect width="160" height="120" fill="#eef1f6"/>
+  <path d="M20 98h120" stroke="#b9c2d2" stroke-width="4"/>
+  <g stroke="#5b6579" stroke-width="2.5" stroke-linejoin="round">
+    <rect x="54" y="18" width="52" height="12" rx="3" fill="#dfe4ee"/>
+    <rect x="70" y="30" width="20" height="20" rx="3" fill="#cfd6e3"/>
+    <rect x="64" y="50" width="32" height="34" rx="5" fill="#dfe4ee"/>
+    <ellipse cx="80" cy="90" rx="34" ry="9" fill="#cfd6e3"/>
+  </g>
+  <g stroke="#7c8699" stroke-width="2.5">
+    <path d="M70 36h20M70 43h20"/>
+  </g>
+</svg>

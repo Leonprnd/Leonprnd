@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Potscharnier 165 graden">
+  <rect width="160" height="120" fill="#eef1f6"/>
+  <g stroke="#5b6579" stroke-width="2.5" stroke-linejoin="round">
+    <circle cx="40" cy="64" r="22" fill="#cfd6e3"/>
+    <circle cx="40" cy="64" r="13" fill="#e7ebf2"/>
+    <path d="M60 56l34-18 10 16-30 20z" fill="#dfe4ee"/>
+    <path d="M96 30h18v40H96z" fill="#cfd6e3"/>
+    <path d="M114 36h24v30h-24z" fill="#dfe4ee"/>
+    <path d="M70 76h40v14H70z" fill="#e7ebf2"/>
+  </g>
+  <g fill="#9aa5bb">
+    <circle cx="126" cy="44" r="4"/>
+    <circle cx="126" cy="58" r="4"/>
+    <circle cx="40" cy="64" r="5"/>
+  </g>
+</svg>

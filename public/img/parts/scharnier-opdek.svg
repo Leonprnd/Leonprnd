@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Potscharnier opdek">
+  <rect width="160" height="120" fill="#eef1f6"/>
+  <g stroke="#5b6579" stroke-width="2.5" stroke-linejoin="round">
+    <circle cx="44" cy="60" r="24" fill="#cfd6e3"/>
+    <circle cx="44" cy="60" r="15" fill="#e7ebf2"/>
+    <path d="M66 50h44v20H66z" fill="#dfe4ee"/>
+    <path d="M104 38h16v44h-16z" fill="#cfd6e3"/>
+    <path d="M120 44h22v32h-22z" fill="#dfe4ee"/>
+  </g>
+  <g fill="#9aa5bb">
+    <circle cx="131" cy="53" r="4"/>
+    <circle cx="131" cy="67" r="4"/>
+    <circle cx="44" cy="60" r="5"/>
+  </g>
+  <path d="M20 24v72" stroke="#b9c2d2" stroke-width="3" stroke-dasharray="6 5"/>
+</svg>

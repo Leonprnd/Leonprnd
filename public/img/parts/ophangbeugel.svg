@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Kastophangbeugel">
+  <rect width="160" height="120" fill="#eef1f6"/>
+  <path d="M112 20v80" stroke="#b9c2d2" stroke-width="4"/>
+  <g stroke="#5b6579" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M40 30h26v66H40z" fill="#cfd6e3"/>
+    <path d="M66 36h40v18H66z" fill="#dfe4ee"/>
+    <path d="M66 70h40v16H66z" fill="#dfe4ee"/>
+    <path d="M30 44h10v40H30z" fill="#e7ebf2"/>
+  </g>
+  <g fill="#9aa5bb">
+    <circle cx="52" cy="44" r="5"/>
+    <circle cx="52" cy="80" r="5"/>
+    <circle cx="86" cy="45" r="4"/>
+  </g>
+</svg>

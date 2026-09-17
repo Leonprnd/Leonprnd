@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Excenter verbinder">
+  <rect width="160" height="120" fill="#eef1f6"/>
+  <g stroke="#5b6579" stroke-width="2.5" stroke-linejoin="round">
+    <circle cx="56" cy="60" r="28" fill="#cfd6e3"/>
+    <circle cx="56" cy="60" r="16" fill="#e7ebf2"/>
+    <path d="M84 54h28v12H84z" fill="#dfe4ee"/>
+    <path d="M112 48h10v24h-10z" fill="#cfd6e3"/>
+    <path d="M122 54h20v12h-20z" fill="#dfe4ee"/>
+  </g>
+  <path d="M48 52l16 16" stroke="#5b6579" stroke-width="4" stroke-linecap="round"/>
+</svg>
