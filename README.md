@@ -21,7 +21,15 @@ allebei anders uit.
   de leverancier en bij welke kast het miste. Bestellen zelf gebeurt (nog)
   buiten het programma; met *afgehandeld* haal je een regel van de lijst.
 
-**Dean** ziet één scherm: de kasten die klaarstaan. Hij kiest de kast die hij
+**Dean** heeft twee tabbladen:
+
+* **Kastlijsten** – de kasten die klaarstaan.
+* **Voorraad** – alle onderdelen onder elkaar op volgorde van locatie, met per
+  onderdeel een vakje voor het aantal. Tellen doe je in één doorloop: typen,
+  Tab, typen. Elk aantal wordt meteen bewaard, met de datum en wie het telde.
+  Later is ditzelfde tabblad het overzicht van hoeveel er van alles ligt.
+
+Het kastlijstscherm van Dean: de kasten die klaarstaan. Hij kiest de kast die hij
 gaat maken en krijgt dan de complete lijst onderdelen te zien, op volgorde van
 locatienummer. Onderaan staat één vraag: *Heb je alle onderdelen?*
 

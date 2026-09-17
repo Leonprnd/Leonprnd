@@ -267,6 +267,21 @@
   .vraag .tekst { font-size: 15.5px; font-weight: 500; }
   .vraag .spacer { margin-left: auto; }
 
+  /* ---------------------------------------------------------- tellen */
+  .telrij { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .telrij:first-child { border-top: 1px solid var(--line); }
+  .telrij .grow { flex: 1; min-width: 150px; }
+  .telrij .nm { font-weight: 500; }
+  .telrij.geteld { background: var(--wash); }
+  .telstand { font-family: var(--mono); font-size: 12px; color: var(--ink-3); text-align: right; min-width: 132px; }
+  input.telveld {
+    width: 92px; text-align: right; font-family: var(--mono); font-size: 16px;
+    appearance: textfield; -moz-appearance: textfield;
+  }
+  input.telveld::-webkit-outer-spin-button,
+  input.telveld::-webkit-inner-spin-button { appearance: none; margin: 0; }
+  .eenheid { font-size: 12.5px; min-width: 44px; }
+
   /* ---------------------------------------------------------- venster */
   .veil {
     position: fixed; inset: 0; background: rgba(10, 9, 7, 0.55);
@@ -293,6 +308,8 @@
   .note b { font-weight: 600; }
 
   @media (max-width: 620px) {
+    .telrij { flex-wrap: wrap; }
+    .telstand { min-width: 0; order: 3; }
     .pakrij { flex-wrap: wrap; }
     .pakrij .grow { flex-basis: 55%; }
     .vraag { flex-direction: column; align-items: stretch; }
@@ -321,7 +338,7 @@
   const MENSEN = ['Roy', 'Dean'];
   const TABBLADEN = {
     Roy: [['maken', 'Kastlijst maken'], ['bestellen', 'Te bestellen']],
-    Dean: [['kastlijsten', 'Kastlijsten']],
+    Dean: [['kastlijsten', 'Kastlijsten'], ['voorraad', 'Voorraad']],
   };
   const LEEG = 'img/placeholder.svg';
 
@@ -330,6 +347,7 @@
     parts: [], lists: [],
     wie: 'Roy', tab: 'maken',
     lijstId: null,     // kastlijst die bekeken of gepakt wordt
+    telZoek: '',       // zoekterm op het voorraadscherm
     mist: null,        // tijdens "er mist iets": { partId: aantal }
     concept: null,     // kastlijst in de maak
   };
@@ -733,9 +751,77 @@
       </div>`;
   }
 
+  /* ------------------------------------------------------------ Dean: voorraad */
+
+  // Geteld is het pas als iemand het echt geteld heeft: oude gegevens waarin
+  // een aantal op nul stond tellen niet mee.
+  const isGeteld = (p) => Boolean(p.countedAt) && typeof p.stock === 'number';
+
+  function schermVoorraad() {
+    const alles = onderdelen();
+    const lijst = zoeken(S.telZoek, alles);
+    const geteld = alles.filter(isGeteld).length;
+    const laatste = alles.map((p) => p.countedAt).filter(Boolean).sort().pop();
+
+    return `
+      <section>
+        <div class="head"><h2>Voorraad</h2>
+          <div class="right faint">${geteld} van ${alles.length} geteld${laatste ? ' · laatst bijgewerkt ' + datum(laatste) : ''}</div></div>
+        <p class="faint" style="margin-bottom:16px">Loop de stellingen langs op volgorde van locatie en vul in hoeveel er ligt.
+          Elk aantal wordt meteen bewaard, je hoeft niets af te sluiten.</p>
+        <div class="search" style="max-width:420px"><span class="ico">zoek</span>
+          <input id="zoekvoorraad" type="search" value="${esc(S.telZoek)}" placeholder="naam, nummer of locatie"></div>
+        <div style="margin-top:14px" id="telrijen">${telRijen(lijst)}</div>
+      </section>`;
+  }
+
+  function telRijen(lijst) {
+    if (!lijst.length) return '<p class="empty">Niets gevonden.</p>';
+    return lijst.map((p) => `<div class="telrij ${isGeteld(p) ? 'geteld' : ''}" id="tel_${esc(p.id)}">
+      ${foto(p)}
+      <div class="grow"><div class="nm">${esc(p.name)}</div>
+        <div class="code">${esc([kort(p), plek(p)].filter(Boolean).join(' · '))}</div></div>
+      <div class="telstand">${telStand(p)}</div>
+      <input class="telveld" type="number" min="0" inputmode="numeric" data-tel="${esc(p.id)}"
+        value="${isGeteld(p) ? p.stock : ''}" aria-label="Aantal ${esc(p.name)}">
+      <span class="eenheid faint">${esc(p.unit || 'stuks')}</span>
+    </div>`).join('');
+  }
+
+  const telStand = (p) => (p.countedAt
+    ? `geteld ${datum(p.countedAt)}${p.countedBy ? ' · ' + esc(p.countedBy) : ''}`
+    : 'nog niet geteld');
+
+  /** Eén aantal bewaren; het scherm blijft staan waar Dean gebleven was. */
+  async function bewaarAantal(partId, tekst) {
+    const p = partById(partId);
+    if (!p) return;
+    const leeg = String(tekst).trim() === '';
+    const aantal = leeg ? null : Math.max(0, Math.round(Number(tekst) || 0));
+    await schrijf(async () => {
+      await partRef(partId).update(leeg
+        ? { stock: null, countedAt: null, countedBy: null }
+        : { stock: aantal, countedAt: nu(), countedBy: S.wie });
+    });
+    const rij = document.getElementById('tel_' + partId);
+    if (rij) {
+      rij.classList.toggle('geteld', !leeg);
+      const stand = rij.querySelector('.telstand');
+      if (stand) stand.textContent = leeg ? 'nog niet geteld' : `geteld ${datum(nu())} · ${S.wie}`;
+    }
+    const teller = document.querySelector('#view .head .right');
+    if (teller) {
+      const alles = onderdelen();
+      teller.textContent = `${alles.filter(isGeteld).length} van ${alles.length} geteld · laatst bijgewerkt ${datum(nu())}`;
+    }
+  }
+
   /* ------------------------------------------------------------ tekenen */
 
   function teken(force) {
+    // Tijdens het tellen houdt het voorraadscherm zichzelf bij: opnieuw
+    // tekenen zou de cursor uit het vakje halen waar Dean net in typt.
+    if (!force && S.wie === 'Dean' && S.tab === 'voorraad' && document.getElementById('telrijen')) return;
     if (!force && document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) {
       S.hertekenen = true;
       return;
@@ -744,7 +830,8 @@
     const view = document.getElementById('view');
     if (!S.klaar) { view.innerHTML = '<p class="empty">Gegevens laden…</p>'; tekenTabs(); return; }
 
-    const scherm = S.wie === 'Dean' ? schermKastlijsten()
+    const scherm = S.wie === 'Dean'
+      ? (S.tab === 'voorraad' ? schermVoorraad() : schermKastlijsten())
       : S.tab === 'bestellen' ? schermBestellen()
       : schermMaken();
     view.innerHTML = scherm;
@@ -1040,8 +1127,21 @@
     doeActie(knop.dataset.act);
   });
 
+  document.addEventListener('change', (e) => {
+    const veld = e.target.closest('[data-tel]');
+    if (veld) bewaarAantal(veld.dataset.tel, veld.value);
+  });
+
+  document.addEventListener('focusin', (e) => {
+    if (e.target.classList && e.target.classList.contains('telveld')) e.target.select();
+  });
+
   document.addEventListener('input', (e) => {
-    if (e.target.id === 'zoek' && S.concept) {
+    if (e.target.id === 'zoekvoorraad') {
+      S.telZoek = e.target.value;
+      const doel = document.getElementById('telrijen');
+      if (doel) doel.innerHTML = telRijen(zoeken(S.telZoek, onderdelen()));
+    } else if (e.target.id === 'zoek' && S.concept) {
       S.concept.zoek = e.target.value;
       const doel = document.getElementById('zoekresultaat');
       if (doel) doel.innerHTML = zoekRijen(zoeken(S.concept.zoek, onderdelen()).slice(0, 30));
