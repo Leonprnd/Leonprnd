@@ -19,7 +19,30 @@ Het programma is gemaakt voor twee manieren van werken:
   onderdelen, vinkt ze af en geeft aan het eind aan of alles compleet was. Wat
   mist gaat meteen naar de bestellijst van Roy.
 
-## Starten
+## De website
+
+De website staat in `docs/` en wordt door GitHub Pages uitgeserveerd op
+
+    https://leonprnd.github.io/Leonprnd/
+
+Deze versie heeft geen server nodig: hij bewaart de gegevens in de browser van
+het apparaat waarop je hem opent, en leest de onderdelenlijst de eerste keer
+uit `docs/gegevens.json`. Met *Gegevens opslaan als bestand* en *Bestand
+inlezen* (op het overzicht) verhuis je de gegevens naar een ander apparaat.
+
+Aanpassen doe je in `site/index.html`; daarna:
+
+```bash
+npm run build:site
+```
+
+Dat zet de pagina met de tekeningen klaar in `docs/`. Bij elke push naar de
+branch staat de nieuwe versie vanzelf online.
+
+## Zelfde programma met één gedeelde voorraad
+
+Wil je dat Roy en Dean dezelfde voorraad zien in plaats van ieder zijn eigen,
+draai dan de serverversie uit deze map op een computer in de werkplaats:
 
 ```bash
 npm start
