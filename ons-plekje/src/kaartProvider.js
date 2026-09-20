@@ -1,22 +1,45 @@
-// Welke kaart-aanbieder gebruiken we?
+// Welke kaart gebruiken we?
 //
-// Google Maps (met ons eigen roze jasje) kan overal, behalve in Expo Go op een
-// iPhone: die app heeft alleen Apple Maps aan boord. Dan vallen we daarop
-// terug zodat de app het nog steeds doet — alleen zonder het kleurthema.
-// In een eigen build (npx expo run:ios of EAS) krijg je wél Google Maps.
+// Google Maps is de mooiste, maar Google geeft alleen een werkende sleutel als
+// er een betaalrekening aan je project hangt — en daar moet je 18 voor zijn.
+// Daarom kan de app het ook zonder: dan pakt hij OpenStreetMap, dat geen
+// sleutel en geen account nodig heeft.
+//
+// De keuze gaat vanzelf: staat er een Google-sleutel in je .env, dan Google
+// Maps. Staat die er niet, dan OpenStreetMap. Je hoeft dus nooit code aan te
+// passen — alleen .env invullen en de app opnieuw starten.
 
 import { Platform } from 'react-native';
 import Constants, { ExecutionEnvironment } from 'expo-constants';
-import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
+
+const androidSleutel = process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_KEY;
+const iosSleutel = process.env.EXPO_PUBLIC_GOOGLE_MAPS_IOS_KEY;
 
 export const inExpoGo =
   Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
 
-export const gebruiktGoogleMaps = !(Platform.OS === 'ios' && inExpoGo);
+// Heb je voor dít toestel een sleutel ingevuld?
+export const heeftGoogleSleutel = Boolean(
+  Platform.OS === 'android' ? androidSleutel : iosSleutel,
+);
 
-export const kaartProvider = gebruiktGoogleMaps ? PROVIDER_GOOGLE : PROVIDER_DEFAULT;
+// Op een iPhone in Expo Go bestaat Google Maps sowieso niet; daar is Apple
+// Maps aan boord. Die is gratis en heeft geen sleutel nodig, dus dat is daar
+// prima — alleen zonder ons roze kleurthema.
+export const appleMapsInExpoGo = Platform.OS === 'ios' && inExpoGo;
 
-// Het kleurthema hoort bij Google Maps; Apple Maps doet er niets mee.
-export function stijlVoorKaart(stijl) {
-  return gebruiktGoogleMaps ? stijl : undefined;
+// react-native-maps gebruiken we alleen als dat ook echt iets oplevert.
+export const gebruiktNativeKaart = heeftGoogleSleutel || appleMapsInExpoGo;
+
+// Anders: OpenStreetMap in een WebView.
+export const gebruiktOpenStreetMap = !gebruiktNativeKaart;
+
+// Het kleurthema is een Google-Maps-ding; Apple Maps doet er niets mee.
+export const kleurthemaWerkt = heeftGoogleSleutel;
+
+// Kort zinnetje voor onder in beeld, zodat je weet waar je naar kijkt.
+export function kaartHerkomst() {
+  if (heeftGoogleSleutel) return null;
+  if (appleMapsInExpoGo) return 'Apple Maps · vul een Google-sleutel in voor het roze thema';
+  return '© OpenStreetMap · CARTO';
 }

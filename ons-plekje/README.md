@@ -14,16 +14,20 @@ Gemaakt voor de telefoon, met Expo (React Native), Firebase en Google Maps.
 
 De app is af, maar moet nog aan een paar diensten gekoppeld worden:
 
-| | Waarvoor | Creditcard? |
-|---|---|---|
-| **Firebase** | jullie kaart, de plekjes, inloggen | nee |
-| **Cloudinary** | de foto's | nee |
-| **Google Maps** | de kaart zelf | **ja, helaas** |
+| | Waarvoor | Nodig? | Creditcard? |
+|---|---|---|---|
+| **Firebase** | jullie kaart, de plekjes, inloggen | ja | nee |
+| **Cloudinary** | de foto's | ja | nee |
+| **Google Maps** | een mooiere kaart | **nee** | ja |
 
-Firebase en Cloudinary kosten je niets en vragen geen betaalgegevens. Google
-Maps wél: de mobiele Maps SDK is gratis en onbeperkt, maar Google geeft geen
-werkende sleutel zonder betaalrekening aan het project. Wat je doet als je er
-geen hebt, staat bij stap 2b.
+Firebase en Cloudinary zijn genoeg om de app volledig te laten werken, en
+allebei vragen ze geen betaalgegevens.
+
+Google Maps is een extraatje. De mobiele Maps SDK is gratis en onbeperkt,
+maar Google geeft alleen een werkende sleutel als er een betaalrekening aan
+je project hangt — en daarvoor moet je 18 zijn. Heb je die niet, dan gebruikt
+de app **OpenStreetMap**: geen sleutel, geen account, werkt meteen. Vul je
+later alsnog een sleutel in, dan schakelt de app vanzelf over.
 
 Reken op een minuut of twintig. Daarna: `npm start`, QR-code scannen, en de
 app draait op je telefoon.
@@ -133,12 +137,19 @@ Je hebt nu twee dingen: je *cloud name* en de *naam van je preset*.
 
 ---
 
-## Stap 2b — Google Maps (alleen met een betaalrekening)
+## Stap 2b — Google Maps (optioneel, mag je overslaan)
+
+**Sla je dit over, dan is er niets aan de hand.** De app gebruikt dan
+OpenStreetMap, en alles werkt: pinnen zetten, foto's, de tijdlijn, live
+locatie. Je ziet alleen een iets eenvoudiger kaart.
 
 Vervelende voorwaarde van Google: de *Maps SDK for Android* en *iOS* zijn
 gratis en onbeperkt, maar je krijgt alleen een wérkende sleutel als er een
-betaalrekening aan je Google Cloud-project hangt. Zonder kaart geeft de kaart
-in de app een foutmelding.
+betaalrekening aan je Google Cloud-project hangt. En voor zo'n
+factureringsaccount moet je meerderjarig zijn — dat is Google's voorwaarde,
+daar helpt geen enkele pas of bank omheen. Ben je nog geen 18, dan kan een
+ouder het factureringsaccount aanmaken; jij blijft gewoon eigenaar van het
+project en de app.
 
 **Heb je een creditcard of een betaalkaart die Google accepteert:**
 
@@ -155,12 +166,25 @@ in de app een foutmelding.
    SDK's vallen buiten de betaalde onderdelen, en het opzoeken van de
    plaatsnaam doet je telefoon zelf.
 
-**Heb je die niet:** laat de twee Maps-regels in je `.env` leeg. De app start
-dan gewoon op en alles werkt — koppelen, plekjes maken, foto's, de tijdlijn —
-maar waar de kaart hoort te staan blijft het leeg. Voor dat geval bestaat er
-een variant van dit scherm op OpenStreetMap, die geen sleutel en geen account
-nodig heeft. Die kun je in plaats van Google Maps gebruiken; zie het
-`kaartProvider.js`-bestand voor waar dat wordt gekozen.
+**Heb je die niet:** laat de twee Maps-regels in je `.env` leeg. Klaar.
+
+### Welke kaart krijg ik dan?
+
+Dat kiest de app zelf, aan de hand van je `.env`:
+
+| Situatie | Kaart |
+|---|---|
+| Geen sleutel ingevuld | **OpenStreetMap** — geen account, geen sleutel |
+| Sleutel ingevuld | **Google Maps** met het roze kleurthema |
+| iPhone in Expo Go, geen sleutel | Apple Maps (die zit al in Expo Go) |
+
+Je hoeft dus nooit code aan te passen. Vul je later een sleutel in en start je
+opnieuw op met `npx expo start -c`, dan staat Google Maps er.
+
+De OpenStreetMap-kaart wordt getekend met Leaflet in een WebView, met tegels
+van CARTO. Die zijn bijna kleurloos, en daar legt de app met één CSS-filter
+hetzelfde zachte roze overheen. Je pins, de fotostapel en de live locatie
+werken precies hetzelfde.
 
 ---
 

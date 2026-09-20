@@ -16,20 +16,17 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../../src/state/AppProvider';
-import { kaartProvider, stijlVoorKaart } from '../../src/kaartProvider';
-import { kaartStijl } from '../../src/mapStyle';
 import { kleuren, letters, ruimte, rond, schaduw } from '../../src/theme';
 import { Titel, Lopend, Knop, Veld, TekstKnop } from '../../src/components/basis';
 import TypeKiezer from '../../src/components/TypeKiezer';
 import DatumKiezer from '../../src/components/DatumKiezer';
-import MomentPin from '../../src/components/MomentPin';
+import Voorbeeld from '../../src/components/kaart/Voorbeeld';
 import Hartjes from '../../src/components/Hartjes';
 import { typeVan } from '../../src/momentTypes';
 import { zoekAdres } from '../../src/services/locatie';
@@ -235,32 +232,7 @@ export default function NieuwMoment() {
       >
         {/* Een klein kaartje zodat je ziet waar je pin komt */}
         <View style={stijl.voorbeeldKaart}>
-          {Number.isFinite(breedte) && Number.isFinite(lengte) ? (
-            <MapView
-              style={StyleSheet.absoluteFill}
-              provider={kaartProvider}
-              customMapStyle={stijlVoorKaart(kaartStijl)}
-              initialRegion={{
-                latitude: breedte,
-                longitude: lengte,
-                latitudeDelta: 0.006,
-                longitudeDelta: 0.006,
-              }}
-              scrollEnabled={false}
-              zoomEnabled={false}
-              pitchEnabled={false}
-              rotateEnabled={false}
-              pointerEvents="none"
-            >
-              <Marker
-                coordinate={{ latitude: breedte, longitude: lengte }}
-                anchor={{ x: 0.5, y: 1 }}
-                tracksViewChanges
-              >
-                <MomentPin moment={{ type }} gekozen />
-              </Marker>
-            </MapView>
-          ) : null}
+          <Voorbeeld lat={breedte} lng={lengte} type={type} style={StyleSheet.absoluteFill} />
 
           <View style={[stijl.sluit, { top: rand.top + ruimte.s }]}>
             <Pressable onPress={() => router.back()} style={stijl.sluitKnop} hitSlop={10}>

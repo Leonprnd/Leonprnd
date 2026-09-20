@@ -13,17 +13,15 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../../src/state/AppProvider';
-import { kaartProvider, stijlVoorKaart, gebruiktGoogleMaps } from '../../src/kaartProvider';
-import { kaartStijl } from '../../src/mapStyle';
+import { kaartHerkomst } from '../../src/kaartProvider';
 import { kleuren, letters, ruimte, rond, schaduw, verlopen } from '../../src/theme';
-import MomentPin, { PartnerStip, useTekenEenKeer } from '../../src/components/MomentPin';
+import Kaartweergave from '../../src/components/kaart';
 import MomentKaartje from '../../src/components/MomentKaartje';
 import { Bolletje } from '../../src/components/basis';
 import { afstandInMeter, afstandZinnetje } from '../../src/utils/afstand';
@@ -31,14 +29,6 @@ import { dagenSinds, geledenKort } from '../../src/utils/datum';
 
 const KAART_BREEDTE = 300;
 const KAART_STAP = KAART_BREEDTE + ruimte.m;
-
-// Als we nog niets beters weten: ergens boven Nederland.
-const BEGIN_GEBIED = {
-  latitude: 52.1326,
-  longitude: 5.2913,
-  latitudeDelta: 3.2,
-  longitudeDelta: 3.2,
-};
 
 export default function Kaart() {
   const {
@@ -55,7 +45,7 @@ export default function Kaart() {
   const rand = useSafeAreaInsets();
   const kaartRef = useRef(null);
   const lijstRef = useRef(null);
-  const middenRef = useRef(BEGIN_GEBIED);
+  const middenRef = useRef({ lat: 52.1326, lng: 5.2913 });
   const alGepastRef = useRef(false);
 
   const [gekozenId, setGekozenId] = useState(null);
@@ -63,24 +53,15 @@ export default function Kaart() {
   // --- De kaart netjes inkaderen bij het openen -----------------------------
 
   const pasKaartAan = useCallback(() => {
-    if (!kaartRef.current) return;
-
     const punten = momenten
       .filter((m) => Number.isFinite(m.lat) && Number.isFinite(m.lng))
-      .map((m) => ({ latitude: m.lat, longitude: m.lng }));
+      .map((m) => ({ lat: m.lat, lng: m.lng }));
 
     if (mijnPositie) {
-      punten.push({ latitude: mijnPositie.lat, longitude: mijnPositie.lng });
+      punten.push({ lat: mijnPositie.lat, lng: mijnPositie.lng });
     }
 
-    if (punten.length >= 2) {
-      kaartRef.current.fitToCoordinates(punten, {
-        edgePadding: { top: 160, right: 70, bottom: 260, left: 70 },
-        animated: true,
-      });
-    } else if (punten.length === 1) {
-      kaartRef.current.animateCamera({ center: punten[0], zoom: 14 }, { duration: 650 });
-    }
+    kaartRef.current?.pasAan(punten);
   }, [momenten, mijnPositie]);
 
   useEffect(() => {
@@ -100,10 +81,7 @@ export default function Kaart() {
       if (!moment) return;
       setGekozenId(moment.id);
 
-      kaartRef.current?.animateCamera(
-        { center: { latitude: moment.lat, longitude: moment.lng } },
-        { duration: 550 },
-      );
+      kaartRef.current?.gaNaar(moment.lat, moment.lng);
 
       if (!vanafLijst) {
         const index = momenten.findIndex((m) => m.id === moment.id);
@@ -126,31 +104,23 @@ export default function Kaart() {
 
   // --- Nieuw plekje ---------------------------------------------------------
 
-  function nieuwOpMidden() {
-    const midden = middenRef.current;
+  function nieuwOpPlek(lat, lng) {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
     router.push({
       pathname: '/moment/nieuw',
-      params: { lat: String(midden.latitude), lng: String(midden.longitude) },
+      params: { lat: String(lat), lng: String(lng) },
     });
   }
 
-  function nieuwOpPunt(e) {
-    const { latitude, longitude } = e.nativeEvent.coordinate;
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-    router.push({
-      pathname: '/moment/nieuw',
-      params: { lat: String(latitude), lng: String(longitude) },
-    });
+  function nieuwOpMidden() {
+    const midden = middenRef.current;
+    nieuwOpPlek(midden.lat, midden.lng);
   }
 
   function naarMij() {
     if (!mijnPositie) return;
     Haptics.selectionAsync().catch(() => {});
-    kaartRef.current?.animateCamera(
-      { center: { latitude: mijnPositie.lat, longitude: mijnPositie.lng }, zoom: 15 },
-      { duration: 600 },
-    );
+    kaartRef.current?.gaNaar(mijnPositie.lat, mijnPositie.lng, 15);
   }
 
   // --- Het zinnetje bovenin -------------------------------------------------
@@ -164,57 +134,27 @@ export default function Kaart() {
 
   return (
     <View style={stijl.vol}>
-      <MapView
+      <Kaartweergave
         ref={kaartRef}
-        style={StyleSheet.absoluteFill}
-        provider={kaartProvider}
-        customMapStyle={stijlVoorKaart(kaartStijl)}
-        initialRegion={BEGIN_GEBIED}
-        onRegionChange={(gebied) => {
-          middenRef.current = gebied;
+        momenten={momenten}
+        gekozenId={gekozenId}
+        partner={partner}
+        partnerLocatie={partnerLocatie}
+        mijnPositie={mijnPositie}
+        toonMij={deeltLocatie}
+        marges={{ boven: rand.top + 90, onder: 210 }}
+        opMomentPress={(id) => {
+          const moment = momenten.find((m) => m.id === id);
+          if (!moment) return;
+          Haptics.selectionAsync().catch(() => {});
+          kiesMoment(moment, false);
         }}
-        onLongPress={nieuwOpPunt}
-        onPress={() => setGekozenId(null)}
-        showsUserLocation={deeltLocatie}
-        showsMyLocationButton={false}
-        showsCompass={false}
-        toolbarEnabled={false}
-        rotateEnabled={false}
-        pitchEnabled={false}
-        mapPadding={{ top: rand.top + 90, right: 0, bottom: 210, left: 0 }}
-      >
-        {momenten.map((moment) => (
-          <MomentMarkering
-            key={moment.id}
-            moment={moment}
-            gekozen={gekozenId === moment.id}
-            opPress={() => {
-              Haptics.selectionAsync().catch(() => {});
-              kiesMoment(moment, false);
-            }}
-          />
-        ))}
-
-        {partnerLocatie?.lat != null && partner ? (
-          <Marker
-            coordinate={{ latitude: partnerLocatie.lat, longitude: partnerLocatie.lng }}
-            anchor={{ x: 0.5, y: 0.5 }}
-            zIndex={999}
-            tracksViewChanges={false}
-            onPress={() => {
-              kaartRef.current?.animateCamera(
-                {
-                  center: { latitude: partnerLocatie.lat, longitude: partnerLocatie.lng },
-                  zoom: 15,
-                },
-                { duration: 550 },
-              );
-            }}
-          >
-            <PartnerStip emoji={partner.emoji} kleur={partner.kleur} naam={partner.naam} />
-          </Marker>
-        ) : null}
-      </MapView>
+        opLangDrukken={({ lat, lng }) => nieuwOpPlek(lat, lng)}
+        opAchtergrond={() => setGekozenId(null)}
+        opMidden={(midden) => {
+          middenRef.current = midden;
+        }}
+      />
 
       {/* --- Bovenin: jullie tweeën --- */}
       <View style={[stijl.kop, { paddingTop: rand.top + ruimte.s }]} pointerEvents="box-none">
@@ -326,31 +266,12 @@ export default function Kaart() {
         <Text style={stijl.plusTeken}>+</Text>
       </Pressable>
 
-      {!gebruiktGoogleMaps ? (
-        <View style={[stijl.notitie, { top: rand.top + 130 }]} pointerEvents="none">
-          <Text style={stijl.notitieTekst}>Apple Maps · eigen build = Google Maps</Text>
+      {kaartHerkomst() ? (
+        <View style={[stijl.notitie, { bottom: 196 }]} pointerEvents="none">
+          <Text style={stijl.notitieTekst}>{kaartHerkomst()}</Text>
         </View>
       ) : null}
     </View>
-  );
-}
-
-// Elke pin apart, zodat hij na het tekenen stil kan blijven staan (scheelt accu).
-function MomentMarkering({ moment, gekozen, opPress }) {
-  const tekent = useTekenEenKeer(`${gekozen}-${moment.fotos?.length || 0}-${moment.type}`);
-
-  if (!Number.isFinite(moment.lat) || !Number.isFinite(moment.lng)) return null;
-
-  return (
-    <Marker
-      coordinate={{ latitude: moment.lat, longitude: moment.lng }}
-      anchor={{ x: 0.5, y: 1 }}
-      onPress={opPress}
-      tracksViewChanges={tekent}
-      zIndex={gekozen ? 500 : 1}
-    >
-      <MomentPin moment={moment} gekozen={gekozen} aantalFotos={moment.fotos?.length || 0} />
-    </Marker>
   );
 }
 
