@@ -1,0 +1,32 @@
+// Beveiligingsregels voor de foto's.
+//
+// Dezelfde afspraak als bij de database: alleen de twee mensen die op de
+// kaart staan, kunnen bij de foto's van die kaart.
+//
+// Zet deze regels in de Firebase-console onder Storage > Regels, of:
+//   firebase deploy --only storage
+
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /kaarten/{code}/{restVanHetPad=**} {
+
+      function lidVanDezeKaart() {
+        return request.auth != null && request.auth.uid in
+          firestore.get(/databases/(default)/documents/kaarten/$(code)).data.ledenIds;
+      }
+
+      allow read: if lidVanDezeKaart();
+
+      // Alleen afbeeldingen, en niet groter dan 8 MB. De app maakt foto's
+      // eerst kleiner, dus in de praktijk blijft het ver daaronder.
+      allow create, update: if lidVanDezeKaart()
+        && request.resource.size < 8 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+
+      allow delete: if lidVanDezeKaart();
+    }
+  }
+}

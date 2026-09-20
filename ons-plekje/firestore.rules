@@ -1,0 +1,71 @@
+// Beveiligingsregels voor de database.
+//
+// Kort samengevat: een kaart is van de twee mensen die erop staan. Iemand
+// anders kan er alleen bij als de kaart nog op een tweede persoon wacht —
+// dat is precies het moment waarop je liefje de code invult.
+//
+// Zet deze regels in de Firebase-console onder Firestore Database > Regels,
+// of stuur ze op met:  firebase deploy --only firestore:rules
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function ingelogd() {
+      return request.auth != null;
+    }
+
+    match /kaarten/{code} {
+
+      function ikStaErop(gegevens) {
+        return ingelogd() && request.auth.uid in gegevens.ledenIds;
+      }
+
+      // Lezen mag als je erop staat. Staat er nog maar één iemand op, dan mag
+      // ook een ander de kaart bekijken: die is de code aan het invullen.
+      allow get: if ingelogd() && (
+        ikStaErop(resource.data) || resource.data.ledenIds.size() < 2
+      );
+
+      // Niemand mag door alle kaarten heen bladeren.
+      allow list: if false;
+
+      // Een nieuwe kaart begint altijd met alleen jezelf erop.
+      allow create: if ingelogd()
+        && request.resource.data.ledenIds == [request.auth.uid]
+        && request.resource.data.gemaaktDoor == request.auth.uid;
+
+      // Aanpassen mag als je erop staat, of als je jezelf als tweede toevoegt
+      // zonder de eerste persoon eraf te gooien.
+      allow update: if ingelogd() && (
+        ikStaErop(resource.data)
+        || (
+          resource.data.ledenIds.size() == 1
+          && request.resource.data.ledenIds.size() == 2
+          && request.auth.uid in request.resource.data.ledenIds
+          && resource.data.ledenIds[0] in request.resource.data.ledenIds
+        )
+      );
+
+      // Een kaart gooi je niet weg; je koppelt jezelf los.
+      allow delete: if false;
+
+      function lidVanDezeKaart() {
+        return ingelogd() && request.auth.uid in
+          get(/databases/$(database)/documents/kaarten/$(code)).data.ledenIds;
+      }
+
+      // De pinpoints: allebei mogen alles.
+      match /momenten/{momentId} {
+        allow read, create, update, delete: if lidVanDezeKaart();
+      }
+
+      // Live locatie: je ziet die van elkaar, maar je schrijft alleen je eigen.
+      match /locaties/{uid} {
+        allow read: if lidVanDezeKaart();
+        allow write: if lidVanDezeKaart() && uid == request.auth.uid;
+      }
+    }
+  }
+}
