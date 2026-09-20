@@ -12,11 +12,21 @@ Gemaakt voor de telefoon, met Expo (React Native), Firebase en Google Maps.
 
 ## Wat je gaat doen
 
-De app is af, maar hij moet nog aan twee gratis diensten van Google gekoppeld
-worden: **Firebase** (waar jullie kaart en foto's staan) en **Google Maps**
-(de kaart zelf). Dat is eenmalig, en kost ongeveer twintig minuten.
+De app is af, maar moet nog aan een paar diensten gekoppeld worden:
 
-Daarna: `npm start`, QR-code scannen, en de app draait op je telefoon.
+| | Waarvoor | Creditcard? |
+|---|---|---|
+| **Firebase** | jullie kaart, de plekjes, inloggen | nee |
+| **Cloudinary** | de foto's | nee |
+| **Google Maps** | de kaart zelf | **ja, helaas** |
+
+Firebase en Cloudinary kosten je niets en vragen geen betaalgegevens. Google
+Maps wél: de mobiele Maps SDK is gratis en onbeperkt, maar Google geeft geen
+werkende sleutel zonder betaalrekening aan het project. Wat je doet als je er
+geen hebt, staat bij stap 2b.
+
+Reken op een minuut of twintig. Daarna: `npm start`, QR-code scannen, en de
+app draait op je telefoon.
 
 ---
 
@@ -43,7 +53,7 @@ Play Store). Daarmee test je de app zonder dat je hem hoeft te publiceren.
 
 ---
 
-## Stap 1 — Firebase (jullie kaart en foto's)
+## Stap 1 — Firebase (jullie kaart, plekjes en inloggen)
 
 1. Ga naar [console.firebase.google.com](https://console.firebase.google.com)
    en log in met je Google-account.
@@ -66,15 +76,7 @@ Play Store). Daarmee test je de app zonder dat je hem hoeft te publiceren.
    - Locatie: **eur3 (europe-west)** — dat is het dichtstbij.
    - Beveiligingsregels: start in **productiemodus**. De echte regels zet je
      in de volgende stap.
-5. **Storage** aanmaken (voor de foto's):
-   - In datzelfde menu: **Databases & Storage → Storage** → *Aan de slag*.
-   - Zelfde locatie als Firestore.
-   - Firebase vraagt je hier om over te stappen op het **Blaze-plan**
-     (betalen naar gebruik). Sinds februari 2026 kan Storage niet meer
-     zonder gekoppelde betaalrekening. Je moet dus een creditcard invullen,
-     maar de eerste 5 GB blijft gratis — en jullie foto's halen dat nooit.
-     In stap 2b hieronder zet je een budgetmelding, zodat je het zou merken.
-6. **De sleutels ophalen:**
+5. **De sleutels ophalen:**
    - Klik op het tandwiel linksboven → **Projectinstellingen**.
    - Scroll naar **Je apps** → klik op het **web-icoontje `</>`**.
    - Geef het een naam (`Ons Plekje`) en klik **App registreren**.
@@ -89,10 +91,6 @@ Dit is belangrijk: zonder deze regels kan iedereen bij jullie foto's.
   Verwijder wat er staat,
   plak de inhoud van [`firestore.rules`](./firestore.rules) erin, klik
   **Publiceren**.
-- **Storage:** ga naar *Databases & Storage → Storage → tabblad Rules*.
-  Zelfde verhaal met
-  [`storage.rules`](./storage.rules).
-
 Wat die regels doen: een kaart hoort bij precies twee accounts. Alleen die
 twee kunnen de pinpoints en foto's zien of aanpassen. Iemand anders kan de
 kaart alleen openen op het moment dat er nog maar één persoon op staat — dat
@@ -100,42 +98,69 @@ is precies wanneer je liefje de code invult.
 
 ---
 
-## Stap 2 — Google Maps
+## Stap 2 — Cloudinary (de foto's)
 
-De kaart zelf komt van Google. Daar heb je een sleutel voor nodig.
+Gratis, geen creditcard, ruim 25 GB. Cloudinary is gemaakt voor precies dit:
+foto's bewaren en ze in de juiste maat afleveren.
 
-1. Ga naar [console.cloud.google.com](https://console.cloud.google.com).
-   Kies linksboven **hetzelfde project** dat Firebase net heeft aangemaakt.
-2. Ga naar *API's en services → Bibliotheek*. Zoek en zet **aan**:
-   - **Maps SDK for Android**
-   - **Maps SDK for iOS** (alleen nodig als je een iPhone hebt)
-3. Ga naar *API's en services → Inloggegevens → Gegevens maken → API-sleutel*.
-   Kopieer de sleutel die je krijgt.
-4. Klik op de sleutel om hem te beperken (aanrader): onder
-   **API-beperkingen** vink je alleen de twee Maps SDK's aan die je net
-   aanzette.
+1. Maak een gratis account op
+   [cloudinary.com/users/register_free](https://cloudinary.com/users/register_free).
+2. Op je dashboard staat je **Cloud name** (iets als `dq8xk2vfp`). Die heb je
+   zo nodig.
+3. Ga naar **Settings** (tandwiel) → **Upload** → **Upload presets** →
+   **Add upload preset**.
+4. Belangrijk: zet **Signing Mode** op **Unsigned**. Zonder dat kan de app
+   niets versturen.
+5. Geef de preset een naam, bijvoorbeeld `ons_plekje`, en onthoud die.
+6. Aanrader: beperk **Allowed formats** tot `jpg, png, heic, webp` en zet de
+   maximale bestandsgrootte op zo'n **10 MB**. De app verkleint foto's al
+   vóór het versturen, dus daar kom je nooit aan.
+7. **Save**.
 
-> **Over de kosten:** de *Maps SDK for Android* en *Maps SDK for iOS* zijn
-> gratis en onbeperkt — de kaart in de app kost dus nooit iets, hoe vaak je
-> hem ook opent. De creditcard is alleen nodig omdat Google Cloud er een aan
-> je account wil hebben (dezelfde die je bij Storage hebt ingevuld).
->
-> De app gebruikt verder geen betaalde onderdelen: het opzoeken van de
-> plaatsnaam gebeurt door je telefoon zelf, niet via de Geocoding API.
+Je hebt nu twee dingen: je *cloud name* en de *naam van je preset*.
+
+> **Waarom "unsigned"?** In een telefoon-app kun je geen geheim bewaren — wat
+> erin zit, kan iemand eruit halen. Daarom stuurt de app zonder geheime
+> sleutel, en beperkt de preset wat er mag. De foto's komen in een map die
+> naar jullie koppelcode heet, en die adressen staan alleen in jullie eigen
+> kaart in Firestore. Wie het adres niet heeft, vindt de foto niet.
+
+> **Over weggooien:** haal je een foto of een plekje weg, dan is hij uit
+> jullie kaart verdwenen en zien jullie hem allebei niet meer. Het bestand
+> blijft wel bij Cloudinary staan, omdat wissen een geheime sleutel vraagt
+> die niet in een app kan. Met 25 GB merk je daar niets van; opruimen kan
+> altijd handmatig in de Media Library.
 
 ---
 
-## Stap 2b — Zet een budgetmelding op €0 (aanrader)
+## Stap 2b — Google Maps (alleen met een betaalrekening)
 
-Nu er een creditcard aan hangt, is dit het knopje waardoor je rustig slaapt.
+Vervelende voorwaarde van Google: de *Maps SDK for Android* en *iOS* zijn
+gratis en onbeperkt, maar je krijgt alleen een wérkende sleutel als er een
+betaalrekening aan je Google Cloud-project hangt. Zonder kaart geeft de kaart
+in de app een foutmelding.
 
-1. Ga naar [Budgetten en meldingen](https://console.cloud.google.com/billing/budgets).
-2. **Budget maken** → geef het een naam → bij *Bedrag* kies **Aangepast** en
-   vul `1` euro in.
-3. Zet de meldingen op **50%, 90% en 100%**.
+**Heb je een creditcard of een betaalkaart die Google accepteert:**
 
-Je krijgt nu een mailtje zodra er ook maar 50 cent aan kosten ontstaat. In
-de praktijk gebeurt dat niet, maar dan weet je het meteen.
+1. Zet aan:
+   [Maps SDK for Android](https://console.cloud.google.com/apis/library/maps-android-backend.googleapis.com)
+   en, voor een iPhone,
+   [Maps SDK for iOS](https://console.cloud.google.com/apis/library/maps-ios-backend.googleapis.com).
+2. Maak een sleutel onder
+   [Inloggegevens](https://console.cloud.google.com/apis/credentials) →
+   *Gegevens maken* → *API-sleutel*.
+3. Beperk hem tot die twee SDK's onder **API-beperkingen**.
+4. Zet een [budgetmelding](https://console.cloud.google.com/billing/budgets)
+   van €1, voor de zekerheid. Kosten maakt deze app niet: de mobiele Maps
+   SDK's vallen buiten de betaalde onderdelen, en het opzoeken van de
+   plaatsnaam doet je telefoon zelf.
+
+**Heb je die niet:** laat de twee Maps-regels in je `.env` leeg. De app start
+dan gewoon op en alles werkt — koppelen, plekjes maken, foto's, de tijdlijn —
+maar waar de kaart hoort te staan blijft het leeg. Voor dat geval bestaat er
+een variant van dit scherm op OpenStreetMap, die geen sleutel en geen account
+nodig heeft. Die kun je in plaats van Google Maps gebruiken; zie het
+`kaartProvider.js`-bestand voor waar dat wordt gekozen.
 
 ---
 
@@ -155,19 +180,23 @@ copy .env.example .env
 notepad .env
 ```
 
-Open `.env` en vul in wat je in stap 1 en 2 hebt opgehaald:
+Open `.env` en vul in wat je hebt opgehaald:
 
 ```
 EXPO_PUBLIC_FIREBASE_API_KEY=AIza...
 EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=ons-plekje.firebaseapp.com
 EXPO_PUBLIC_FIREBASE_PROJECT_ID=ons-plekje
-EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=ons-plekje.firebasestorage.app
 EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789012
 EXPO_PUBLIC_FIREBASE_APP_ID=1:123456789012:web:abc123
 
-EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_KEY=AIza...
-EXPO_PUBLIC_GOOGLE_MAPS_IOS_KEY=AIza...
+EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=dq8xk2vfp
+EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=ons_plekje
+
+EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_KEY=
+EXPO_PUBLIC_GOOGLE_MAPS_IOS_KEY=
 ```
+
+Zonder betaalrekening bij Google laat je die laatste twee gewoon leeg.
 
 `.env` staat in `.gitignore`, dus je sleutels komen niet per ongeluk op
 GitHub terecht.
@@ -346,9 +375,9 @@ op Android werkt de sleutel uit `.env` pas na `npx expo start -c`.
 **"Missing or insufficient permissions"** — de regels uit `firestore.rules`
 staan nog niet in de Firebase-console, of *Anoniem inloggen* staat nog uit.
 
-**Foto's uploaden lukt niet** — check of Storage is aangemaakt en of
-`storage.rules` erin staat. Kijk ook of `EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET`
-precies overeenkomt met wat in de Firebase-console staat.
+**Foto's versturen lukt niet** — de app zegt zelf wat er mis is. Meestal
+staat de upload-preset nog op *Signed* in plaats van *Unsigned*, of is de
+naam van de preset of de cloud name verkeerd overgetypt (let op hoofdletters).
 
 **"Deze code kennen we niet"** — in onze codes zitten nooit een B, I, L, O, S
 of Z; die lijken te veel op 8, 1, 0, 5 en 2. Kijk dus nog eens goed naar de

@@ -7,6 +7,7 @@ import { Image } from 'expo-image';
 import { kleuren, letters, ruimte, rond, schaduw } from '../theme';
 import { typeVan } from '../momentTypes';
 import { korteDatum } from '../utils/datum';
+import { fotoUrl, MINI } from '../cloudinary';
 
 export default function MomentKaartje({ moment, opPress, breed, actief }) {
   const type = typeVan(moment.type);
@@ -86,7 +87,7 @@ export function MiniStapel({ fotos, kleur, icoon, maat = 76 }) {
           return (
             <Image
               key={foto.url || i}
-              source={{ uri: foto.url }}
+              source={{ uri: fotoUrl(foto.url, MINI) }}
               contentFit="cover"
               transition={180}
               cachePolicy="memory-disk"

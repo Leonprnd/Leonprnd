@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { useApp } from '../src/state/AppProvider';
+import { cloudinaryIsIngesteld } from '../src/cloudinary';
 import { kleuren, letters, ruimte, rond } from '../src/theme';
 import { Titel, Lopend, Kaartje } from '../src/components/basis';
 
@@ -56,7 +57,7 @@ function NogInstellen() {
         {[
           'Maak een gratis project op console.firebase.google.com',
           'Zet Authentication aan met "Anoniem"',
-          'Maak een Firestore-database en een Storage-bucket',
+          'Maak een Firestore-database (Standard edition)',
           'Voeg een web-app toe en kopieer de sleutels',
           'Zet die in het bestand .env (zie .env.example)',
           'Stop de app en start hem opnieuw met npx expo start -c',
@@ -70,8 +71,20 @@ function NogInstellen() {
         ))}
       </Kaartje>
 
+      {!cloudinaryIsIngesteld ? (
+        <Kaartje style={{ marginTop: ruimte.m, width: '100%' }}>
+          <Text style={stijl.stapKop}>En voor de foto’s</Text>
+          <Text style={stijl.stapTekst}>
+            Maak een gratis account op cloudinary.com, zet onder
+            Settings {'>'} Upload een upload-preset op {'"'}Unsigned{'"'}, en vul je
+            cloud name en de naam van die preset in je .env in. Geen
+            creditcard nodig.
+          </Text>
+        </Kaartje>
+      ) : null}
+
       <Lopend zacht klein style={{ textAlign: 'center', marginTop: ruimte.l }}>
-        In README.md staat elke stap met plaatjes erbij uitgeschreven.
+        In README.md staat elke stap uitgeschreven.
       </Lopend>
     </ScrollView>
   );

@@ -13,7 +13,6 @@ import {
 } from 'firebase/firestore';
 import { geefDb } from '../firebase';
 import { normaliseerCode } from '../utils/code';
-import { verwijderFotos } from './fotos';
 
 function momentenRef(code) {
   return collection(geefDb(), 'kaarten', normaliseerCode(code), 'momenten');
@@ -57,8 +56,8 @@ export async function bewerkMoment(code, id, velden) {
 }
 
 export async function verwijderMoment(code, moment) {
-  // Eerst de foto's uit de opslag, anders blijven die voor altijd staan.
-  await verwijderFotos(moment?.fotos);
+  // Het plekje verdwijnt hiermee bij jullie allebei. De fotobestanden blijven
+  // bij Cloudinary staan; zie de uitleg onderaan services/fotos.js.
   await deleteDoc(momentRef(code, moment.id));
 }
 

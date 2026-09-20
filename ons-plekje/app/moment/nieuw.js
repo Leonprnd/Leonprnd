@@ -38,7 +38,6 @@ import {
   kiesUitGalerij,
   maakMetCamera,
   uploadFotos,
-  verwijderFotos,
   MAX_FOTOS_PER_MOMENT,
 } from '../../src/services/fotos';
 import { vandaagSleutel } from '../../src/utils/datum';
@@ -63,7 +62,6 @@ export default function NieuwMoment() {
   const [datum, setDatum] = useState(bestaand?.datum || vandaagSleutel());
   const [nieuweFotos, setNieuweFotos] = useState([]); // nog te uploaden
   const [oudeFotos, setOudeFotos] = useState(bestaand?.fotos || []);
-  const [weggegooid, setWeggegooid] = useState([]); // foto's die eruit moeten
 
   const [zoekt, setZoekt] = useState(
     () => !bestaand && Number.isFinite(breedte) && Number.isFinite(lengte),
@@ -131,7 +129,6 @@ export default function NieuwMoment() {
 
   function gooiOudeWeg(foto) {
     setOudeFotos((oud) => oud.filter((f) => f.url !== foto.url));
-    setWeggegooid((oud) => [...oud, foto]);
   }
 
   // --- Opslaan --------------------------------------------------------------
@@ -174,8 +171,6 @@ export default function NieuwMoment() {
       }
 
       await bewerkMoment(code, momentId, { ...gegevens, fotos: alleFotos });
-
-      if (weggegooid.length) await verwijderFotos(weggegooid);
 
       setVoortgang(null);
       setFeest(true);

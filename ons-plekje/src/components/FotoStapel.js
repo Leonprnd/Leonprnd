@@ -24,6 +24,7 @@ import { Image } from 'expo-image';
 import * as Haptics from 'expo-haptics';
 import { kleuren, letters, rond, ruimte, schaduw } from '../theme';
 import { useAnimatie, useAnimatieXY } from '../utils/animatie';
+import { fotoUrl, STAPEL, GROOT } from '../cloudinary';
 import { korteDatum } from '../utils/datum';
 
 const SCHERM = Dimensions.get('window');
@@ -178,7 +179,7 @@ export default function FotoStapel({ fotos, datum, hoogte = 300, sleutel = 'stap
             >
               <View style={[stijl.tape, { backgroundColor: tape }]} />
               <Image
-                source={{ uri: foto.url }}
+                source={{ uri: fotoUrl(foto.url, STAPEL) }}
                 style={[stijl.foto, { height: polaroidBreedte * 0.92 }]}
                 contentFit="cover"
                 transition={220}
@@ -259,7 +260,7 @@ function GroteWeergave({ fotos, start, opSluiten, datum }) {
           {(fotos || []).map((foto, i) => (
             <View key={foto.url || i} style={stijl.grootPagina}>
               <Image
-                source={{ uri: foto.url }}
+                source={{ uri: fotoUrl(foto.url, GROOT) }}
                 style={stijl.grootFoto}
                 contentFit="contain"
                 transition={180}
