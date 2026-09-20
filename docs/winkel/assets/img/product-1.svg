@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t1 d1">
+  <title id="t1">Bijtijds 28 automatische pillendoos, gesloten, van bovenaf</title>
+  <desc id="d1">Ronde witte pillendoos met doorzichtig deksel, verlicht display met de tijd 08:00 en een uitgiftevenster waar de pillen van dat moment zichtbaar zijn.</desc>
+  <defs>
+    <radialGradient id="doek" cx="42%" cy="32%" r="78%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eee7dc"/>
+    </radialGradient>
+    <linearGradient id="romp" x1="18%" y1="4%" x2="82%" y2="96%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#f6f7f8"/>
+      <stop offset=".78" stop-color="#e4e8ec"/><stop offset="1" stop-color="#d2d9e0"/>
+    </linearGradient>
+    <linearGradient id="wand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0" stop-color="#b6bfc8"/><stop offset=".22" stop-color="#e8ecef"/>
+      <stop offset=".55" stop-color="#cdd5dc"/><stop offset="1" stop-color="#a7b1bb"/>
+    </linearGradient>
+    <radialGradient id="deksel" cx="36%" cy="26%" r="80%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".92"/>
+      <stop offset=".5" stop-color="#dfe9f2" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#b9c9d8" stop-opacity=".55"/>
+    </radialGradient>
+    <linearGradient id="scherm" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0" stop-color="#3f4f43"/><stop offset=".5" stop-color="#5d7a63"/>
+      <stop offset="1" stop-color="#46583f"/>
+    </linearGradient>
+    <linearGradient id="glansboog" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="zacht" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="bak" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#14212e" flood-opacity=".18"/>
+    </filter>
+    <filter id="bakje" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#14212e" flood-opacity=".25"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#doek)"/>
+
+  <!-- Contactschaduw: breed en zacht, zoals bij een softbox recht boven. -->
+  <ellipse cx="400" cy="648" rx="292" ry="52" fill="#9a8f7f" opacity=".42" filter="url(#zacht)"/>
+  <ellipse cx="400" cy="640" rx="210" ry="30" fill="#6f665a" opacity=".3" filter="url(#zacht)"/>
+
+  <g filter="url(#bak)">
+    <!-- Zijwand: geeft het apparaat dikte. -->
+    <path d="M110 404a290 262 0 0 0 580 0v56a290 262 0 0 1-580 0z" fill="url(#wand)"/>
+    <ellipse cx="400" cy="404" rx="290" ry="262" fill="url(#romp)"/>
+    <ellipse cx="400" cy="404" rx="290" ry="262" fill="none" stroke="#aab4be" stroke-width="2.5"/>
+    <ellipse cx="400" cy="404" rx="268" ry="241" fill="none" stroke="#c4ccd4" stroke-width="3"/>
+  </g>
+
+  <!-- Verzonken vlak waar het deksel in rust. -->
+  <ellipse cx="400" cy="406" rx="252" ry="226" fill="#eef1f4"/>
+  <ellipse cx="400" cy="406" rx="252" ry="226" fill="none" stroke="#b9c2cb" stroke-width="2"/>
+
+  <!-- De 28 vakjes, zichtbaar als fijne ribbels door het deksel heen. -->
+  <g stroke="#cbd3da" stroke-width="1.6" opacity=".9">
+    <g transform="translate(400 406)">
+      <g><line y2="-222"/></g><g transform="rotate(12.86)"><line y2="-222"/></g>
+      <g transform="rotate(25.71)"><line y2="-222"/></g><g transform="rotate(38.57)"><line y2="-222"/></g>
+      <g transform="rotate(51.43)"><line y2="-222"/></g><g transform="rotate(64.29)"><line y2="-222"/></g>
+      <g transform="rotate(77.14)"><line y2="-222"/></g><g transform="rotate(90)"><line y2="-222"/></g>
+      <g transform="rotate(102.86)"><line y2="-222"/></g><g transform="rotate(115.71)"><line y2="-222"/></g>
+      <g transform="rotate(128.57)"><line y2="-222"/></g><g transform="rotate(141.43)"><line y2="-222"/></g>
+      <g transform="rotate(154.29)"><line y2="-222"/></g><g transform="rotate(167.14)"><line y2="-222"/></g>
+      <g transform="rotate(180)"><line y2="-222"/></g><g transform="rotate(192.86)"><line y2="-222"/></g>
+      <g transform="rotate(205.71)"><line y2="-222"/></g><g transform="rotate(218.57)"><line y2="-222"/></g>
+      <g transform="rotate(231.43)"><line y2="-222"/></g><g transform="rotate(244.29)"><line y2="-222"/></g>
+      <g transform="rotate(257.14)"><line y2="-222"/></g><g transform="rotate(270)"><line y2="-222"/></g>
+      <g transform="rotate(282.86)"><line y2="-222"/></g><g transform="rotate(295.71)"><line y2="-222"/></g>
+      <g transform="rotate(308.57)"><line y2="-222"/></g><g transform="rotate(321.43)"><line y2="-222"/></g>
+      <g transform="rotate(334.29)"><line y2="-222"/></g><g transform="rotate(347.14)"><line y2="-222"/></g>
+    </g>
+  </g>
+
+  <!-- Uitgiftevenster: de uitsparing in het deksel waar het vakje van dit
+       moment onder ligt. Verzonken rand geeft het diepte. -->
+  <path d="M339.0 186.7 A252 226 0 0 1 461.0 186.7 L421.9 327.1 A91 81 0 0 0 378.1 327.1 Z" fill="#c9d2da"/>
+  <path d="M351.6 192.4 A243 218 0 0 1 448.4 192.4 L419.7 319.4 A99 88 0 0 0 380.3 319.4 Z" fill="#fcfdfd"/>
+  <path d="M339.0 186.7 A252 226 0 0 1 461.0 186.7 L421.9 327.1 A91 81 0 0 0 378.1 327.1 Z" fill="none" stroke="#9aa5b0" stroke-width="2"/>
+  <g filter="url(#bakje)">
+    <ellipse cx="386" cy="238" rx="18" ry="16" fill="#ffffff" stroke="#c6ced6" stroke-width="1.8"/>
+    <ellipse cx="382" cy="234" rx="6" ry="4.5" fill="#ffffff" opacity=".85"/>
+    <g transform="rotate(16 416 268)">
+      <rect x="397" y="258" width="38" height="19" rx="9.5" fill="#e8543f"/>
+      <rect x="397" y="258" width="38" height="8" rx="4" fill="#f4897a"/>
+    </g>
+    <ellipse cx="398" cy="312" rx="16" ry="14" fill="#6aa5e8" stroke="#4a86cc" stroke-width="1.6"/>
+    <ellipse cx="394" cy="308" rx="5" ry="3.6" fill="#ffffff" opacity=".6"/>
+  </g>
+  <!-- Doorzichtig deksel met randdikte. -->
+  <ellipse cx="400" cy="400" rx="252" ry="226" fill="url(#deksel)"/>
+  <ellipse cx="400" cy="400" rx="252" ry="226" fill="none" stroke="#ffffff" stroke-width="4" opacity=".8"/>
+  <ellipse cx="400" cy="400" rx="252" ry="226" fill="none" stroke="#9fb2c2" stroke-width="1.6" opacity=".7"/>
+  <!-- Specular: één lange veeg linksboven, zoals een softbox geeft. -->
+  <path d="M232 268a238 214 0 0 1 148-84 8 8 0 0 1 0 15 224 200 0 0 0-136 77 8 8 0 0 1-12-8z" fill="url(#glansboog)"/>
+  <ellipse cx="300" cy="300" rx="70" ry="44" fill="#ffffff" opacity=".22" transform="rotate(-34 300 300)"/>
+
+  <!-- Draaiknop in het midden. -->
+  <ellipse cx="400" cy="400" rx="46" ry="42" fill="#f4f6f8" stroke="#b3bcc5" stroke-width="2.5"/>
+  <ellipse cx="400" cy="397" rx="30" ry="27" fill="#ffffff" stroke="#cdd5dc" stroke-width="2"/>
+  <ellipse cx="392" cy="390" rx="12" ry="9" fill="#ffffff" opacity=".9"/>
+
+  <!-- Display. Groen achtergrondlicht = het apparaat staat aan. -->
+  <g filter="url(#bak)">
+    <rect x="286" y="486" width="228" height="96" rx="14" fill="#1f2a22"/>
+    <rect x="296" y="495" width="208" height="78" rx="9" fill="url(#scherm)"/>
+    <text x="400" y="546" text-anchor="middle" font-family="'Courier New',monospace"
+          font-size="50" font-weight="700" fill="#101a12" letter-spacing="5">08:00</text>
+    <text x="400" y="566" text-anchor="middle" font-family="Arial,sans-serif"
+          font-size="15" font-weight="700" fill="#22321f" letter-spacing="2.5">OCHTEND · 1/4</text>
+  </g>
+
+  <!-- Bedieningsknoppen: drie stuks, groot en ver uit elkaar. -->
+  <g>
+    <ellipse cx="228" cy="520" rx="27" ry="24" fill="#e9edf1" stroke="#b3bcc5" stroke-width="2"/>
+    <ellipse cx="228" cy="516" rx="19" ry="16" fill="#fbfcfd"/>
+    <ellipse cx="572" cy="520" rx="27" ry="24" fill="#e9edf1" stroke="#b3bcc5" stroke-width="2"/>
+    <ellipse cx="572" cy="516" rx="19" ry="16" fill="#fbfcfd"/>
+    <ellipse cx="400" cy="612" rx="31" ry="27" fill="#0f6b5c" stroke="#0a4d42" stroke-width="2"/>
+    <ellipse cx="400" cy="607" rx="22" ry="18" fill="#178a76"/>
+  </g>
+
+  <!-- Slotje met sleutelgat. -->
+  <g transform="translate(298 286)">
+    <ellipse rx="22" ry="19" fill="#dfe4e9" stroke="#a9b3bd" stroke-width="2"/>
+    <circle cy="-3" r="6" fill="#6b7885"/>
+    <rect x="-2.5" y="-3" width="5" height="12" rx="2.5" fill="#6b7885"/>
+  </g>
+</svg>

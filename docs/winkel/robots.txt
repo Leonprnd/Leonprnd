@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /afrekenen.html
+Disallow: /bedankt.html
+Disallow: /_test-winkelwagen.html
+
+Sitemap: https://bijtijds.nl/sitemap.xml

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t6 d6">
+  <title id="t6">De verpakking zoals die bezorgd wordt</title>
+  <desc id="d6">Een lichte doos met het Bijtijds-logo, met daarnaast de gedrukte handleiding in grote letters.</desc>
+  <defs>
+    <radialGradient id="doek" cx="42%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eee7dc"/>
+    </radialGradient>
+    <linearGradient id="romp" x1="18%" y1="4%" x2="82%" y2="96%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#f6f7f8"/>
+      <stop offset=".78" stop-color="#e4e8ec"/><stop offset="1" stop-color="#d2d9e0"/>
+    </linearGradient>
+    <linearGradient id="wand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0" stop-color="#b6bfc8"/><stop offset=".22" stop-color="#e8ecef"/>
+      <stop offset=".55" stop-color="#cdd5dc"/><stop offset="1" stop-color="#a7b1bb"/>
+    </linearGradient>
+    <linearGradient id="scherm" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0" stop-color="#3f4f43"/><stop offset=".5" stop-color="#5d7a63"/>
+      <stop offset="1" stop-color="#46583f"/>
+    </linearGradient>
+    <filter id="zacht" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="bak" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#14212e" flood-opacity=".18"/>
+    </filter>
+    <filter id="bakje" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#14212e" flood-opacity=".22"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#doek)"/>
+  <ellipse cx="400" cy="646" rx="290" ry="44" fill="#9a8f7f" opacity=".4" filter="url(#zacht)"/>
+  <g filter="url(#bak)">
+    <path d="M148 254 400 158l252 96v296l-252 96-252-96z" fill="#f0e7d8"/>
+    <path d="M400 254v296l252-96V254z" fill="#e2d6c2"/>
+    <path d="M148 254l252 96 252-96-252-96z" fill="#f7f1e6"/>
+    <path d="M148 254 400 350v296l-252-96z" fill="#e9ded0"/>
+  </g>
+  <!-- Merk op de linkervlak, tekst past binnen het vlak. -->
+  <g transform="translate(214 424)">
+    <circle cx="0" cy="0" r="25" fill="none" stroke="#0f6b5c" stroke-width="6"/>
+    <path d="M0-15v16l12 7" fill="none" stroke="#0f6b5c" stroke-width="6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="42" y="10" font-family="Georgia,serif" font-size="36" font-weight="700"
+          fill="#14212e">Bijtijds</text>
+    <text x="42" y="36" font-family="Arial,sans-serif" font-size="13" fill="#4a5b6b"
+          letter-spacing="1.2">28 VAKJES</text>
+    <text x="42" y="56" font-family="Arial,sans-serif" font-size="13" fill="#4a5b6b"
+          letter-spacing="1.2">6 ALARMEN PER DAG</text>
+  </g>
+
+  <!-- Gedrukte handleiding ernaast: het bewijs dat er uitleg bij zit. -->
+  <g filter="url(#bak)" transform="translate(586 486) rotate(-7)">
+    <rect x="0" y="0" width="168" height="216" rx="8" fill="#ffffff" stroke="#d8dde2" stroke-width="2"/>
+    <text x="22" y="48" font-family="Georgia,serif" font-size="25" font-weight="700" fill="#14212e">Zo stelt</text>
+    <text x="22" y="77" font-family="Georgia,serif" font-size="25" font-weight="700" fill="#14212e">u hem in</text>
+    <g fill="#c8d0d8">
+      <rect x="22" y="99" width="122" height="8" rx="4"/>
+      <rect x="22" y="119" width="106" height="8" rx="4"/>
+      <rect x="22" y="139" width="122" height="8" rx="4"/>
+      <rect x="22" y="159" width="76" height="8" rx="4"/>
+    </g>
+    <rect x="22" y="181" width="118" height="22" rx="11" fill="#e7f2ef"/>
+    <text x="32" y="197" font-family="Arial,sans-serif" font-size="13" font-weight="700"
+          fill="#0f6b5c" letter-spacing=".5">GROTE LETTERS</text>
+  </g>
+</svg>

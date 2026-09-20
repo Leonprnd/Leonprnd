@@ -12,6 +12,8 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "test": "node --test test/*.test.js",
-    "build:site": "node scripts/bouw-site.mjs"
+    "build:site": "node scripts/bouw-site.mjs",
+    "build:winkel": "node scripts/bouw-winkel.mjs",
+    "build": "npm run build:site && npm run build:winkel"
   }
 }

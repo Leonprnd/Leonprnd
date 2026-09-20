@@ -1,0 +1,108 @@
+<!--#
+titel: Contact — Bijtijds
+omschrijving: Bel of mail ons. Wij nemen zelf op, zonder keuzemenu.
+prioriteit: 0.5
+#-->
+
+<section class="sectie sectie--kort">
+  <div class="omhulsel">
+    <div class="rooster rooster--2" style="gap:var(--r8);align-items:start">
+      <div>
+        <h1>Contact</h1>
+        <p style="font-size:1.15rem;color:var(--inkt-zacht)">
+          Er is geen keuzemenu en geen chatrobot. U krijgt gewoon iemand aan de lijn.
+        </p>
+
+        <div class="kaart" style="margin-bottom:var(--r5)">
+          <h2 style="font-size:1.3rem">Bellen</h2>
+          <p style="font-size:1.6rem;font-weight:700;margin-bottom:var(--r2)">
+            <a href="tel:{{bedrijf.telefoonLink}}">{{bedrijf.telefoonTekst}}</a>
+          </p>
+          <p style="margin:0">{{bedrijf.telefoontijden}}</p>
+        </div>
+
+        <div class="kaart" style="margin-bottom:var(--r5)">
+          <h2 style="font-size:1.3rem">Mailen</h2>
+          <p style="font-size:1.2rem;font-weight:700;margin-bottom:var(--r2)">
+            <a href="mailto:{{bedrijf.email}}">{{bedrijf.email}}</a>
+          </p>
+          <p style="margin:0">Wij antwoorden binnen &eacute;&eacute;n werkdag.</p>
+        </div>
+
+        <div class="kaart kaart--vlak" style="background:var(--papier)">
+          <h2 style="font-size:1.15rem">Post</h2>
+          <p style="margin:0">
+            {{bedrijf.juridischeNaam}}<br>
+            {{bedrijf.straat}}<br>
+            {{bedrijf.postcode}} {{bedrijf.plaats}}
+          </p>
+          <p style="margin-top:var(--r4);font-size:.96rem;color:var(--inkt-zacht)">
+            Stuur retourzendingen niet zomaar op: meld ze eerst even aan, dan krijgt u
+            het juiste adres en gaat het sneller. Zie
+            <a href="verzending-en-retour.html">bezorging en retour</a>.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <h2>Waar de meeste mensen voor bellen</h2>
+
+        <details class="vraag">
+          <summary>Hulp bij het instellen</summary>
+          <div class="vraag__antwoord">
+            <p>Pak het apparaat erbij en bel ons. Wij lopen de stappen met u door; meestal
+              staat het binnen vijf minuten goed. De handleiding staat ook
+              <a href="handleiding.html">op deze website</a>.</p>
+          </div>
+        </details>
+
+        <details class="vraag">
+          <summary>Waar blijft mijn pakket?</summary>
+          <div class="vraag__antwoord">
+            <p>U heeft een e-mail met een Track &amp; Trace-code gekregen. Lukt het
+              daarmee niet, bel ons dan met uw bestelnummer bij de hand &ndash; dat begint
+              met BT en staat in de bevestigingsmail.</p>
+          </div>
+        </details>
+
+        <details class="vraag">
+          <summary>Ik wil hem terugsturen</summary>
+          <div class="vraag__antwoord">
+            <p>Dat mag binnen {{bedrijf.bedenktijdDagen}} dagen, zonder reden. Bel of mail
+              ons even, dan krijgt u het retouradres en het formulier. Zodra het pakket
+              binnen is, staat uw geld binnen veertien dagen terug op uw rekening.</p>
+          </div>
+        </details>
+
+        <details class="vraag">
+          <summary>Er is iets stuk</summary>
+          <div class="vraag__antwoord">
+            <p>Binnen {{bedrijf.garantieJaren}} jaar sturen wij een nieuwe, zonder kosten.
+              Stuur een foto mee per e-mail, dan gaat het het snelst. U hoeft de kapotte
+              meestal niet eens terug te sturen.</p>
+          </div>
+        </details>
+
+        <details class="vraag">
+          <summary>Ik wil telefonisch bestellen</summary>
+          <div class="vraag__antwoord">
+            <p>Graag. Bel ons en wij nemen uw bestelling op. U krijgt een e-mail of een
+              brief met het rekeningnummer en betaalt daarna gewoon per overboeking. Er
+              komt geen computer aan te pas.</p>
+          </div>
+        </details>
+
+        <details class="vraag">
+          <summary>Ik heb een klacht</summary>
+          <div class="vraag__antwoord">
+            <p>Vertel het ons, wij lossen het op. Komen wij er samen niet uit, dan kunt u
+              terecht bij het Europese platform voor geschillenbeslechting op
+              <a href="https://ec.europa.eu/consumers/odr" rel="nofollow noopener">ec.europa.eu/consumers/odr</a>.
+              Meer daarover staat in onze
+              <a href="algemene-voorwaarden.html">algemene voorwaarden</a>.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>

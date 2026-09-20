@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t3 d3">
+  <title id="t3">Vier instelbare inneemmomenten per dag</title>
+  <desc id="d3">Het display met de tijd 07:30 groot in beeld, daaronder de vier ingestelde momenten: ochtend, middag, avond en nacht.</desc>
+  <defs>
+    <radialGradient id="doek" cx="42%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eee7dc"/>
+    </radialGradient>
+    <linearGradient id="romp" x1="18%" y1="4%" x2="82%" y2="96%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#f6f7f8"/>
+      <stop offset=".78" stop-color="#e4e8ec"/><stop offset="1" stop-color="#d2d9e0"/>
+    </linearGradient>
+    <linearGradient id="wand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0" stop-color="#b6bfc8"/><stop offset=".22" stop-color="#e8ecef"/>
+      <stop offset=".55" stop-color="#cdd5dc"/><stop offset="1" stop-color="#a7b1bb"/>
+    </linearGradient>
+    <linearGradient id="scherm" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0" stop-color="#3f4f43"/><stop offset=".5" stop-color="#5d7a63"/>
+      <stop offset="1" stop-color="#46583f"/>
+    </linearGradient>
+    <filter id="zacht" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="bak" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#14212e" flood-opacity=".18"/>
+    </filter>
+    <filter id="bakje" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#14212e" flood-opacity=".22"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#doek)"/>
+  <g filter="url(#bak)">
+    <rect x="150" y="120" width="500" height="176" rx="22" fill="#1f2a22"/>
+    <rect x="166" y="136" width="468" height="144" rx="14" fill="url(#scherm)"/>
+    <text x="400" y="232" text-anchor="middle" font-family="'Courier New',monospace"
+          font-size="92" font-weight="700" fill="#101a12" letter-spacing="8">07:30</text>
+    <text x="400" y="264" text-anchor="middle" font-family="Arial,sans-serif"
+          font-size="20" font-weight="700" fill="#22321f" letter-spacing="3">MAANDAG · OCHTEND</text>
+  </g>
+  <g>
+      <rect x="150" y="336" width="500" height="78" rx="14" fill="#e7f2ef"
+            stroke="#0f6b5c" stroke-width="3"/>
+      <text x="186" y="384" font-family="'Courier New',monospace" font-size="34"
+            font-weight="700" fill="#14212e">07:30</text>
+      <text x="320" y="372" font-family="Arial,sans-serif" font-size="20"
+            font-weight="700" fill="#14212e">Ochtend</text>
+      <text x="320" y="396" font-family="Arial,sans-serif" font-size="16"
+            fill="#6e8093">na het ontbijt</text>
+      <circle cx="606" cy="375" r="17" fill="#0f6b5c"/>
+      <path d="M598 375l6 6 12-13" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <g>
+      <rect x="150" y="428" width="500" height="78" rx="14" fill="#ffffff"
+            stroke="#e6ded2" stroke-width="2"/>
+      <text x="186" y="476" font-family="'Courier New',monospace" font-size="34"
+            font-weight="700" fill="#14212e">12:30</text>
+      <text x="320" y="464" font-family="Arial,sans-serif" font-size="20"
+            font-weight="700" fill="#14212e">Middag</text>
+      <text x="320" y="488" font-family="Arial,sans-serif" font-size="16"
+            fill="#6e8093">bij de lunch</text>
+      <circle cx="606" cy="467" r="17" fill="#f2efe9"/>
+      <circle cx="606" cy="467" r="6" fill="#cfc3b2"/>
+    </g>
+    <g>
+      <rect x="150" y="520" width="500" height="78" rx="14" fill="#ffffff"
+            stroke="#e6ded2" stroke-width="2"/>
+      <text x="186" y="568" font-family="'Courier New',monospace" font-size="34"
+            font-weight="700" fill="#14212e">18:00</text>
+      <text x="320" y="556" font-family="Arial,sans-serif" font-size="20"
+            font-weight="700" fill="#14212e">Avond</text>
+      <text x="320" y="580" font-family="Arial,sans-serif" font-size="16"
+            fill="#6e8093">bij het eten</text>
+      <circle cx="606" cy="559" r="17" fill="#f2efe9"/>
+      <circle cx="606" cy="559" r="6" fill="#cfc3b2"/>
+    </g>
+    <g>
+      <rect x="150" y="612" width="500" height="78" rx="14" fill="#ffffff"
+            stroke="#e6ded2" stroke-width="2"/>
+      <text x="186" y="660" font-family="'Courier New',monospace" font-size="34"
+            font-weight="700" fill="#14212e">22:00</text>
+      <text x="320" y="648" font-family="Arial,sans-serif" font-size="20"
+            font-weight="700" fill="#14212e">Nacht</text>
+      <text x="320" y="672" font-family="Arial,sans-serif" font-size="16"
+            fill="#6e8093">voor het slapen</text>
+      <circle cx="606" cy="651" r="17" fill="#f2efe9"/>
+      <circle cx="606" cy="651" r="6" fill="#cfc3b2"/>
+    </g>
+  <text x="400" y="736" text-anchor="middle" font-family="Georgia,serif" font-size="25"
+        font-style="italic" fill="#4a5b6b">Eén keer instellen. Daarna doet hij het zelf.</text>
+</svg>

@@ -1,0 +1,65 @@
+<!--#
+titel: Over ons — Bijtijds
+omschrijving: Wie wij zijn, wat wij verkopen en wat wij bewust niet doen.
+prioriteit: 0.5
+#-->
+
+<section class="sectie sectie--kort">
+  <div class="omhulsel omhulsel--smal">
+    <h1>Over ons</h1>
+
+    <p style="font-size:1.18rem;color:var(--inkt-zacht)">
+      Wij zijn een kleine Nederlandse webwinkel die &eacute;&eacute;n soort product
+      verkoopt: pillendozen met een alarm. Meer niet.
+    </p>
+
+    <h2>Waarom &eacute;&eacute;n product</h2>
+    <p>
+      Omdat wij dan alles weten van dat ene ding. Wij kunnen u aan de telefoon vertellen
+      hoe hard het alarm is, hoeveel tabletten er in een vakje passen en wat er gebeurt
+      als de batterijen leegraken &ndash; zonder het op te moeten zoeken. Bij een winkel
+      met vierduizend artikelen kan dat niet.
+    </p>
+
+    <h2>Hoe het bij u komt</h2>
+    <p>
+      Wij houden geen eigen magazijn aan. De pillendozen liggen bij ons logistieke
+      partner in Europa; zodra uw bestelling binnen is, pakken zij hem in en sturen hem
+      op. Daardoor zijn wij goedkoper dan een winkelketen en duurt het toch maar
+      {{bedrijf.bezorgtijdDagen}}.
+    </p>
+    <p>
+      Dat is geen geheim en wij doen er niet geheimzinnig over: u koopt bij ons, wij
+      staan garant, en als er iets mis is regelt u het met ons &ndash; niet met een
+      fabrikant aan de andere kant van de wereld.
+    </p>
+
+    <h2>Wat wij bewust niet doen</h2>
+    <ul class="vinklijst">
+      <li><strong>Geen verzonnen beoordelingen.</strong> Op onze productpagina staat pas
+        iets zodra er echte klanten zijn die het geschreven hebben.</li>
+      <li><strong>Geen aftelklokjes en geen "nog 3 op voorraad".</strong> Als er haast bij
+        is, hoort u dat van ons. Anders niet.</li>
+      <li><strong>Geen doorgestreepte prijzen die nooit gegolden hebben.</strong> De prijs
+        is de prijs.</li>
+      <li><strong>Geen beloftes over uw gezondheid.</strong> Wij verkopen een doos met
+        vakjes. Over uw medicijnen gaat uw arts of apotheker.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>
+      Bel <a href="tel:{{bedrijf.telefoonLink}}"><strong>{{bedrijf.telefoonTekst}}</strong></a>
+      ({{bedrijf.telefoontijden}}) of mail
+      <a href="mailto:{{bedrijf.email}}">{{bedrijf.email}}</a>. Wij nemen zelf op.
+    </p>
+
+    <div class="kaart kaart--vlak" style="background:var(--papier);margin-top:var(--r6)">
+      <h3 style="font-size:1.15rem">Bedrijfsgegevens</h3>
+      <p style="margin:0">
+        {{bedrijf.juridischeNaam}}<br>
+        {{bedrijf.straat}}, {{bedrijf.postcode}} {{bedrijf.plaats}}<br>
+        KvK {{bedrijf.kvk}} &middot; Btw {{bedrijf.btw}}
+      </p>
+    </div>
+  </div>
+</section>

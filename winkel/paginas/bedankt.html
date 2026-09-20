@@ -1,0 +1,63 @@
+<!--#
+titel: Bedankt voor uw bestelling — Bijtijds
+omschrijving: Uw bestelling is bij ons binnen.
+robots: noindex, nofollow
+#-->
+
+<section class="sectie">
+  <div class="omhulsel omhulsel--smal">
+    <div style="text-align:center;margin-bottom:var(--r7)">
+      <div class="pictogram" style="width:88px;height:88px;border-radius:50%;margin-inline:auto"
+           aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"
+             stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h1>Bedankt, uw bestelling is binnen</h1>
+      <p style="font-size:1.15rem;color:var(--inkt-zacht)">
+        U krijgt binnen een paar minuten een bevestiging per e-mail<span data-bevestiging hidden>
+        op <strong data-klantmail></strong></span>. Zit hij er niet bij, kijk dan even in
+        de map ongewenste e-mail.
+      </p>
+    </div>
+
+    <div class="samenvatting" data-bevestiging hidden style="margin-bottom:var(--r7)">
+      <h2 style="font-size:1.3rem">Bestelling <span data-bestelnummer></span></h2>
+      <dl data-bestelde-regels></dl>
+      <div class="samenvatting__totaal">
+        <span>Totaal</span><span data-besteltotaal></span>
+      </div>
+    </div>
+
+    <div class="kaart" style="margin-bottom:var(--r6)">
+      <h2 style="font-size:1.35rem">Wat er nu gebeurt</h2>
+      <ol style="padding-left:1.4em;margin:0">
+        <li style="margin-bottom:var(--r3)"><strong>Vandaag nog</strong> &ndash; wij zetten uw
+          bestelling klaar. Bestelde u voor 15.00 uur op een werkdag, dan gaat hij vandaag
+          de deur uit.</li>
+        <li style="margin-bottom:var(--r3)"><strong>Binnen een dag</strong> &ndash; u krijgt een
+          e-mail met een Track &amp; Trace-code waarmee u het pakket kunt volgen.</li>
+        <li style="margin-bottom:var(--r3)"><strong>Over {{bedrijf.bezorgtijdDagen}}</strong> &ndash;
+          de bezorger komt langs. Bent u niet thuis, dan probeert hij het de volgende dag
+          nog een keer.</li>
+        <li><strong>Daarna</strong> &ndash; komt u er bij het instellen niet uit? Bel ons, dan
+          lopen we het samen door.</li>
+      </ol>
+    </div>
+
+    <div class="kaart kaart--vlak" style="background:var(--merk-licht);border-color:#cfe3dd">
+      <h2 style="font-size:1.25rem">Alvast een vraag?</h2>
+      <p>
+        Bel <a href="tel:{{bedrijf.telefoonLink}}"><strong>{{bedrijf.telefoonTekst}}</strong></a>
+        ({{bedrijf.telefoontijden}}) of mail
+        <a href="mailto:{{bedrijf.email}}">{{bedrijf.email}}</a>. Houd uw bestelnummer bij
+        de hand, dan kunnen wij u meteen verder helpen.
+      </p>
+      <p style="margin-top:var(--r4)">
+        De handleiding kunt u alvast doorlezen op
+        <a href="handleiding.html">de handleidingpagina</a>.
+      </p>
+    </div>
+  </div>
+</section>

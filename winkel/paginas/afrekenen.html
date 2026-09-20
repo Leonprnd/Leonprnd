@@ -1,0 +1,177 @@
+<!--#
+titel: Afrekenen — Bijtijds
+omschrijving: Rond uw bestelling af.
+robots: noindex, nofollow
+#-->
+
+<section class="sectie sectie--kort">
+  <div class="omhulsel">
+
+    <ol class="stappenbalk">
+      <li>Winkelwagen</li>
+      <li aria-current="step">Uw gegevens</li>
+      <li>Betalen</li>
+    </ol>
+
+    <h1>Afrekenen</h1>
+
+    <div class="melding melding--letop" data-wagen-leeg hidden>
+      Uw winkelwagen is leeg. <a href="product.html">Kies eerst een pillendoos.</a>
+    </div>
+
+    <!-- data-endpoint: laat leeg zolang er geen betaalkoppeling is. De winkel
+         toont dan de bevestigingspagina. Zodra Mollie draait, zet je hier de
+         URL van je eigen functie neer, bijvoorbeeld data-endpoint="/api/bestelling".
+         Zie draaiboek/07-betalen-en-techniek.md. -->
+    <form class="wagen-rooster" data-afrekenen data-endpoint="" novalidate>
+
+      <div>
+        <div class="melding melding--fout" data-verzendfout hidden>
+          Het is niet gelukt om de bestelling door te sturen. Probeer het nog een keer, of
+          bel ons op <a href="tel:{{bedrijf.telefoonLink}}">{{bedrijf.telefoonTekst}}</a> &ndash;
+          dan nemen wij de bestelling telefonisch op.
+        </div>
+
+        <fieldset>
+          <legend>Waar mogen we hem bezorgen?</legend>
+
+          <div class="veldrij veldrij--2">
+            <div class="veld">
+              <label for="voornaam">Voornaam</label>
+              <input type="text" id="voornaam" name="voornaam" autocomplete="given-name" required>
+              <span class="veldfout" id="fout-voornaam" hidden></span>
+            </div>
+            <div class="veld">
+              <label for="achternaam">Achternaam</label>
+              <input type="text" id="achternaam" name="achternaam" autocomplete="family-name" required>
+              <span class="veldfout" id="fout-achternaam" hidden></span>
+            </div>
+          </div>
+
+          <div class="veldrij veldrij--postcode">
+            <div class="veld">
+              <label for="postcode">Postcode</label>
+              <input type="text" id="postcode" name="postcode" autocomplete="postal-code"
+                     inputmode="text" placeholder="1012 AB" required>
+              <span class="veldfout" id="fout-postcode" hidden></span>
+            </div>
+            <div class="veld">
+              <label for="huisnummer">Huisnummer
+                <span class="veld__hint">Met toevoeging, als u die heeft</span></label>
+              <input type="text" id="huisnummer" name="huisnummer" autocomplete="address-line2" required>
+              <span class="veldfout" id="fout-huisnummer" hidden></span>
+            </div>
+          </div>
+
+          <div class="veld">
+            <label for="straat">Straatnaam</label>
+            <input type="text" id="straat" name="straat" autocomplete="address-line1" required>
+            <span class="veldfout" id="fout-straat" hidden></span>
+          </div>
+
+          <div class="veld">
+            <label for="plaats">Woonplaats</label>
+            <input type="text" id="plaats" name="plaats" autocomplete="address-level2" required>
+            <span class="veldfout" id="fout-plaats" hidden></span>
+          </div>
+
+          <div class="veld">
+            <label for="land">Land</label>
+            <select id="land" name="land">
+              <option value="NL" selected>Nederland</option>
+              <option value="BE">België</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Hoe kunnen we u bereiken?</legend>
+
+          <div class="veld">
+            <label for="email">E-mailadres
+              <span class="veld__hint">Hier sturen we de bevestiging en de Track &amp; Trace naartoe</span></label>
+            <input type="email" id="email" name="email" autocomplete="email"
+                   inputmode="email" required>
+            <span class="veldfout" id="fout-email" hidden></span>
+          </div>
+
+          <div class="veld">
+            <label for="telefoon">Telefoonnummer
+              <span class="veld__hint">De bezorger belt als hij u niet thuis treft</span></label>
+            <input type="tel" id="telefoon" name="telefoon" autocomplete="tel"
+                   inputmode="tel" required>
+            <span class="veldfout" id="fout-telefoon" hidden></span>
+          </div>
+
+          <div class="veld">
+            <label for="opmerking">Opmerking voor de bezorger
+              <span class="veld__hint">Niet verplicht &ndash; bijvoorbeeld "graag bij de buren op nummer 12"</span></label>
+            <textarea id="opmerking" name="opmerking" rows="3" style="min-height:96px"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Hoe wilt u betalen?</legend>
+
+          <div class="keuzevak">
+            <input type="radio" id="betaal-ideal" name="betaalwijze" value="ideal" checked>
+            <label for="betaal-ideal"><strong>iDEAL</strong><br>
+              <span style="color:var(--inkt-zacht);font-size:.96rem">Via uw eigen bank, net als bij internetbankieren.</span></label>
+          </div>
+          <div class="keuzevak">
+            <input type="radio" id="betaal-bancontact" name="betaalwijze" value="bancontact">
+            <label for="betaal-bancontact"><strong>Bancontact</strong><br>
+              <span style="color:var(--inkt-zacht);font-size:.96rem">Voor klanten in België.</span></label>
+          </div>
+          <div class="keuzevak">
+            <input type="radio" id="betaal-overboeking" name="betaalwijze" value="overboeking">
+            <label for="betaal-overboeking"><strong>Gewone overboeking</strong><br>
+              <span style="color:var(--inkt-zacht);font-size:.96rem">U krijgt een e-mail met het
+              rekeningnummer. Wij versturen zodra de betaling binnen is.</span></label>
+          </div>
+        </fieldset>
+
+        <div class="keuzevak" style="margin-bottom:var(--r5)">
+          <input type="checkbox" id="voorwaarden" name="voorwaarden" value="ja">
+          <label for="voorwaarden">Ik ga akkoord met de
+            <a href="algemene-voorwaarden.html">algemene voorwaarden</a> en het
+            <a href="privacybeleid.html">privacybeleid</a>.</label>
+        </div>
+        <span class="veldfout" id="fout-voorwaarden" hidden style="display:block;margin:-16px 0 24px"></span>
+
+        <div class="keuzevak" style="margin-bottom:var(--r6)">
+          <input type="checkbox" id="nieuwsbrief" name="nieuwsbrief" value="ja">
+          <label for="nieuwsbrief">Houd mij op de hoogte per e-mail. Hooguit één bericht per
+            maand, en met één klik weer uit.</label>
+        </div>
+      </div>
+
+      <aside class="samenvatting">
+        <h2 style="font-size:1.4rem">Uw bestelling</h2>
+        <dl data-bestelregels></dl>
+        <dl>
+          <div class="samenvatting__rij"><dt>Bezorging</dt><dd data-verzending>&euro;&nbsp;0,00</dd></div>
+        </dl>
+        <div class="samenvatting__totaal">
+          <span>Totaal</span><span data-totaal>&euro;&nbsp;0,00</span>
+        </div>
+        <p style="font-size:.92rem;color:var(--inkt-licht);margin:var(--r2) 0 var(--r5)">
+          Inclusief <span data-btw>&euro;&nbsp;0,00</span> btw
+        </p>
+
+        <button type="submit" class="knop knop--actie knop--breed knop--groot" data-verzendknop>
+          Bestelling afronden
+        </button>
+
+        <p style="font-size:.95rem;color:var(--inkt-zacht);margin-top:var(--r4)">
+          U betaalt pas op de volgende stap. Er wordt nu nog niets afgeschreven.
+        </p>
+
+        <p style="font-size:.95rem;margin-top:var(--r5);padding-top:var(--r5);border-top:1px solid var(--lijn)">
+          Komt u er niet uit? Bel <a href="tel:{{bedrijf.telefoonLink}}"><strong>{{bedrijf.telefoonTekst}}</strong></a>
+          en wij nemen de bestelling telefonisch voor u op.
+        </p>
+      </aside>
+    </form>
+  </div>
+</section>

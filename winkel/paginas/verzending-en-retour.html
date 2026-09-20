@@ -1,0 +1,94 @@
+<!--#
+titel: Bezorging en retour — Bijtijds
+omschrijving: Hoe en wanneer wij bezorgen, en hoe u binnen 30 dagen kunt terugsturen.
+prioriteit: 0.6
+#-->
+
+<section class="sectie sectie--kort">
+  <div class="omhulsel omhulsel--smal">
+    <h1>Bezorging en retour</h1>
+
+    <h2>Bezorging</h2>
+    <div class="tabelhouder">
+      <table class="vergelijk">
+        <tbody>
+          <tr><th scope="row">Kosten</th>
+              <td>Gratis vanaf &euro;&nbsp;{{bedrijf.gratisVanaf}}; daaronder
+                  &euro;&nbsp;{{bedrijf.verzendkosten}}</td></tr>
+          <tr><th scope="row">Levertijd</th><td>{{bedrijf.bezorgtijdDagen}}</td></tr>
+          <tr><th scope="row">Verzonden vanuit</th><td>Ons magazijn in Europa</td></tr>
+          <tr><th scope="row">Vervoerder</th><td>PostNL, met Track &amp; Trace</td></tr>
+          <tr><th scope="row">Landen</th><td>Nederland en België</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:var(--r5)">
+      Bestelt u op een werkdag voor 15.00 uur, dan gaat uw pakket diezelfde dag de deur
+      uit. U krijgt een e-mail met een code waarmee u het kunt volgen. Bent u niet thuis,
+      dan probeert de bezorger het de volgende werkdag opnieuw of laat hij het bij de
+      buren achter.
+    </p>
+
+    <p>
+      Duurt het onverhoopt langer dan dertig dagen, dan mag u de koop kosteloos ontbinden
+      en krijgt u alles terug. Wij bellen u in dat geval zelf, voordat u ons hoeft te
+      bellen.
+    </p>
+
+    <h2 style="margin-top:var(--r8)">Terugsturen</h2>
+
+    <p>
+      U mag uw bestelling binnen <strong>{{bedrijf.bedenktijdDagen}} dagen</strong> na
+      ontvangst terugsturen zonder op te hoeven geven waarom. De wet schrijft veertien
+      dagen voor; wij geven u er meer, omdat een pillendoos pas na een paar weken laat
+      zien of hij bij u past.
+    </p>
+
+    <div class="kaart" style="margin-bottom:var(--r6)">
+      <h3 style="font-size:1.2rem">Zo gaat het</h3>
+      <ol style="padding-left:1.4em;margin:0">
+        <li style="margin-bottom:var(--r3)"><strong>Meld het even aan.</strong> Bel
+          <a href="tel:{{bedrijf.telefoonLink}}">{{bedrijf.telefoonTekst}}</a> of mail
+          <a href="mailto:{{bedrijf.email}}">{{bedrijf.email}}</a>. U mag ook het
+          modelformulier hieronder gebruiken, maar dat hoeft niet.</li>
+        <li style="margin-bottom:var(--r3)"><strong>U krijgt het retouradres.</strong>
+          Stuur het pakket binnen veertien dagen na uw melding terug.</li>
+        <li style="margin-bottom:var(--r3)"><strong>Wij betalen terug.</strong> Binnen
+          veertien dagen nadat wij het pakket terug hebben, staat het bedrag op uw
+          rekening &ndash; inclusief de bezorgkosten die u betaald heeft.</li>
+      </ol>
+    </div>
+
+    <h3>Goed om te weten</h3>
+    <ul class="vinklijst">
+      <li>U mag het apparaat uitpakken en uitproberen, net zoals u in een winkel zou doen.</li>
+      <li>De kosten van het terugsturen zijn voor uw rekening; reken op ongeveer
+        &euro;&nbsp;7,-.</li>
+      <li>Is er door gebruik waarde verloren gegaan die verder gaat dan uitproberen, dan
+        mogen wij dat verrekenen. In de praktijk doen wij daar zelden een beroep op.</li>
+      <li>Heeft u de vakjes al met medicijnen gevuld? Maak hem dan even leeg en schoon
+        voordat u hem terugstuurt.</li>
+    </ul>
+
+    <div class="kaart kaart--vlak" style="background:var(--papier);margin-top:var(--r7)">
+      <h3 style="font-size:1.2rem">Modelformulier voor herroeping</h3>
+      <p style="font-size:.98rem;color:var(--inkt-zacht)">
+        Dit formulier hoeft u alleen in te vullen als u de overeenkomst schriftelijk wilt
+        herroepen. Een telefoontje of e-mail volstaat ook.
+      </p>
+      <div style="background:var(--wit);border:1px solid var(--lijn);border-radius:var(--rond);padding:var(--r5);font-size:1rem">
+        <p>Aan: {{bedrijf.juridischeNaam}}, {{bedrijf.straat}},
+          {{bedrijf.postcode}} {{bedrijf.plaats}}, {{bedrijf.email}}</p>
+        <p>Ik deel u hierbij mede dat ik onze overeenkomst betreffende de verkoop van de
+          volgende goederen herroep:</p>
+        <p>&mdash; Besteld op / ontvangen op: ..............................</p>
+        <p>&mdash; Bestelnummer: ..............................</p>
+        <p>&mdash; Naam consument: ..............................</p>
+        <p>&mdash; Adres consument: ..............................</p>
+        <p>&mdash; Datum: ..............................</p>
+        <p>&mdash; Handtekening (alleen bij papieren verzending): ..............................</p>
+      </div>
+    </div>
+  </div>
+</section>

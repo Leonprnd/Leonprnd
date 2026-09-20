@@ -1,0 +1,31 @@
+{
+  "_lees_dit_eerst": "Alles tussen [rechte haken] moet vervangen worden voordat de winkel live gaat. De bouwer waarschuwt je bij elke build welke er nog staan. Zie draaiboek/08-juridisch-en-kvk.md.",
+
+  "naam": "Bijtijds",
+  "leus": "Elke dag de juiste pillen, op het juiste moment.",
+  "domein": "bijtijds.nl",
+  "webadres": "https://bijtijds.nl",
+
+  "juridischeNaam": "[BEDRIJFSNAAM ZOALS INGESCHREVEN BIJ DE KVK]",
+  "kvk": "[KVK-NUMMER]",
+  "btw": "[BTW-IDENTIFICATIENUMMER]",
+  "iban": "[IBAN VAN DE ZAKELIJKE REKENING]",
+
+  "straat": "[STRAAT EN HUISNUMMER]",
+  "postcode": "[POSTCODE]",
+  "plaats": "[PLAATS]",
+  "land": "Nederland",
+
+  "email": "hallo@bijtijds.nl",
+  "telefoonTekst": "085 – 0000 000",
+  "telefoonLink": "+31850000000",
+  "telefoontijden": "maandag tot en met vrijdag, 9.00 tot 17.00 uur",
+
+  "metaPixelId": "",
+
+  "bezorgtijdDagen": "2 tot 4 werkdagen",
+  "bedenktijdDagen": 30,
+  "garantieJaren": 2,
+  "gratisVanaf": "50,00",
+  "verzendkosten": "4,95"
+}

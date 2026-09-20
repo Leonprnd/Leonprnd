@@ -73,6 +73,30 @@ De website bewaart de gegevens in de browser van het apparaat waarop je hem
 opent. Met *Gegevens opslaan als bestand* en *Bestand inlezen* verhuis je ze
 naar een ander apparaat.
 
+## Webwinkel Bijtijds
+
+Los van het onderdelenbeheer staat in `winkel/` een complete webwinkel voor
+pillendozen met alarm. Die twee zitten elkaar niet in de weg: `build:site`
+schrijft alleen `docs/index.html` en `docs/img/`, `build:winkel` schrijft alleen
+`docs/winkel/`.
+
+```bash
+npm run build:winkel     # bouwt de winkel naar docs/winkel/
+npm run build            # bouwt allebei
+```
+
+Bekijken: `cd docs && python3 -m http.server 8000`, dan
+<http://localhost:8000/winkel/>. Na een wijziging in de winkelwagen controleer je
+het rekenwerk op `/winkel/_test-winkelwagen.html`; daar hoort onderaan
+`UITSLAG: ALLES GOED` te staan.
+
+Bedrijfsgegevens staan op één plek in `winkel/bedrijf.json`. Zolang daar velden
+tussen `[HAKEN]` staan, waarschuwt de bouwer bij elke build — die moeten weg
+voordat de winkel live gaat.
+
+Het draaiboek eromheen (product, inkoop, marges, advertenties, juridisch) staat
+in `draaiboek/`; begin bij [`draaiboek/00-start-hier.md`](draaiboek/00-start-hier.md).
+
 ## Serverversie (ouder)
 
 In `public/`, `src/` en `server.js` staat een oudere opzet met een eigen

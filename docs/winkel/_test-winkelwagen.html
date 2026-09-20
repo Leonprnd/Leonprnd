@@ -1,0 +1,57 @@
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>test</title></head><body>
+<div id="toast"></div>
+<pre id="uitslag">bezig</pre>
+<script src="assets/js/winkel.js"></script>
+<script>
+var regels = [], fouten = 0;
+function eis(naam, echt, verwacht) {
+  var ok = JSON.stringify(echt) === JSON.stringify(verwacht);
+  if (!ok) fouten++;
+  regels.push((ok ? 'GOED  ' : 'FOUT  ') + naam +
+              (ok ? '' : '  -> kreeg ' + JSON.stringify(echt) + ', verwachtte ' + JSON.stringify(verwacht)));
+}
+var w = window.Bijtijds.wagen, euro = window.Bijtijds.euro;
+
+w.leeg();
+eis('lege wagen telt 0', w.aantal(), 0);
+eis('lege wagen kost 0', w.totaal(), 0);
+eis('lege wagen rekent geen verzending', w.verzending(), 0);
+
+w.voegToe('bijtijds-28', 1);
+eis('28 toegevoegd', w.aantal(), 1);
+eis('28 kost 99,95', w.subtotaal(), 9995);
+eis('boven 50 euro is verzending gratis', w.verzending(), 0);
+eis('totaal is 99,95', w.totaal(), 9995);
+
+w.voegToe('bijtijds-28', 2);
+eis('zelfde product telt op', w.aantal(), 3);
+eis('drie stuks kosten 299,85', w.subtotaal(), 29985);
+
+w.leeg();
+w.voegToe('doseerring', 1);
+eis('losse doseerring kost 14,95', w.subtotaal(), 1495);
+eis('onder 50 euro wel verzendkosten', w.verzending(), 495);
+eis('totaal met verzending is 19,90', w.totaal(), 1990);
+
+w.voegToe('bijtijds-7', 1);
+eis('met de 7 erbij weer gratis verzending', w.verzending(), 0);
+eis('totaal 74,90', w.totaal(), 7490);
+
+w.zet('doseerring', 0);
+eis('op 0 zetten verwijdert de regel', w.aantal(), 1);
+
+w.leeg();
+w.voegToe('bijtijds-28', 99);
+eis('aantal wordt afgetopt op 20', w.aantal(), 20);
+
+w.leeg();
+w.voegToe('bestaat-niet', 1);
+eis('onbekend product wordt genegeerd', w.aantal(), 0);
+
+eis('bedrag met euroteken en komma', euro(9995), '€ 99,95');
+eis('rond bedrag houdt twee decimalen', euro(6000), '€ 60,00');
+
+w.leeg();
+document.getElementById('uitslag').textContent =
+  regels.join('\n') + '\n\nUITSLAG: ' + (fouten === 0 ? 'ALLES GOED' : fouten + ' FOUT(EN)');
+</script></body></html>
