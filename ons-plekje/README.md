@@ -55,11 +55,20 @@ Play Store). Daarmee test je de app zonder dat je hem hoeft te publiceren.
    - Hiermee krijgt iedereen stilletjes een account. Geen wachtwoorden,
      geen e-mailadressen. De koppelcode is wat jullie verbindt.
 4. **Firestore Database** aanmaken:
-   - *Build → Firestore Database → Database maken*.
-   - Kies locatie **eur3 (europe-west)** — dat is het dichtstbij.
-   - Start in **productiemodus** (de regels zetten we zo goed).
+   - In het linkermenu: **Databases & Storage → Firestore**
+     (dit zat vroeger onder *Build*).
+   - Klik **Create database** / **Database maken**.
+   - Kies **Standard edition** — niet Enterprise. Die laatste is voor
+     bedrijven en kost geld.
+   - **Database ID: laat `(default)` staan.** De app en de
+     beveiligingsregels gaan uit van die naam; geef je hem iets anders, dan
+     vindt de app je gegevens niet.
+   - Locatie: **eur3 (europe-west)** — dat is het dichtstbij.
+   - Beveiligingsregels: start in **productiemodus**. De echte regels zet je
+     in de volgende stap.
 5. **Storage** aanmaken (voor de foto's):
-   - *Build → Storage → Aan de slag*. Zelfde locatie.
+   - In datzelfde menu: **Databases & Storage → Storage** → *Aan de slag*.
+   - Zelfde locatie als Firestore.
    - Firebase vraagt je hier om over te stappen op het **Blaze-plan**
      (betalen naar gebruik). Sinds februari 2026 kan Storage niet meer
      zonder gekoppelde betaalrekening. Je moet dus een creditcard invullen,
@@ -76,10 +85,12 @@ Play Store). Daarmee test je de app zonder dat je hem hoeft te publiceren.
 
 Dit is belangrijk: zonder deze regels kan iedereen bij jullie foto's.
 
-- **Firestore:** ga naar *Firestore Database → Regels*. Verwijder wat er staat,
+- **Firestore:** ga naar *Databases & Storage → Firestore → tabblad Rules*.
+  Verwijder wat er staat,
   plak de inhoud van [`firestore.rules`](./firestore.rules) erin, klik
   **Publiceren**.
-- **Storage:** ga naar *Storage → Regels*. Zelfde verhaal met
+- **Storage:** ga naar *Databases & Storage → Storage → tabblad Rules*.
+  Zelfde verhaal met
   [`storage.rules`](./storage.rules).
 
 Wat die regels doen: een kaart hoort bij precies twee accounts. Alleen die
