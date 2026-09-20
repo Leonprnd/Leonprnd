@@ -60,6 +60,11 @@ Play Store). Daarmee test je de app zonder dat je hem hoeft te publiceren.
    - Start in **productiemodus** (de regels zetten we zo goed).
 5. **Storage** aanmaken (voor de foto's):
    - *Build → Storage → Aan de slag*. Zelfde locatie.
+   - Firebase vraagt je hier om over te stappen op het **Blaze-plan**
+     (betalen naar gebruik). Sinds februari 2026 kan Storage niet meer
+     zonder gekoppelde betaalrekening. Je moet dus een creditcard invullen,
+     maar de eerste 5 GB blijft gratis — en jullie foto's halen dat nooit.
+     In stap 2b hieronder zet je een budgetmelding, zodat je het zou merken.
 6. **De sleutels ophalen:**
    - Klik op het tandwiel linksboven → **Projectinstellingen**.
    - Scroll naar **Je apps** → klik op het **web-icoontje `</>`**.
@@ -99,11 +104,27 @@ De kaart zelf komt van Google. Daar heb je een sleutel voor nodig.
    **API-beperkingen** vink je alleen de twee Maps SDK's aan die je net
    aanzette.
 
-> **Over de kosten:** Google vraagt een creditcard om te verifiëren dat je
-> geen robot bent. Voor een app die twee mensen gebruiken kom je nooit in de
-> buurt van de gratis grens. Wil je zeker weten dat je nooit iets betaalt,
-> stel dan in Google Cloud een **budgetmelding van €0** in onder *Facturering
-> → Budgetten en meldingen*.
+> **Over de kosten:** de *Maps SDK for Android* en *Maps SDK for iOS* zijn
+> gratis en onbeperkt — de kaart in de app kost dus nooit iets, hoe vaak je
+> hem ook opent. De creditcard is alleen nodig omdat Google Cloud er een aan
+> je account wil hebben (dezelfde die je bij Storage hebt ingevuld).
+>
+> De app gebruikt verder geen betaalde onderdelen: het opzoeken van de
+> plaatsnaam gebeurt door je telefoon zelf, niet via de Geocoding API.
+
+---
+
+## Stap 2b — Zet een budgetmelding op €0 (aanrader)
+
+Nu er een creditcard aan hangt, is dit het knopje waardoor je rustig slaapt.
+
+1. Ga naar [Budgetten en meldingen](https://console.cloud.google.com/billing/budgets).
+2. **Budget maken** → geef het een naam → bij *Bedrag* kies **Aangepast** en
+   vul `1` euro in.
+3. Zet de meldingen op **50%, 90% en 100%**.
+
+Je krijgt nu een mailtje zodra er ook maar 50 cent aan kosten ontstaat. In
+de praktijk gebeurt dat niet, maar dan weet je het meteen.
 
 ---
 
