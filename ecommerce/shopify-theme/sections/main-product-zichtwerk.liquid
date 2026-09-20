@@ -1,0 +1,204 @@
+{%- comment -%}
+  BESTAND     : main-product-zichtwerk.liquid
+  LOCATIE     : Shopify-thema → Sections → main-product-zichtwerk.liquid
+  INSTALLATIE : 1. Maak de section aan.
+                2. Templates → product.json → vervang de "main" section door
+                   { "type": "main-product-zichtwerk" }
+                   (of gebruik templates/product.zichtwerk.json uit deze map
+                   en wijs die toe aan het product via Online Store → Products)
+  COPY        : 14-productpagina.md, deel 1
+  --------------------------------------------------------------------------
+  Alles boven de vouw beantwoordt zeven vragen: wat, voor wie, welk probleem,
+  waarom beter, wat kost het, wanneer heb ik het, hoe stuur ik het terug.
+
+  De bundelkeuze zijn echte radio's met name="id" binnen het formulier. Dat
+  betekent dat bestellen werkt zonder JavaScript. Dat is geen puriteinse
+  keuze: bij deze doelgroep draaien relatief veel oudere browsers en
+  bespaarstanden waarin scripts sneuvelen.
+{%- endcomment -%}
+
+{%- liquid
+  assign huidige = product.selected_or_first_available_variant
+  assign heeft_media = false
+  if product.media.size > 0
+    assign heeft_media = true
+  endif
+-%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--papier">
+    <div class="zw__wrap">
+      <div class="zw__rooster zw__rooster--2">
+
+        {%- comment -%} ---------- Beeld ---------- {%- endcomment -%}
+        <div>
+          {%- if heeft_media -%}
+            {%- for media in product.media limit: 6 -%}
+              {%- liquid
+                if forloop.first
+                  assign laden = 'eager'
+                else
+                  assign laden = 'lazy'
+                endif
+              -%}
+              {{ media.preview_image | image_url: width: 1200
+                 | image_tag:
+                     class: 'zw__beeld zw__beeld--vierkant',
+                     loading: laden,
+                     widths: '500, 800, 1200',
+                     sizes: '(min-width: 750px) 50vw, 100vw',
+                     alt: media.alt,
+                     style: 'margin-bottom:12px' }}
+            {%- endfor -%}
+          {%- else -%}
+            <div class="zw__beeld zw__beeld--vierkant" role="img"
+                 aria-label="Nog geen productfoto toegevoegd"></div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} ---------- Koopblok ---------- {%- endcomment -%}
+        <div>
+          {%- if section.settings.merkregel != blank -%}
+            <p class="zw__bijschrift" style="letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">
+              {{ section.settings.merkregel }}
+            </p>
+          {%- endif -%}
+
+          <h1>{{ product.title }}</h1>
+
+          {%- if section.settings.subkop != blank -%}
+            <p class="zw__lead">{{ section.settings.subkop }}</p>
+          {%- endif -%}
+
+          {%- comment -%}
+            Beoordeling staat bewust uit tot er echte reviews zijn.
+            Zie 13-homepage.md, sectie 14.
+          {%- endcomment -%}
+
+          <p class="zw__prijs" style="margin-top:24px">
+            <span data-zw-prijs>{{ huidige.price | money }}</span>
+            {%- if section.settings.verzendregel != blank -%}
+              <span class="zw__prijs-bij">{{ section.settings.verzendregel }}</span>
+            {%- endif -%}
+          </p>
+
+          <div data-zw-plak-anker>
+            {%- form 'product', product, id: 'zw-koopformulier', novalidate: 'novalidate' -%}
+
+              {%- if product.variants.size > 1 -%}
+                <fieldset class="zw__bundels"
+                          data-zw-bundels="zw-koopformulier"
+                          style="margin-top:24px">
+                  <legend class="zw__srt">{{ section.settings.keuze_label }}</legend>
+
+                  {%- for variant in product.variants -%}
+                    {%- liquid
+                      assign is_aanbevolen = false
+                      if section.settings.aanbevolen_variant == variant.title
+                        assign is_aanbevolen = true
+                      endif
+                    -%}
+                    <label class="zw__bundel">
+                      {%- if is_aanbevolen -%}
+                        <span class="zw__vlag">{{ section.settings.aanbevolen_label }}</span>
+                      {%- endif -%}
+
+                      <input type="radio"
+                             name="id"
+                             value="{{ variant.id }}"
+                             data-prijs="{{ variant.price }}"
+                             data-beschikbaar="{{ variant.available }}"
+                             {% if is_aanbevolen %}checked{% elsif forloop.first and section.settings.aanbevolen_variant == blank %}checked{% endif %}
+                             {% unless variant.available %}disabled{% endunless %}>
+
+                      <span class="zw__bundel-kop">
+                        <span>{{ variant.title }}</span>
+                        <span class="zw__bundel-prijs">{{ variant.price | money }}</span>
+                      </span>
+
+                      {%- assign bij = variant.metafields.zichtwerk.bijregel.value -%}
+                      {%- if bij != blank -%}
+                        <span class="zw__bundel-bij">{{ bij }}</span>
+                      {%- endif -%}
+
+                      {%- unless variant.available -%}
+                        <span class="zw__bundel-bij">Tijdelijk uitverkocht</span>
+                      {%- endunless -%}
+                    </label>
+                  {%- endfor -%}
+                </fieldset>
+              {%- else -%}
+                <input type="hidden" name="id" value="{{ huidige.id }}">
+              {%- endif -%}
+
+              <button type="submit"
+                      class="zw__knop zw__knop--primair zw__knop--breed"
+                      {% unless huidige.available %}disabled{% endunless %}>
+                {%- if huidige.available -%}
+                  {{ section.settings.knop_tekst }}
+                {%- else -%}
+                  Tijdelijk uitverkocht
+                {%- endif -%}
+              </button>
+
+            {%- endform -%}
+          </div>
+
+          {%- render 'zw-betaallogos' -%}
+
+          {%- comment -%} De vier vinkjes: 14-productpagina.md, deel 1 {%- endcomment -%}
+          <ul class="zw__vinkjes">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'zekerheid' -%}
+                <li {{ block.shopify_attributes }}>
+                  <strong>{{ block.settings.kop }}</strong>
+                  {%- if block.settings.tekst != blank -%} - {{ block.settings.tekst }}{%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{%- render 'zw-sticky-cart', product: product, variant: huidige, knop: section.settings.knop_tekst -%}
+
+{% schema %}
+{
+  "name": "Productblok Zichtwerk",
+  "settings": [
+    { "type": "text", "id": "merkregel", "label": "Merkregel boven de titel", "default": "ZICHTWERK" },
+    {
+      "type": "textarea", "id": "subkop", "label": "Subkop",
+      "default": "Voor handwerk, puzzelen en lezen - zodat u 's avonds doorgaat zonder dat uw ogen eraan gaan"
+    },
+    { "type": "text", "id": "verzendregel", "label": "Regel onder de prijs", "default": "Gratis verzending" },
+    { "type": "text", "id": "keuze_label", "label": "Label bundelkeuze (schermlezers)", "default": "Kies uw pakket" },
+    {
+      "type": "text", "id": "aanbevolen_variant", "label": "Naam van de aanbevolen variant",
+      "default": "Compleet",
+      "info": "Moet exact overeenkomen met de varianttitel in Shopify."
+    },
+    {
+      "type": "text", "id": "aanbevolen_label", "label": "Label op de aanbevolen variant",
+      "default": "Onze aanbeveling",
+      "info": "Zet hier pas 'Meest gekozen' neer als dat feitelijk klopt."
+    },
+    { "type": "text", "id": "knop_tekst", "label": "Knoptekst", "default": "In de winkelwagen" }
+  ],
+  "blocks": [
+    {
+      "type": "zekerheid",
+      "name": "Zekerheid",
+      "settings": [
+        { "type": "text", "id": "kop", "label": "Vetgedrukt deel" },
+        { "type": "text", "id": "tekst", "label": "Rest van de regel" }
+      ]
+    }
+  ],
+  "max_blocks": 5
+}
+{% endschema %}

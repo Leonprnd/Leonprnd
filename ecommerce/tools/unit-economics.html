@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zichtwerk Rekenmodel</title>
+<style>
+  :root{
+    --bg:#f7f6f3; --surface:#ffffff; --border:#e2ded7; --ink:#1c1b19;
+    --muted:#6b675f; --accent:#1f5f4f; --accent-soft:#e8f0ed;
+    --good:#1f6f3f; --bad:#a32b1e; --warn:#8a6412;
+    --radius:10px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#17181a; --surface:#1f2124; --border:#33363b; --ink:#eceae6;
+      --muted:#9b978f; --accent:#6fbfa5; --accent-soft:#1e2e2a;
+      --good:#6fbf8a; --bad:#e08272; --warn:#d9ab55;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17181a; --surface:#1f2124; --border:#33363b; --ink:#eceae6;
+    --muted:#9b978f; --accent:#6fbfa5; --accent-soft:#1e2e2a;
+    --good:#6fbf8a; --bad:#e08272; --warn:#d9ab55;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    padding:24px 16px 64px;
+  }
+  .wrap{max-width:1000px;margin:0 auto}
+  h1{font-size:1.55rem;margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 28px;font-size:.93rem}
+  .grid{display:grid;gap:20px;grid-template-columns:1fr}
+  @media(min-width:860px){.grid{grid-template-columns:340px 1fr}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+  .card h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 14px;font-weight:600}
+  label{display:block;margin-bottom:11px;font-size:.87rem}
+  label span{display:block;color:var(--muted);margin-bottom:3px}
+  input[type=number]{
+    width:100%;padding:8px 10px;font-size:1rem;font-variant-numeric:tabular-nums;
+    border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);
+  }
+  input:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .row{display:flex;gap:10px}.row>*{flex:1}
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.9rem}
+  th,td{text-align:right;padding:7px 8px;border-bottom:1px solid var(--border)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+  tr.total td{font-weight:700;border-top:2px solid var(--border);border-bottom:none}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+  .kpi{background:var(--accent-soft);border:1px solid var(--border);border-radius:var(--radius);padding:13px 14px}
+  .kpi .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px}
+  .kpi .val{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .pos{color:var(--good)}.neg{color:var(--bad)}
+  .note{font-size:.83rem;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+  .toggle{display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:.88rem}
+  .toggle input{width:auto;accent-color:var(--accent)}
+  .verdict{padding:11px 13px;border-radius:8px;font-size:.88rem;margin-top:14px;border:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Zichtwerk — rekenmodel</h1>
+  <p class="sub">Vul je eigen geverifieerde cijfers in. Alles rekent direct mee. Prijzen zijn inclusief btw, zoals verplicht bij verkoop aan Nederlandse consumenten.</p>
+
+  <div class="grid">
+    <div>
+      <div class="card" style="margin-bottom:20px">
+        <h2>Invoer</h2>
+        <div class="toggle">
+          <input type="checkbox" id="mix" checked>
+          <label for="mix" style="margin:0"><span style="display:inline;color:var(--ink)">Rekenen met de volledige aanbieding (bundels + bump + upsell)</span></label>
+        </div>
+        <label><span>Verkoopprijs enkel product (incl. btw)</span><input type="number" id="price" value="79.95" step="0.01"></label>
+        <label><span>Btw-percentage</span><input type="number" id="vat" value="21" step="0.1"></label>
+        <label><span>Inkoopprijs per stuk</span><input type="number" id="cogs" value="21.50" step="0.01"></label>
+        <label><span>Verzendkosten naar klant</span><input type="number" id="ship" value="4.95" step="0.01"></label>
+        <div class="row">
+          <label><span>Betaalkosten vast</span><input type="number" id="payfix" value="0.29" step="0.01"></label>
+          <label><span>Betaalkosten %</span><input type="number" id="paypct" value="0.5" step="0.1"></label>
+        </div>
+        <div class="row">
+          <label><span>Refundreserve %</span><input type="number" id="refund" value="5" step="0.5"></label>
+          <label><span>Overige per order</span><input type="number" id="other" value="1.10" step="0.01"></label>
+        </div>
+        <label><span>Vaste kosten per maand</span><input type="number" id="fixed" value="200" step="10"></label>
+        <label><span>Bestellingen per maand</span><input type="number" id="orders" value="300" step="10"></label>
+      </div>
+
+      <div class="card">
+        <h2>Aanbieding (aandeel %)</h2>
+        <div class="row">
+          <label><span>Compleet € 99,95</span><input type="number" id="shComplete" value="25" step="1"></label>
+          <label><span>Duo € 139,95</span><input type="number" id="shDuo" value="13" step="1"></label>
+        </div>
+        <div class="row">
+          <label><span>Bump-afname %</span><input type="number" id="bumpRate" value="22" step="1"></label>
+          <label><span>Upsell-afname %</span><input type="number" id="upRate" value="8" step="1"></label>
+        </div>
+        <p class="note" style="margin-top:6px">Rest van de orders is het enkele product. Meet deze percentages na je eerste 100 bestellingen en vul ze hier in.</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Gem. orderwaarde</div><div class="val" id="kAov">—</div></div>
+        <div class="kpi"><div class="lbl">Marge vóór ads</div><div class="val" id="kCm">—</div></div>
+        <div class="kpi"><div class="lbl">Break-even CPA</div><div class="val" id="kCpa">—</div></div>
+        <div class="kpi"><div class="lbl">Break-even ROAS</div><div class="val" id="kRoas">—</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px">
+        <h2>Opbouw per bestelling</h2>
+        <table><tbody id="tBreak"></tbody></table>
+      </div>
+
+      <div class="card" style="margin-bottom:20px">
+        <h2>Winst per CAC-scenario</h2>
+        <table>
+          <thead><tr><th>CAC</th><th>Winst/order</th><th>ROAS</th><th>Winst p/m</th></tr></thead>
+          <tbody id="tCac"></tbody>
+        </table>
+        <p class="note">Winst per maand is ná aftrek van je vaste kosten, bij het ingevulde aantal bestellingen.</p>
+      </div>
+
+      <div class="card">
+        <h2>Welke conversieratio heb je nodig?</h2>
+        <table>
+          <thead><tr><th>Kosten per klik</th><th>CR break-even</th><th>CR voor gezonde winst</th></tr></thead>
+          <tbody id="tCr"></tbody>
+        </table>
+        <div class="verdict" id="verdict"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const eur = n => (n<0?"−€ ":"€ ") + Math.abs(n).toFixed(2).replace(".",",");
+const pct = n => n.toFixed(2).replace(".",",") + "%";
+
+// Vaste aannames van de aanbieding, afgestemd op 09-offer.md
+const OFFER = {
+  completePrice: 99.95, completeExtraCogs: 6.00,  // reservelens + hoes
+  duoPrice: 139.95,
+  bumpPrice: 9.95,  bumpCogs: 2.50,
+  upsellPrice: 59.95
+};
+
+function calc(){
+  const price  = +$("price").value || 0;
+  const vat    = (+$("vat").value || 0) / 100;
+  const cogs   = +$("cogs").value || 0;
+  const ship   = +$("ship").value || 0;
+  const payfix = +$("payfix").value || 0;
+  const paypct = (+$("paypct").value || 0) / 100;
+  const refund = (+$("refund").value || 0) / 100;
+  const other  = +$("other").value || 0;
+  const fixed  = +$("fixed").value || 0;
+  const orders = +$("orders").value || 0;
+  const useMix = $("mix").checked;
+
+  let gross, unitCogs, unitShip;
+
+  if (useMix){
+    const shC = (+$("shComplete").value || 0)/100;
+    const shD = (+$("shDuo").value || 0)/100;
+    const shS = Math.max(0, 1 - shC - shD);
+    const bump = (+$("bumpRate").value || 0)/100;
+    const up   = (+$("upRate").value || 0)/100;
+
+    gross = shS*price + shC*OFFER.completePrice + shD*OFFER.duoPrice
+          + bump*OFFER.bumpPrice + up*OFFER.upsellPrice;
+    unitCogs = shS*cogs + shC*(cogs+OFFER.completeExtraCogs) + shD*(cogs*2)
+             + bump*OFFER.bumpCogs + up*cogs;
+    unitShip = ship * (1 + shD*0.70);   // duo weegt meer, zelfde pakket
+  } else {
+    gross = price; unitCogs = cogs; unitShip = ship;
+  }
+
+  const net      = gross / (1 + vat);
+  const vatAmt   = gross - net;
+  const payCost  = payfix + gross * paypct;
+  const refCost  = net * refund;
+  const variable = unitCogs + unitShip + payCost + refCost + other;
+  const cm       = net - variable;
+  const beCpa    = cm;
+  const beRoas   = cm > 0 ? gross / cm : Infinity;
+
+  $("kAov").textContent  = eur(gross);
+  $("kCm").textContent   = eur(cm);
+  $("kCm").className     = "val " + (cm>0?"pos":"neg");
+  $("kCpa").textContent  = eur(beCpa);
+  $("kRoas").textContent = cm>0 ? beRoas.toFixed(2).replace(".",",") : "—";
+
+  $("tBreak").innerHTML = [
+    ["Brutoomzet per bestelling", gross],
+    ["Af te dragen btw", -vatAmt],
+    ["<strong>Netto-omzet</strong>", net, "sep"],
+    ["Inkoop", -unitCogs],
+    ["Verzending", -unitShip],
+    ["Betaalkosten", -payCost],
+    ["Refund- en defectreserve", -refCost],
+    ["Overige", -other],
+    ["<strong>Contributiemarge vóór advertenties</strong>", cm, "total"]
+  ].map(([l,v,cls]) =>
+    `<tr class="${cls==='total'?'total':''}" ${cls==='sep'?'style="border-top:1px solid var(--border)"':''}>
+       <td>${l}</td><td class="${v<0?'':'pos'}">${eur(v)}</td></tr>`
+  ).join("");
+
+  $("tCac").innerHTML = [15,20,25,30,35,40].map(cac => {
+    const p = cm - cac, m = p*orders - fixed;
+    return `<tr><td>${eur(cac)}</td>
+      <td class="${p>0?'pos':'neg'}">${eur(p)}</td>
+      <td>${(gross/cac).toFixed(2).replace(".",",")}</td>
+      <td class="${m>0?'pos':'neg'}">${eur(m)}</td></tr>`;
+  }).join("");
+
+  const healthy = cm * 0.70;   // CPA op 70% van break-even = ~30% marge over
+  $("tCr").innerHTML = [0.50,0.60,0.80,1.00,1.20].map(cpc => {
+    const beCr = cm>0 ? (cpc/cm)*100 : 0;
+    const hCr  = cm>0 ? (cpc/healthy)*100 : 0;
+    return `<tr><td>${eur(cpc)}</td>
+      <td>${pct(beCr)}</td>
+      <td class="${hCr>3?'neg':''}">${pct(hCr)}</td></tr>`;
+  }).join("");
+
+  const v = $("verdict");
+  if (cm <= 0){
+    v.style.color = "var(--bad)";
+    v.textContent = "Je verliest geld op elke bestelling voordat je één euro aan advertenties uitgeeft. Verhoog de prijs of verlaag de inkoop.";
+  } else if (cm < 25){
+    v.style.color = "var(--warn)";
+    v.textContent = "Marge van " + eur(cm) + " per bestelling is krap voor betaalde advertenties. Je hebt een conversieratio boven de 3% nodig om dit te laten werken. Overweeg een hogere prijs of een sterkere bundel.";
+  } else {
+    v.style.color = "var(--good)";
+    const maxCpc = healthy * 0.025;          // wat je per klik mag betalen bij 2,5% conversie
+    const crAt80 = (0.80 / healthy) * 100;   // welke conversie je nodig hebt bij 80 cent per klik
+    v.textContent = "Werkbaar. Bij een conversieratio van 2,5% mag een klik je maximaal "
+      + eur(maxCpc) + " kosten. Betaal je 80 cent per klik, dan heb je " + pct(crAt80)
+      + " conversie nodig voor een gezonde marge.";
+  }
+}
+
+document.querySelectorAll("input").forEach(el => el.addEventListener("input", calc));
+calc();
+</script>
+</body>
+</html>

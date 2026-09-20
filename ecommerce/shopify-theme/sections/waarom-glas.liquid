@@ -1,0 +1,79 @@
+{%- comment -%}
+  BESTAND : waarom-glas.liquid   LOCATIE: Sections → waarom-glas.liquid
+  COPY    : 13-homepage.md, sectie 8
+  --------------------------------------------------------------------------
+  Dit is de sectie die het meeste verkoopwerk doet en die geen enkele
+  concurrent heeft. Hij staat bewust op de plek waar de bezoeker denkt
+  "mooi, maar op bol.com is het de helft".
+
+  Het uitklapblok onderaan geeft de lezer een test waarmee ze kan vaststellen
+  dat ze ons NIET nodig heeft. Dat is het sterkste geloofwaardigheidssignaal
+  op de hele site.
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--papier" id="waarom-glas">
+    <div class="zw__wrap">
+      <div style="max-width:var(--zw-tekstbreedte);margin-inline:auto">
+
+        <h2>{{ section.settings.kop }}</h2>
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'alinea' -%}
+              <p {{ block.shopify_attributes }}>{{ block.settings.tekst }}</p>
+
+            {%- when 'beeld' -%}
+              <div {{ block.shopify_attributes }} style="margin:32px 0">
+                {%- if block.settings.beeld != blank -%}
+                  {{ block.settings.beeld | image_url: width: 1200
+                     | image_tag: class: 'zw__beeld', loading: 'lazy',
+                       widths: '500, 800, 1200',
+                       sizes: '(min-width: 750px) 700px, 100vw',
+                       alt: block.settings.alt }}
+                {%- endif -%}
+                {%- if block.settings.bijschrift != blank -%}
+                  <p class="zw__bijschrift" style="margin-top:10px">{{ block.settings.bijschrift }}</p>
+                {%- endif -%}
+              </div>
+
+            {%- when 'uitklap' -%}
+              <details class="zw__uitklap" style="margin-top:24px" {{ block.shopify_attributes }}>
+                <summary>{{ block.settings.kop }}</summary>
+                <div class="zw__uitklap-inhoud">{{ block.settings.tekst }}</div>
+              </details>
+          {%- endcase -%}
+        {%- endfor -%}
+
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Waarom geslepen glas",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "Waarom een loeplamp van EUR 19 u duizelig maakt" }
+  ],
+  "blocks": [
+    { "type": "alinea", "name": "Alinea", "settings": [ { "type": "richtext", "id": "tekst", "label": "Tekst" } ] },
+    {
+      "type": "beeld", "name": "Beeld",
+      "settings": [
+        { "type": "image_picker", "id": "beeld", "label": "Afbeelding" },
+        { "type": "text", "id": "alt", "label": "Alt-tekst" },
+        { "type": "text", "id": "bijschrift", "label": "Bijschrift" }
+      ]
+    },
+    {
+      "type": "uitklap", "name": "Uitklapblok",
+      "settings": [
+        { "type": "text", "id": "kop", "label": "Kop", "default": "Hoe u dit zelf test" },
+        { "type": "richtext", "id": "tekst", "label": "Tekst" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Waarom geslepen glas" }]
+}
+{% endschema %}

@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product-zichtwerk",
+      "blocks": {
+        "z1": { "type": "zekerheid", "settings": { "kop": "Voor 15.00 uur besteld, meestal binnen 2 tot 4 werkdagen in huis" } },
+        "z2": { "type": "zekerheid", "settings": { "kop": "60 dagen op proef", "tekst": "het retourlabel zit al in de doos, wij betalen de retourzending" } },
+        "z3": { "type": "zekerheid", "settings": { "kop": "2 jaar garantie" } },
+        "z4": { "type": "zekerheid", "settings": { "kop": "0XX - XXX XXXX", "tekst": "maandag t/m vrijdag 9.00-17.00 uur, u krijgt iemand in Nederland" } }
+      },
+      "block_order": ["z1", "z2", "z3", "z4"],
+      "settings": {
+        "merkregel": "ZICHTWERK",
+        "subkop": "Voor handwerk, puzzelen en lezen - zodat u 's avonds doorgaat zonder dat uw ogen eraan gaan",
+        "verzendregel": "Gratis verzending",
+        "aanbevolen_variant": "Compleet",
+        "aanbevolen_label": "Onze aanbeveling",
+        "knop_tekst": "In de winkelwagen"
+      }
+    },
+    "demonstratie":     { "type": "demonstratie" },
+    "waarom_glas":      { "type": "waarom-glas" },
+    "voordelen":        { "type": "voordelen" },
+    "vergelijking":     { "type": "vergelijking" },
+    "faq":              { "type": "faq" },
+    "compliance":       { "type": "product-compliance" },
+    "garantie":         { "type": "garantie" }
+  },
+  "order": [
+    "main",
+    "demonstratie",
+    "waarom_glas",
+    "voordelen",
+    "vergelijking",
+    "faq",
+    "compliance",
+    "garantie"
+  ]
+}

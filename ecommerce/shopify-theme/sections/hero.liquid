@@ -1,0 +1,88 @@
+{%- comment -%}
+  BESTAND     : hero.liquid
+  LOCATIE     : Shopify-thema → Sections → hero.liquid
+  INSTALLATIE : Add a new section → hero.liquid, daarna via Customize op de
+                homepage plaatsen als eerste sectie.
+  COPY        : 13-homepage.md, sectie 3
+  BEELD       : shot 5 uit 15-fotografie.md
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--papier">
+    <div class="zw__wrap">
+      <div class="zw__rooster zw__rooster--2" style="align-items:center">
+
+        <div>
+          <h1>{{ section.settings.kop }}</h1>
+          <p class="zw__lead">{{ section.settings.subkop }}</p>
+
+          {%- if section.settings.knop_tekst != blank -%}
+            <p style="margin-top:28px">
+              <a class="zw__knop zw__knop--primair" href="{{ section.settings.knop_link }}">
+                {{ section.settings.knop_tekst }}
+              </a>
+            </p>
+          {%- endif -%}
+
+          {%- if section.settings.onder_knop != blank -%}
+            <p class="zw__bijschrift" style="margin-top:14px">{{ section.settings.onder_knop }}</p>
+          {%- endif -%}
+        </div>
+
+        <div>
+          {%- if section.settings.beeld != blank -%}
+            {{ section.settings.beeld
+               | image_url: width: 1200
+               | image_tag:
+                   class: 'zw__beeld zw__beeld--staand',
+                   loading: 'eager',
+                   fetchpriority: 'high',
+                   sizes: '(min-width: 750px) 50vw, 100vw',
+                   widths: '600, 900, 1200',
+                   alt: section.settings.beeld_alt }}
+          {%- else -%}
+            <div class="zw__beeld zw__beeld--staand" role="img"
+                 aria-label="Plaatshouder voor het herobeeld"></div>
+          {%- endif -%}
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kop",
+      "label": "Kop",
+      "default": "'s Avonds haken zonder dat uw ogen eraan gaan"
+    },
+    {
+      "type": "textarea",
+      "id": "subkop",
+      "label": "Subkop",
+      "default": "De Zichtwerk Daglamp geeft uw werk hetzelfde licht als de middagzon bij het raam, en vergroot precies genoeg om uw steken weer te zien. Geslepen glas, geen plastic."
+    },
+    { "type": "text", "id": "knop_tekst", "label": "Knoptekst", "default": "Bekijk de Daglamp - EUR 79,95" },
+    { "type": "url",  "id": "knop_link",  "label": "Knoplink" },
+    {
+      "type": "text",
+      "id": "onder_knop",
+      "label": "Regel onder de knop",
+      "default": "Gratis verzending · 60 dagen op proef · Voor 15.00 uur besteld, meestal binnen 2-4 werkdagen in huis"
+    },
+    { "type": "image_picker", "id": "beeld", "label": "Herobeeld" },
+    {
+      "type": "text",
+      "id": "beeld_alt",
+      "label": "Alt-tekst",
+      "default": "Vrouw haakt 's avonds aan de eettafel bij het licht van de Zichtwerk Daglamp"
+    }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

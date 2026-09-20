@@ -1,0 +1,84 @@
+{%- comment -%}
+  BESTAND     : probleem.liquid
+  LOCATIE     : Shopify-thema → Sections → probleem.liquid
+  COPY        : 13-homepage.md, sectie 4
+  DOEL        : Herkenning. Drie concrete gebeurtenissen, geen gevoelens.
+                De afsluitende regel haalt de schaamte weg en maakt het een
+                oplosbaar probleem - zie 06-customer-avatar.md.
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--linnen">
+    <div class="zw__wrap">
+
+      <h2 class="zw__centreer">{{ section.settings.kop }}</h2>
+
+      <div class="zw__rooster zw__rooster--3" style="margin-top:40px">
+        {%- for block in section.blocks -%}
+          <div class="zw__kaart zw__kaart--vlak" {{ block.shopify_attributes }}>
+            <span class="zw__pictogram">{%- render 'zw-icon', naam: block.settings.pictogram -%}</span>
+            <h3>{{ block.settings.kop }}</h3>
+            <p>{{ block.settings.tekst }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.afsluiter != blank -%}
+        <p class="zw__centreer" style="margin-top:44px;font-size:22px;font-family:var(--zw-serif)">
+          {{ section.settings.afsluiter }}
+        </p>
+      {%- endif -%}
+
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Herkenning",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "Komt dit u bekend voor?" },
+    {
+      "type": "text",
+      "id": "afsluiter",
+      "label": "Afsluitende regel",
+      "default": "Dat ligt zelden aan uw ogen. Meestal ligt het aan het licht."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "punt",
+      "name": "Herkenningspunt",
+      "settings": [
+        {
+          "type": "select",
+          "id": "pictogram",
+          "label": "Pictogram",
+          "options": [
+            { "value": "klok",     "label": "Klok" },
+            { "value": "gebogen",  "label": "Vooroverbuigen" },
+            { "value": "steek",    "label": "Uitgehaalde steek" },
+            { "value": "loep",     "label": "Loep" },
+            { "value": "oog",      "label": "Oog" },
+            { "value": "lamp",     "label": "Lamp" }
+          ],
+          "default": "klok"
+        },
+        { "type": "text", "id": "kop", "label": "Kop" },
+        { "type": "textarea", "id": "tekst", "label": "Tekst" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Herkenning",
+      "blocks": [
+        { "type": "punt", "settings": { "pictogram": "klok", "kop": "U stopt eerder dan u wilt", "tekst": "Niet omdat het werk af is, maar omdat uw ogen gaan branden. Rond een uur of acht legt u het weg." } },
+        { "type": "punt", "settings": { "pictogram": "gebogen", "kop": "U buigt steeds verder voorover", "tekst": "Dichter bij het werk, schuin naar het licht toe. De volgende ochtend voelt u het in uw nek en schouders." } },
+        { "type": "punt", "settings": { "pictogram": "steek", "kop": "U haalt werk uit dat af was", "tekst": "Een steek gemist, een verkeerde kleur, een stukje op de verkeerde plek. Tien toeren terug omdat u het niet goed zag." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

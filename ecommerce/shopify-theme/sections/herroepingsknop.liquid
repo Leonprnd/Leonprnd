@@ -1,0 +1,149 @@
+{%- comment -%}
+  BESTAND     : herroepingsknop.liquid
+  LOCATIE     : Shopify-thema → Sections → herroepingsknop.liquid
+  INSTALLATIE : 1. Maak een pagina aan: Online Store → Pages → "Bestelling
+                   herroepen", handle: herroeping
+                2. Maak templates/page.herroeping.json (staat in deze map)
+                3. Koppel die template aan de pagina
+                4. Zet een duidelijke link "Bestelling herroepen" in de footer
+                   EN in de orderbevestigingsmail
+  --------------------------------------------------------------------------
+  WETTELIJK VERPLICHT sinds 19 juni 2026. Webshops moeten een herroepingsknop
+  hebben waarmee een consument de koop eenvoudig digitaal kan ontbinden.
+  Eisen volgens de ACM:
+    - geen onnodige drempels
+    - alleen gegevens die nodig zijn om de herroeping te verwerken
+    - inloggen mag worden aangeboden, een account verplichten mag NIET
+  Ontbreekt de knop, dan kan de bedenktijd oplopen tot een jaar en kan de ACM
+  handhaven en boetes opleggen.
+  Bron: acm.nl - zie 24-juridisch.md
+
+  Deze sectie gebruikt Shopify's ingebouwde contactformulier. Er is dus geen
+  app voor nodig, en de melding komt binnen op het e-mailadres dat onder
+  Settings → Notifications staat.
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--papier">
+    <div class="zw__wrap">
+      <div style="max-width:640px;margin-inline:auto">
+
+        <h1>{{ section.settings.kop }}</h1>
+        <p class="zw__lead">{{ section.settings.inleiding }}</p>
+
+        {%- form 'contact', id: 'zw-herroeping' -%}
+
+          {%- if form.posted_successfully? -%}
+            <div class="zw__kaart" style="border-color:var(--zw-mos);border-width:2px;margin:24px 0">
+              <h2 style="font-size:22px">{{ section.settings.bevestiging_kop }}</h2>
+              <p>{{ section.settings.bevestiging_tekst }}</p>
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="zw__kaart" style="border-color:var(--zw-baksteen);border-width:2px;margin:24px 0">
+              <p style="color:var(--zw-baksteen);font-weight:600;margin:0">
+                Er ontbreekt nog iets: {{ form.errors | default_errors }}
+              </p>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%}
+            Verborgen markering, zodat je herroepingen in je mailbox kunt
+            onderscheiden van gewone vragen.
+          {%- endcomment -%}
+          <input type="hidden" name="contact[onderwerp]" value="HERROEPING">
+
+          <div style="margin-top:28px">
+            <label for="zw-h-naam" style="display:block;font-weight:600;margin-bottom:6px">
+              Uw naam
+            </label>
+            <input id="zw-h-naam" type="text" name="contact[naam]" required
+                   autocomplete="name"
+                   style="width:100%;min-height:52px;padding:12px;font-size:18px;border:2px solid var(--zw-rand);border-radius:6px">
+          </div>
+
+          <div style="margin-top:20px">
+            <label for="zw-h-mail" style="display:block;font-weight:600;margin-bottom:6px">
+              Uw e-mailadres
+            </label>
+            <input id="zw-h-mail" type="email" name="contact[email]" required
+                   autocomplete="email"
+                   style="width:100%;min-height:52px;padding:12px;font-size:18px;border:2px solid var(--zw-rand);border-radius:6px">
+            <p class="zw__bijschrift" style="margin-top:6px">
+              Hier sturen we de bevestiging naartoe.
+            </p>
+          </div>
+
+          <div style="margin-top:20px">
+            <label for="zw-h-order" style="display:block;font-weight:600;margin-bottom:6px">
+              Uw bestelnummer
+            </label>
+            <input id="zw-h-order" type="text" name="contact[bestelnummer]" required
+                   style="width:100%;min-height:52px;padding:12px;font-size:18px;border:2px solid var(--zw-rand);border-radius:6px">
+            <p class="zw__bijschrift" style="margin-top:6px">
+              Dat staat bovenaan uw orderbevestiging, bijvoorbeeld #1042.
+              Weet u het niet? Laat het veld leeg en vermeld hieronder wanneer
+              u ongeveer besteld heeft.
+            </p>
+          </div>
+
+          <div style="margin-top:20px">
+            <label for="zw-h-toelichting" style="display:block;font-weight:600;margin-bottom:6px">
+              Toelichting <span class="zw__stil" style="font-weight:400">(niet verplicht)</span>
+            </label>
+            <textarea id="zw-h-toelichting" name="contact[toelichting]" rows="4"
+                      style="width:100%;padding:12px;font-size:18px;border:2px solid var(--zw-rand);border-radius:6px"></textarea>
+            <p class="zw__bijschrift" style="margin-top:6px">
+              U hoeft geen reden op te geven. Als u wilt vertellen wat er niet
+              goed was, helpt dat ons wel.
+            </p>
+          </div>
+
+          <button type="submit" class="zw__knop zw__knop--primair zw__knop--breed" style="margin-top:28px">
+            {{ section.settings.knop_tekst }}
+          </button>
+
+          <p class="zw__bijschrift" style="margin-top:16px">
+            {{ section.settings.kleine_letters }}
+          </p>
+
+        {%- endform -%}
+
+        <hr style="margin:44px 0;border:0;border-top:1px solid var(--zw-rand)">
+
+        <h2 style="font-size:22px">{{ section.settings.alternatief_kop }}</h2>
+        <div>{{ section.settings.alternatief_tekst }}</div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Herroepingsknop",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "Bestelling herroepen" },
+    {
+      "type": "textarea", "id": "inleiding", "label": "Inleiding",
+      "default": "Wilt u uw bestelling ongedaan maken? Vul hieronder uw gegevens in en klik op de knop. U hoeft geen account aan te maken en geen reden op te geven."
+    },
+    { "type": "text", "id": "knop_tekst", "label": "Knoptekst", "default": "Mijn bestelling herroepen" },
+    {
+      "type": "textarea", "id": "kleine_letters", "label": "Regel onder de knop",
+      "default": "Wij bevestigen uw herroeping binnen een werkdag per e-mail en betalen u binnen 14 dagen terug op dezelfde rekening."
+    },
+    { "type": "text", "id": "bevestiging_kop", "label": "Kop na verzenden", "default": "Uw herroeping is bij ons binnen" },
+    {
+      "type": "textarea", "id": "bevestiging_tekst", "label": "Tekst na verzenden",
+      "default": "U krijgt binnen een werkdag een bevestiging per e-mail, met uitleg over het terugsturen. Heeft u het pakket al ontvangen? Het retourlabel zit in de doos."
+    },
+    { "type": "text", "id": "alternatief_kop", "label": "Kop alternatief", "default": "Liever even bellen?" },
+    {
+      "type": "richtext", "id": "alternatief_tekst", "label": "Tekst alternatief",
+      "default": "<p>Dat kan ook. Bel 0XX - XXX XXXX, maandag tot en met vrijdag van 9.00 tot 17.00 uur. Of mail naar info@zichtwerk.nl. U hoeft dit formulier dan niet in te vullen.</p>"
+    }
+  ]
+}
+{% endschema %}

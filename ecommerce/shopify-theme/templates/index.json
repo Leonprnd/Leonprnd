@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "hero":             { "type": "hero" },
+    "probleem":         { "type": "probleem" },
+    "voordelen":        { "type": "voordelen" },
+    "demonstratie":     { "type": "demonstratie" },
+    "waarom_glas":      { "type": "waarom-glas" },
+    "vergelijking":     { "type": "vergelijking" },
+    "reviews":          { "type": "reviews-eerlijk" },
+    "faq":              { "type": "faq" },
+    "garantie":         { "type": "garantie" }
+  },
+  "order": [
+    "hero",
+    "probleem",
+    "voordelen",
+    "demonstratie",
+    "waarom_glas",
+    "vergelijking",
+    "reviews",
+    "faq",
+    "garantie"
+  ]
+}

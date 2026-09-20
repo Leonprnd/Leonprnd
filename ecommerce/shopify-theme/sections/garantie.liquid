@@ -1,0 +1,74 @@
+{%- comment -%}
+  BESTAND : garantie.liquid   LOCATIE: Sections → garantie.liquid
+  COPY    : 13-homepage.md, sectie 16
+  DOEL    : Het vertrouwensblok vlak boven de footer. Volgens het
+            klantonderzoek is dit precies waar een twijfelende koper heen
+            scrollt voordat ze op bestellen drukt.
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--linnen">
+    <div class="zw__wrap">
+      <h2 class="zw__centreer">{{ section.settings.kop }}</h2>
+
+      <div class="zw__rooster zw__rooster--4" style="margin-top:40px">
+        {%- for block in section.blocks -%}
+          <div class="zw__kaart zw__kaart--vlak" {{ block.shopify_attributes }}>
+            <span class="zw__pictogram">{%- render 'zw-icon', naam: block.settings.pictogram -%}</span>
+            <h3 style="font-size:19px">{{ block.settings.kop }}</h3>
+            <p style="font-size:17px">
+              {{ block.settings.tekst }}
+              {%- if block.settings.link_tekst != blank and block.settings.link != blank -%}
+                <br><a href="{{ block.settings.link }}" style="color:var(--zw-groen);font-weight:600">{{ block.settings.link_tekst }}</a>
+              {%- endif -%}
+            </p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Vertrouwensblok",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "Rustig bestellen" }
+  ],
+  "blocks": [
+    {
+      "type": "zekerheid", "name": "Zekerheid",
+      "settings": [
+        {
+          "type": "select", "id": "pictogram", "label": "Pictogram",
+          "options": [
+            { "value": "schild", "label": "Schild" },
+            { "value": "telefoon", "label": "Telefoon" },
+            { "value": "doos", "label": "Doos" },
+            { "value": "retour", "label": "Retour" },
+            { "value": "envelop", "label": "Envelop" },
+            { "value": "vraag", "label": "Vraagteken" }
+          ],
+          "default": "schild"
+        },
+        { "type": "text", "id": "kop", "label": "Kop" },
+        { "type": "textarea", "id": "tekst", "label": "Tekst" },
+        { "type": "text", "id": "link_tekst", "label": "Linktekst" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Vertrouwensblok",
+      "blocks": [
+        { "type": "zekerheid", "settings": { "pictogram": "schild", "kop": "60 dagen op proef", "tekst": "Bevalt hij niet, dan stuurt u hem terug. Het retourlabel zit al in de doos en wij betalen de retourzending.", "link_tekst": "Hoe retourneren werkt" } },
+        { "type": "zekerheid", "settings": { "pictogram": "telefoon", "kop": "Gewoon bellen", "tekst": "0XX - XXX XXXX, maandag tot en met vrijdag van 9.00 tot 17.00 uur. U krijgt iemand in Nederland aan de lijn." } },
+        { "type": "zekerheid", "settings": { "pictogram": "doos", "kop": "Snel in huis", "tekst": "Voor 15.00 uur besteld, meestal binnen 2 tot 4 werkdagen bezorgd. U krijgt een track-en-tracecode per e-mail.", "link_tekst": "Meer over verzending" } },
+        { "type": "zekerheid", "settings": { "pictogram": "envelop", "kop": "Betalen met iDEAL", "tekst": "Of met creditcard, PayPal of Apple Pay. Uw betaling loopt via een beveiligde verbinding." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
