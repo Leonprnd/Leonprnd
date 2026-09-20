@@ -4,8 +4,9 @@
 // anders kan er alleen bij als de kaart nog op een tweede persoon wacht —
 // dat is precies het moment waarop je liefje de code invult.
 //
-// Zet deze regels in de Firebase-console onder Firestore Database > Regels,
-// of stuur ze op met:  firebase deploy --only firestore:rules
+// Zet deze regels in de Firebase-console onder
+// Databases & Storage > Firestore > tabblad Rules, of stuur ze op met:
+//   firebase deploy --only firestore:rules
 
 rules_version = '2';
 

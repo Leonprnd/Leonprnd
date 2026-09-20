@@ -3,7 +3,8 @@
 // Dezelfde afspraak als bij de database: alleen de twee mensen die op de
 // kaart staan, kunnen bij de foto's van die kaart.
 //
-// Zet deze regels in de Firebase-console onder Storage > Regels, of:
+// Zet deze regels in de Firebase-console onder
+// Databases & Storage > Storage > tabblad Rules, of:
 //   firebase deploy --only storage
 
 rules_version = '2';

@@ -148,6 +148,13 @@ ervoor). Het makkelijkst:
 cp .env.example .env
 ```
 
+Op Windows in de opdrachtprompt is dat:
+
+```
+copy .env.example .env
+notepad .env
+```
+
 Open `.env` en vul in wat je in stap 1 en 2 hebt opgehaald:
 
 ```
