@@ -1,0 +1,524 @@
+/* ==========================================================================
+   BESTAND        : zichtwerk.css
+   LOCATIE        : Shopify-thema → Assets → zichtwerk.css
+   INSTALLATIE    : Online Store → Themes → ... → Edit code → Assets →
+                    Add a new asset → Create blank file → zichtwerk.css
+                    Daarna in layout/theme.liquid, vlak boven </head>:
+                      {{ 'zichtwerk.css' | asset_url | stylesheet_tag }}
+   AFHANKELIJK VAN: niets. Werkt bovenop Dawn of elk ander Shopify-thema.
+   --------------------------------------------------------------------------
+   Ontworpen voor lezers van 55-75. Drie regels die nergens gebroken worden:
+     1. Niets is kleiner dan 15px.
+     2. Geen tekstkleur lichter dan --zw-steen (5,4:1 op de achtergrond).
+     3. Elk aanraakdoel is minimaal 48px hoog, knoppen 56px.
+   ========================================================================== */
+
+:root {
+  /* Kleur — zie 10-brand-identity.md */
+  --zw-inkt:        #1C1B19;
+  --zw-papier:      #FAF8F4;
+  --zw-groen:       #1F5F4F;
+  --zw-groen-diep:  #17483C;
+  --zw-daglicht:    #E8A33D;
+  --zw-linnen:      #EFEAE1;
+  --zw-steen:       #6B675F;
+  --zw-mos:         #1F6F3F;
+  --zw-baksteen:    #A32B1E;
+  --zw-rand:        #E2DED7;
+
+  /* Typografie */
+  --zw-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --zw-sans:  "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --zw-tekst:       18px;   /* mobiel */
+  --zw-tekst-groot: 19px;   /* productpagina */
+  --zw-regel:       1.6;
+
+  /* Ruimte */
+  --zw-gutter: 16px;
+  --zw-sectie: 56px;
+  --zw-max:    1120px;
+  --zw-tekstbreedte: 68ch;
+
+  --zw-radius: 10px;
+  --zw-radius-klein: 6px;
+
+  --zw-schaduw: 0 1px 2px rgba(28,27,25,.05), 0 4px 12px rgba(28,27,25,.06);
+}
+
+@media (min-width: 750px) {
+  :root {
+    --zw-tekst: 19px;
+    --zw-tekst-groot: 20px;
+    --zw-gutter: 24px;
+    --zw-sectie: 80px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Basis
+   -------------------------------------------------------------------------- */
+
+.zw { 
+  font-family: var(--zw-sans);
+  font-size: var(--zw-tekst);
+  line-height: var(--zw-regel);
+  color: var(--zw-inkt);
+  -webkit-font-smoothing: antialiased;
+}
+
+.zw *, .zw *::before, .zw *::after { box-sizing: border-box; }
+
+.zw__wrap {
+  max-width: var(--zw-max);
+  margin-inline: auto;
+  padding-inline: var(--zw-gutter);
+}
+
+.zw__sectie { padding-block: var(--zw-sectie); }
+.zw__sectie--linnen { background: var(--zw-linnen); }
+.zw__sectie--papier { background: var(--zw-papier); }
+.zw__sectie--groen  { background: var(--zw-groen); color: #fff; }
+.zw__sectie--groen a { color: #fff; }
+
+/* Koppen ------------------------------------------------------------------ */
+
+.zw h1, .zw h2, .zw h3, .zw .zw__h1, .zw .zw__h2, .zw .zw__h3 {
+  font-family: var(--zw-serif);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 .5em;
+  text-wrap: balance;
+}
+
+.zw h1, .zw .zw__h1 { font-size: 30px; }
+.zw h2, .zw .zw__h2 { font-size: 24px; }
+.zw h3, .zw .zw__h3 { font-size: 20px; }
+
+@media (min-width: 750px) {
+  .zw h1, .zw .zw__h1 { font-size: 44px; }
+  .zw h2, .zw .zw__h2 { font-size: 32px; }
+  .zw h3, .zw .zw__h3 { font-size: 22px; }
+}
+
+.zw p { margin: 0 0 1em; max-width: var(--zw-tekstbreedte); }
+.zw p:last-child { margin-bottom: 0; }
+
+.zw__lead { font-size: calc(var(--zw-tekst) + 3px); color: var(--zw-inkt); }
+.zw__bijschrift { font-size: 15px; color: var(--zw-steen); }
+
+/* Nooit lichter dan dit. */
+.zw__stil { color: var(--zw-steen); }
+
+.zw__centreer { text-align: center; }
+.zw__centreer p { margin-inline: auto; }
+
+/* --------------------------------------------------------------------------
+   Knoppen — 56px hoog, 19px tekst, altijd een woord (nooit alleen een icoon)
+   -------------------------------------------------------------------------- */
+
+.zw__knop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 14px 28px;
+  font-family: var(--zw-sans);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: var(--zw-radius-klein);
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+
+.zw__knop--primair {
+  background: var(--zw-groen);
+  color: #fff;
+}
+.zw__knop--primair:hover { background: var(--zw-groen-diep); color: #fff; }
+
+.zw__knop--secundair {
+  background: transparent;
+  color: var(--zw-groen);
+  border-color: var(--zw-groen);
+}
+.zw__knop--secundair:hover { background: rgba(31,95,79,.08); }
+
+.zw__knop--breed { width: 100%; }
+
+.zw__knop:focus-visible,
+.zw a:focus-visible,
+.zw button:focus-visible,
+.zw input:focus-visible,
+.zw summary:focus-visible {
+  outline: 3px solid var(--zw-daglicht);
+  outline-offset: 2px;
+}
+
+.zw__knop[disabled], .zw__knop[aria-disabled="true"] {
+  background: var(--zw-steen);
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   Roosters
+   -------------------------------------------------------------------------- */
+
+.zw__rooster { display: grid; gap: 28px; }
+@media (min-width: 750px) {
+  .zw__rooster--2 { grid-template-columns: repeat(2, 1fr); }
+  .zw__rooster--3 { grid-template-columns: repeat(3, 1fr); }
+  .zw__rooster--4 { grid-template-columns: repeat(4, 1fr); }
+  .zw__rooster--6 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 990px) {
+  .zw__rooster--6 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* --------------------------------------------------------------------------
+   Kaart
+   -------------------------------------------------------------------------- */
+
+.zw__kaart {
+  background: #fff;
+  border: 1px solid var(--zw-rand);
+  border-radius: var(--zw-radius);
+  padding: 24px;
+}
+.zw__kaart--vlak { background: transparent; border: 0; padding: 0; }
+
+.zw__kaart h3 { margin-bottom: .35em; }
+
+/* Pictogram + label. Nooit een pictogram zonder woord. */
+.zw__pictogram {
+  width: 32px; height: 32px;
+  display: block;
+  margin-bottom: 14px;
+  color: var(--zw-groen);
+}
+.zw__pictogram svg { width: 100%; height: 100%; }
+
+/* --------------------------------------------------------------------------
+   Lijst met vinkjes — het vertrouwensblok onder de koopknop
+   -------------------------------------------------------------------------- */
+
+.zw__vinkjes { list-style: none; margin: 20px 0 0; padding: 0; }
+.zw__vinkjes li {
+  position: relative;
+  padding: 10px 0 10px 32px;
+  border-top: 1px solid var(--zw-rand);
+  font-size: 17px;
+}
+.zw__vinkjes li:first-child { border-top: 0; }
+.zw__vinkjes li::before {
+  content: "";
+  position: absolute; left: 2px; top: 15px;
+  width: 18px; height: 10px;
+  border-left: 3px solid var(--zw-mos);
+  border-bottom: 3px solid var(--zw-mos);
+  transform: rotate(-45deg);
+}
+.zw__vinkjes strong { font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   Tabel — moet op mobiel leesbaar blijven
+   -------------------------------------------------------------------------- */
+
+.zw__tabelwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.zw__tabel {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 17px;
+}
+.zw__tabel th, .zw__tabel td {
+  padding: 13px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--zw-rand);
+  vertical-align: top;
+}
+.zw__tabel thead th {
+  font-family: var(--zw-serif);
+  font-size: 17px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--zw-inkt);
+}
+.zw__tabel tbody th { font-weight: 400; }
+.zw__tabel td.is-ja  { color: var(--zw-mos); font-weight: 600; }
+.zw__tabel td.is-nee { color: var(--zw-steen); }
+.zw__tabel .zw__kolom-eigen { background: rgba(31,95,79,.06); }
+
+/* --------------------------------------------------------------------------
+   Uitklap (FAQ) — hele kop klikbaar, minimaal 56px
+   -------------------------------------------------------------------------- */
+
+.zw__uitklap {
+  border-bottom: 1px solid var(--zw-rand);
+}
+.zw__uitklap summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  padding: 16px 0;
+  font-family: var(--zw-serif);
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.zw__uitklap summary::-webkit-details-marker { display: none; }
+.zw__uitklap summary::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 12px; height: 12px;
+  border-right: 2.5px solid var(--zw-groen);
+  border-bottom: 2.5px solid var(--zw-groen);
+  transform: rotate(45deg);
+  transition: transform .2s ease;
+}
+.zw__uitklap[open] summary::after { transform: rotate(-135deg); }
+.zw__uitklap-inhoud { padding: 0 0 20px; }
+.zw__uitklap-inhoud p { font-size: 17px; }
+
+/* --------------------------------------------------------------------------
+   Voor/na-schuifvergelijking
+   -------------------------------------------------------------------------- */
+
+.zw__vergelijk {
+  position: relative;
+  max-width: 760px;
+  margin-inline: auto;
+  border-radius: var(--zw-radius);
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+}
+.zw__vergelijk img { display: block; width: 100%; height: auto; }
+.zw__vergelijk-na {
+  position: absolute; inset: 0;
+  width: 50%;
+  overflow: hidden;
+}
+.zw__vergelijk-na img {
+  width: auto;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+}
+.zw__vergelijk-greep {
+  position: absolute; top: 0; bottom: 0;
+  left: 50%;
+  width: 4px;
+  margin-left: -2px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(28,27,25,.25);
+  pointer-events: none;
+}
+.zw__vergelijk-greep::after {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  width: 48px; height: 48px;
+  margin: -24px 0 0 -24px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: var(--zw-schaduw);
+}
+.zw__vergelijk-invoer {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+.zw__vergelijk-label {
+  position: absolute; bottom: 14px;
+  padding: 7px 13px;
+  background: rgba(28,27,25,.78);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 4px;
+  pointer-events: none;
+}
+.zw__vergelijk-label--links  { left: 14px; }
+.zw__vergelijk-label--rechts { right: 14px; }
+
+/* --------------------------------------------------------------------------
+   Bundelkiezer
+   -------------------------------------------------------------------------- */
+
+.zw__bundels { display: grid; gap: 14px; margin: 0 0 24px; padding: 0; border: 0; }
+
+.zw__bundel {
+  position: relative;
+  display: block;
+  min-height: 60px;
+  padding: 18px 18px 18px 56px;
+  background: #fff;
+  border: 2px solid var(--zw-rand);
+  border-radius: var(--zw-radius);
+  cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.zw__bundel:hover { border-color: var(--zw-steen); }
+.zw__bundel input {
+  position: absolute; left: 18px; top: 50%;
+  width: 24px; height: 24px;
+  margin: -12px 0 0;
+  accent-color: var(--zw-groen);
+  cursor: pointer;
+}
+.zw__bundel:has(input:checked) {
+  border-color: var(--zw-groen);
+  background: rgba(31,95,79,.05);
+}
+.zw__bundel:has(input:focus-visible) {
+  outline: 3px solid var(--zw-daglicht);
+  outline-offset: 2px;
+}
+.zw__bundel-kop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 19px;
+  font-weight: 600;
+}
+.zw__bundel-prijs { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.zw__bundel-bij { display: block; margin-top: 5px; font-size: 16px; color: var(--zw-steen); }
+.zw__bundel-voordeel { color: var(--zw-mos); font-weight: 600; }
+
+.zw__vlag {
+  position: absolute; top: -11px; left: 52px;
+  padding: 3px 10px;
+  background: var(--zw-daglicht);
+  color: var(--zw-inkt);
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 4px;
+  letter-spacing: .01em;
+}
+
+/* --------------------------------------------------------------------------
+   Prijs
+   -------------------------------------------------------------------------- */
+
+.zw__prijs {
+  font-family: var(--zw-serif);
+  font-size: 32px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.zw__prijs-bij { display: block; margin-top: 4px; font-family: var(--zw-sans); font-size: 17px; color: var(--zw-mos); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   Betaallogo's — iDEAL eerst en het grootst
+   -------------------------------------------------------------------------- */
+
+.zw__betalen {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.zw__betalen img,
+.zw__betalen svg { height: 26px; width: auto; display: block; }
+.zw__betalen > :first-child,
+.zw__betalen > :first-child svg { height: 34px; }
+
+/* --------------------------------------------------------------------------
+   Plakkende koopknop (mobiel)
+   -------------------------------------------------------------------------- */
+
+.zw__plak {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px var(--zw-gutter) calc(10px + env(safe-area-inset-bottom));
+  background: rgba(250,248,244,.97);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--zw-rand);
+  transform: translateY(105%);
+  transition: transform .22s ease;
+}
+.zw__plak.is-zichtbaar { transform: translateY(0); }
+.zw__plak-prijs { font-weight: 700; font-size: 19px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.zw__plak .zw__knop { flex: 1; padding-inline: 16px; }
+
+@media (min-width: 750px) { .zw__plak { display: none; } }
+
+/* --------------------------------------------------------------------------
+   Aankondigingsbalk + telefoonnummer
+   -------------------------------------------------------------------------- */
+
+.zw__balk {
+  background: var(--zw-groen);
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+.zw__balk a { color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 4px; }
+.zw__balk a:hover { text-decoration: underline; }
+.zw__balk-scheider { opacity: .6; margin-inline: 10px; }
+
+@media (max-width: 749px) {
+  .zw__balk-desktop { display: none; }
+}
+@media (min-width: 750px) {
+  .zw__balk-mobiel { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Afbeeldingen
+   -------------------------------------------------------------------------- */
+
+.zw__beeld {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--zw-radius);
+  background: var(--zw-linnen);
+}
+.zw__beeld--vierkant { aspect-ratio: 1/1; object-fit: cover; }
+.zw__beeld--staand   { aspect-ratio: 4/5; object-fit: cover; }
+.zw__beeld--liggend  { aspect-ratio: 16/9; object-fit: cover; }
+
+/* --------------------------------------------------------------------------
+   Toegankelijkheid
+   -------------------------------------------------------------------------- */
+
+.zw__srt {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zw *, .zw *::before, .zw *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media print {
+  .zw__plak, .zw__balk { display: none !important; }
+}

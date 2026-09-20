@@ -1,0 +1,91 @@
+{%- comment -%}
+  BESTAND     : product-compliance.liquid
+  LOCATIE     : Shopify-thema → Sections → product-compliance.liquid
+  INSTALLATIE : toevoegen aan de productpagina, onderaan bij de specificaties
+  --------------------------------------------------------------------------
+  VERPLICHT onder de GPSR - Verordening (EU) 2023/988, van toepassing sinds
+  13 december 2024. Op ELKE productpagina moet staan:
+    - naam en contactgegevens van de fabrikant of de verantwoordelijke persoon
+      in de EU
+    - productidentificatie (type-, serie- of batchnummer)
+    - veiligheidswaarschuwingen in de taal van het land waar je verkoopt
+  Koop je rechtstreeks in buiten de EU, dan ben JIJ de verantwoordelijke
+  persoon. Zie 07-sourcing.md en 24-juridisch.md.
+
+  Vul de velden via de theme-editor of via product-metafields, zodat je ze per
+  product kunt zetten zodra je assortiment groeit.
+{%- endcomment -%}
+
+{%- liquid
+  assign fab       = product.metafields.zichtwerk.fabrikant.value       | default: section.settings.fabrikant
+  assign fab_adres = product.metafields.zichtwerk.fabrikant_adres.value | default: section.settings.fabrikant_adres
+  assign eu        = product.metafields.zichtwerk.eu_verantwoordelijke.value | default: section.settings.eu_verantwoordelijke
+  assign eu_adres  = product.metafields.zichtwerk.eu_adres.value        | default: section.settings.eu_adres
+  assign typenr    = product.metafields.zichtwerk.typenummer.value      | default: section.settings.typenummer
+-%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--papier" style="padding-block:40px">
+    <div class="zw__wrap">
+      <div style="max-width:var(--zw-tekstbreedte);margin-inline:auto">
+
+        <details class="zw__uitklap">
+          <summary>{{ section.settings.kop }}</summary>
+          <div class="zw__uitklap-inhoud">
+
+            <table class="zw__tabel" style="min-width:0">
+              <tbody>
+                {%- if fab != blank -%}
+                  <tr><th scope="row">Fabrikant</th><td>{{ fab }}{% if fab_adres != blank %}<br>{{ fab_adres }}{% endif %}</td></tr>
+                {%- endif -%}
+                {%- if eu != blank -%}
+                  <tr><th scope="row">Verantwoordelijke persoon in de EU</th><td>{{ eu }}{% if eu_adres != blank %}<br>{{ eu_adres }}{% endif %}</td></tr>
+                {%- endif -%}
+                {%- if typenr != blank -%}
+                  <tr><th scope="row">Typenummer</th><td>{{ typenr }}</td></tr>
+                {%- endif -%}
+                {%- if product.selected_or_first_available_variant.sku != blank -%}
+                  <tr><th scope="row">Artikelnummer</th><td>{{ product.selected_or_first_available_variant.sku }}</td></tr>
+                {%- endif -%}
+              </tbody>
+            </table>
+
+            {%- if section.settings.waarschuwingen != blank -%}
+              <h3 style="font-size:19px;margin-top:28px">Veiligheidswaarschuwingen</h3>
+              {{ section.settings.waarschuwingen }}
+            {%- endif -%}
+
+            {%- if section.settings.conformiteit != blank -%}
+              <p class="zw__bijschrift" style="margin-top:20px">{{ section.settings.conformiteit }}</p>
+            {%- endif -%}
+
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Productveiligheid (GPSR)",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "Fabrikant, veiligheid en conformiteit" },
+    { "type": "text", "id": "fabrikant", "label": "Fabrikant" },
+    { "type": "textarea", "id": "fabrikant_adres", "label": "Adres fabrikant" },
+    { "type": "text", "id": "eu_verantwoordelijke", "label": "Verantwoordelijke persoon in de EU" },
+    { "type": "textarea", "id": "eu_adres", "label": "Adres EU-verantwoordelijke" },
+    { "type": "text", "id": "typenummer", "label": "Typenummer" },
+    {
+      "type": "richtext", "id": "waarschuwingen", "label": "Veiligheidswaarschuwingen (Nederlands)",
+      "default": "<p>Leg de lamp niet met de lens omhoog in direct zonlicht. Een lens bundelt licht, ook zonlicht, en dat kan brand veroorzaken. Gebruik de beschermhoes of draai de lamp weg als u hem niet gebruikt.</p><p>Gebruik uitsluitend de meegeleverde adapter. Gebruik het apparaat niet als het snoer beschadigd is. Niet geschikt voor gebruik buitenshuis of in vochtige ruimtes.</p>"
+    },
+    {
+      "type": "textarea", "id": "conformiteit", "label": "Conformiteitsregel",
+      "default": "Dit product voldoet aan de toepasselijke Europese richtlijnen. De EU-conformiteitsverklaring is op aanvraag beschikbaar via info@zichtwerk.nl."
+    }
+  ],
+  "presets": [{ "name": "Productveiligheid (GPSR)" }]
+}
+{% endschema %}

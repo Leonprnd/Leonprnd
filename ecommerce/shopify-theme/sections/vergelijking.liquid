@@ -1,0 +1,83 @@
+{%- comment -%}
+  BESTAND : vergelijking.liquid   LOCATIE: Sections → vergelijking.liquid
+  COPY    : 13-homepage.md, sectie 11
+  LET OP  : noem geen merknamen van concurrenten. Vergelijk met producttypes.
+            Elke claim in deze tabel moet je kunnen aantonen.
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--linnen">
+    <div class="zw__wrap">
+      <h2 class="zw__centreer">{{ section.settings.kop }}</h2>
+
+      <div class="zw__tabelwrap" style="margin-top:36px">
+        <table class="zw__tabel">
+          <thead>
+            <tr>
+              <th scope="col"><span class="zw__srt">Eigenschap</span></th>
+              <th scope="col">{{ section.settings.kolom_1 }}</th>
+              <th scope="col">{{ section.settings.kolom_2 }}</th>
+              <th scope="col" class="zw__kolom-eigen">{{ section.settings.kolom_3 }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for block in section.blocks -%}
+              <tr {{ block.shopify_attributes }}>
+                <th scope="row">{{ block.settings.eigenschap }}</th>
+                <td class="is-nee">{{ block.settings.waarde_1 }}</td>
+                <td class="is-nee">{{ block.settings.waarde_2 }}</td>
+                <td class="zw__kolom-eigen is-ja">{{ block.settings.waarde_3 }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+
+      {%- if section.settings.afsluiter != blank -%}
+        <p class="zw__centreer zw__stil" style="margin-top:24px">{{ section.settings.afsluiter }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Vergelijking",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "Zichtwerk naast de alternatieven" },
+    { "type": "text", "id": "kolom_1", "label": "Kolom 1", "default": "Gewone schemerlamp" },
+    { "type": "text", "id": "kolom_2", "label": "Kolom 2", "default": "Loeplamp van EUR 19" },
+    { "type": "text", "id": "kolom_3", "label": "Kolom 3 (wijzelf)", "default": "Zichtwerk Daglamp" },
+    {
+      "type": "text", "id": "afsluiter", "label": "Regel onder de tabel",
+      "default": "Een gewone schemerlamp is prima om de kamer mee te verlichten. Hij is alleen niet gemaakt om er onder te werken."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "rij", "name": "Rij",
+      "settings": [
+        { "type": "text", "id": "eigenschap", "label": "Eigenschap" },
+        { "type": "text", "id": "waarde_1", "label": "Kolom 1" },
+        { "type": "text", "id": "waarde_2", "label": "Kolom 2" },
+        { "type": "text", "id": "waarde_3", "label": "Kolom 3 (wijzelf)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vergelijking",
+      "blocks": [
+        { "type": "rij", "settings": { "eigenschap": "Licht recht boven uw werk", "waarde_1": "nee", "waarde_2": "soms", "waarde_3": "ja" } },
+        { "type": "rij", "settings": { "eigenschap": "Vergroting", "waarde_1": "geen", "waarde_2": "10x of meer", "waarde_3": "2x, met 4x venster" } },
+        { "type": "rij", "settings": { "eigenschap": "Lens", "waarde_1": "-", "waarde_2": "gegoten glas of plastic", "waarde_3": "geslepen glas, 110 mm" } },
+        { "type": "rij", "settings": { "eigenschap": "Beeldveld", "waarde_1": "-", "waarde_2": "zeer klein", "waarde_3": "groot genoeg voor twee handen" } },
+        { "type": "rij", "settings": { "eigenschap": "Flikkervrij", "waarde_1": "wisselend", "waarde_2": "meestal niet", "waarde_3": "ja" } },
+        { "type": "rij", "settings": { "eigenschap": "Blijft staan waar u hem zet", "waarde_1": "n.v.t.", "waarde_2": "zakt vaak weg", "waarde_3": "ja" } },
+        { "type": "rij", "settings": { "eigenschap": "Nederlandse klantenservice", "waarde_1": "-", "waarde_2": "nee", "waarde_3": "ja, telefonisch" } },
+        { "type": "rij", "settings": { "eigenschap": "Retourtermijn", "waarde_1": "-", "waarde_2": "14 dagen", "waarde_3": "60 dagen" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

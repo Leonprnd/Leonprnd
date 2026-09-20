@@ -1,0 +1,51 @@
+{%- comment -%}
+  BESTAND : reviews-eerlijk.liquid   LOCATIE: Sections → reviews-eerlijk.liquid
+  COPY    : 13-homepage.md, sectie 14
+  --------------------------------------------------------------------------
+  Dit blok staat op de plek waar een bezoeker reviews verwacht, zolang je er
+  nog geen echte hebt. Verzonnen reviews zijn verboden onder de Wet oneerlijke
+  handelspraktijken, en ze zijn bovendien het eerste wat een achterdochtige
+  koper van 65 controleert.
+
+  Eerlijk zeggen dat je nieuw bent werkt bij deze doelgroep aantoonbaar beter
+  dan een verzonnen sterrenrij. Zie 21-cro-audit.md, punt 11.
+
+  Vervang deze sectie door je echte reviewsectie zodra je er MINIMAAL TWAALF
+  hebt. Daaronder oogt een reviewblok leger dan geen reviewblok.
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--papier">
+    <div class="zw__wrap">
+      <div class="zw__kaart" style="max-width:720px;margin-inline:auto">
+        <h2>{{ section.settings.kop }}</h2>
+        <div>{{ section.settings.tekst }}</div>
+
+        {%- if section.settings.naam != blank -%}
+          <p style="margin-top:20px;font-weight:600">
+            {{ section.settings.naam }}
+            {%- if section.settings.functie != blank -%}
+              <span class="zw__stil" style="font-weight:400"><br>{{ section.settings.functie }}</span>
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Eerlijk over reviews",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "We zijn net begonnen" },
+    {
+      "type": "richtext", "id": "tekst", "label": "Tekst",
+      "default": "<p>Zichtwerk bestaat sinds [maand jaar]. We hebben nog geen berg klantbeoordelingen om u te laten zien, en we gaan er geen verzinnen.</p><p>Wat we wel doen: u krijgt 60 dagen om de lamp te proberen, het retourlabel zit al in de doos, en u kunt ons gewoon bellen. Als hij niet is wat u ervan verwachtte, stuurt u hem terug en krijgt u uw geld terug. Zo simpel is het.</p>"
+    },
+    { "type": "text", "id": "naam", "label": "Ondertekend door" },
+    { "type": "text", "id": "functie", "label": "Functie" }
+  ],
+  "presets": [{ "name": "Eerlijk over reviews" }]
+}
+{% endschema %}

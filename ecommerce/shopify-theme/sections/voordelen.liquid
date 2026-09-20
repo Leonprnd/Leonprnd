@@ -1,0 +1,65 @@
+{%- comment -%}
+  BESTAND : voordelen.liquid   LOCATIE: Sections → voordelen.liquid
+  COPY    : 13-homepage.md, sectie 6
+  DOEL    : Uitkomsten, geen specificaties. Geen enkele kop bevat een getal.
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--papier">
+    <div class="zw__wrap">
+      <h2 class="zw__centreer">{{ section.settings.kop }}</h2>
+      <div class="zw__rooster zw__rooster--4" style="margin-top:40px">
+        {%- for block in section.blocks -%}
+          <div class="zw__kaart" {{ block.shopify_attributes }}>
+            <span class="zw__pictogram">{%- render 'zw-icon', naam: block.settings.pictogram -%}</span>
+            <h3>{{ block.settings.kop }}</h3>
+            <p style="font-size:17px">{{ block.settings.tekst }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Voordelen",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "Wat u ervan merkt" }
+  ],
+  "blocks": [
+    {
+      "type": "voordeel",
+      "name": "Voordeel",
+      "settings": [
+        {
+          "type": "select", "id": "pictogram", "label": "Pictogram",
+          "options": [
+            { "value": "loep", "label": "Loep" },
+            { "value": "oog", "label": "Oog" },
+            { "value": "knop", "label": "Knop" },
+            { "value": "klem", "label": "Klem" },
+            { "value": "lamp", "label": "Lamp" },
+            { "value": "schild", "label": "Schild" }
+          ],
+          "default": "loep"
+        },
+        { "type": "text", "id": "kop", "label": "Kop" },
+        { "type": "textarea", "id": "tekst", "label": "Tekst" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Voordelen",
+      "blocks": [
+        { "type": "voordeel", "settings": { "pictogram": "loep", "kop": "U ziet uw steken weer", "tekst": "Twee keer vergroot, met een klein venster van vier keer voor het echte priegelwerk. Genoeg om te helpen, niet zoveel dat u de weg kwijtraakt." } },
+        { "type": "voordeel", "settings": { "pictogram": "oog", "kop": "Uw ogen worden minder moe", "tekst": "Het licht flikkert niet. Dat ziet u niet, maar uw ogen merken het wel - flikkering is de belangrijkste oorzaak van vermoeide ogen bij goedkope lampen." } },
+        { "type": "voordeel", "settings": { "pictogram": "knop", "kop": "Een knop, meer is er niet", "tekst": "Indrukken om aan te zetten. Nog eens indrukken voor feller. Geen app, geen afstandsbediening, geen handleiding van vier pagina's." } },
+        { "type": "voordeel", "settings": { "pictogram": "klem", "kop": "Hij staat waar u hem zet", "tekst": "Klem aan de tafel of los op de voet. De arm zakt niet weg, ook niet na een paar uur." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

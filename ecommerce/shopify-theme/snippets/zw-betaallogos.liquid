@@ -1,0 +1,30 @@
+{%- comment -%}
+  BESTAND : zw-betaallogos.liquid   LOCATIE: Snippets → zw-betaallogos.liquid
+  --------------------------------------------------------------------------
+  iDEAL eerst en het grootst. Ruim 70% van de Nederlandse online betalingen
+  loopt via iDEAL en onder senioren nog hoger; 39% beoordeelt de
+  betrouwbaarheid van een webshop mede op de betaalmethode en een derde heeft
+  weleens een aankoop afgebroken omdat de juiste methode ontbrak.
+  Zie 06-customer-avatar.md.
+
+  De logo's komen uit Shopify's eigen betaalinstellingen, zodat je nooit een
+  logo toont van een methode die je niet daadwerkelijk aanbiedt. Dat laatste
+  is misleidend en het is bovendien de snelste manier om iemand in de checkout
+  kwijt te raken.
+{%- endcomment -%}
+
+{%- if shop.enabled_payment_types.size > 0 -%}
+  <div class="zw__betalen">
+    {%- comment -%} iDEAL vooraan {%- endcomment -%}
+    {%- for type in shop.enabled_payment_types -%}
+      {%- if type == 'ideal' -%}
+        {{ type | payment_type_svg_tag: class: 'zw__betaallogo' }}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- for type in shop.enabled_payment_types -%}
+      {%- unless type == 'ideal' -%}
+        {{ type | payment_type_svg_tag: class: 'zw__betaallogo' }}
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

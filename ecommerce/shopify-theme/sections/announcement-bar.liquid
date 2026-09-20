@@ -1,0 +1,68 @@
+{%- comment -%}
+  BESTAND     : announcement-bar.liquid
+  LOCATIE     : Shopify-thema → Sections → announcement-bar.liquid
+  INSTALLATIE : Add a new section → announcement-bar.liquid. Daarna via
+                Customize bovenaan de template toevoegen.
+  DOEL        : Telefoonnummer bovenaan elke pagina. Uit het klantonderzoek
+                (06-customer-avatar.md) is dit het sterkste vertrouwenssignaal
+                dat we hebben. Hij roteert niet: roterende balken worden
+                aantoonbaar niet gelezen.
+{%- endcomment -%}
+
+<div class="zw">
+  <div class="zw__balk">
+    <div class="zw__wrap">
+
+      {%- if section.settings.telefoon != blank -%}
+        <span class="zw__balk-mobiel">
+          <a href="tel:{{ section.settings.telefoon | remove: ' ' | remove: '-' }}">
+            {%- render 'zw-icon', naam: 'telefoon' -%}
+            {{ section.settings.telefoon }}
+            <span class="zw__stil" style="color:rgba(255,255,255,.8);font-weight:400">
+              · {{ section.settings.openingstijden }}
+            </span>
+          </a>
+        </span>
+      {%- endif -%}
+
+      <span class="zw__balk-desktop">
+        {%- if section.settings.usp_1 != blank -%}{{ section.settings.usp_1 }}{%- endif -%}
+        {%- if section.settings.usp_2 != blank -%}
+          <span class="zw__balk-scheider" aria-hidden="true">·</span>{{ section.settings.usp_2 }}
+        {%- endif -%}
+        {%- if section.settings.telefoon != blank -%}
+          <span class="zw__balk-scheider" aria-hidden="true">·</span>
+          <a href="tel:{{ section.settings.telefoon | remove: ' ' | remove: '-' }}">
+            {%- render 'zw-icon', naam: 'telefoon' -%}
+            {{ section.settings.telefoon }}, {{ section.settings.openingstijden }}
+          </a>
+        {%- endif -%}
+      </span>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Aankondigingsbalk",
+  "settings": [
+    {
+      "type": "text",
+      "id": "telefoon",
+      "label": "Telefoonnummer",
+      "default": "0XX - XXX XXXX",
+      "info": "Zet hier je echte nummer. Een nummer dat niet opgenomen wordt is erger dan geen nummer."
+    },
+    {
+      "type": "text",
+      "id": "openingstijden",
+      "label": "Openingstijden",
+      "default": "ma-vr 9.00-17.00 uur"
+    },
+    { "type": "text", "id": "usp_1", "label": "Voordeel 1", "default": "Gratis verzending" },
+    { "type": "text", "id": "usp_2", "label": "Voordeel 2", "default": "60 dagen retour" }
+  ],
+  "presets": [{ "name": "Aankondigingsbalk" }]
+}
+{% endschema %}

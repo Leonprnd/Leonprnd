@@ -1,0 +1,18 @@
+{%- comment -%}
+  BESTAND : zw-sticky-cart.liquid   LOCATIE: Snippets → zw-sticky-cart.liquid
+  GEBRUIK : {%- render 'zw-sticky-cart', product: product, variant: huidige, knop: 'In de winkelwagen' -%}
+  --------------------------------------------------------------------------
+  Alleen mobiel. Verschijnt zodra het echte koopformulier uit beeld is.
+  Hij verzendt NIET zelf maar springt terug naar het formulier: een tweede
+  koopformulier op dezelfde pagina geeft dubbele AddToCart-events in de Meta
+  Pixel, en dan klopt je hele CPA-rapportage niet meer.
+{%- endcomment -%}
+
+<div class="zw">
+  <div class="zw__plak" data-zw-plak>
+    <span class="zw__plak-prijs" data-zw-prijs>{{ variant.price | money }}</span>
+    <button type="button" class="zw__knop zw__knop--primair" data-zw-plak-knop>
+      {{ knop | default: 'In de winkelwagen' }}
+    </button>
+  </div>
+</div>

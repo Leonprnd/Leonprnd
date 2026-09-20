@@ -1,0 +1,85 @@
+{%- comment -%}
+  BESTAND : demonstratie.liquid   LOCATIE: Sections → demonstratie.liquid
+  COPY    : 13-homepage.md, sectie 7
+  BEELD   : shot 4 uit 15-fotografie.md
+  --------------------------------------------------------------------------
+  LET OP - dit is de enige sectie met een harde voorwaarde:
+  de bijschriftregel claimt dat beide foto's dezelfde avond zijn gemaakt met
+  dezelfde camera-instellingen en zonder bewerking. Is dat niet zo, haal de
+  regel dan weg. Een bewezen claim is je sterkste troef, een onware claim is
+  een misleidende handelspraktijk.
+  --------------------------------------------------------------------------
+  Werkt zonder JavaScript: de range-invoer is een echte <input type="range">,
+  dus ook met toetsenbord te bedienen.
+{%- endcomment -%}
+
+<div class="zw">
+  <section class="zw__sectie zw__sectie--linnen">
+    <div class="zw__wrap">
+      <h2 class="zw__centreer">{{ section.settings.kop }}</h2>
+
+      <div class="zw__vergelijk" data-zw-vergelijk style="margin-top:32px">
+        {%- if section.settings.beeld_voor != blank -%}
+          {{ section.settings.beeld_voor | image_url: width: 1600
+             | image_tag: loading: 'lazy', widths: '600, 1000, 1600',
+               sizes: '(min-width: 750px) 760px, 100vw',
+               alt: section.settings.alt_voor }}
+        {%- else -%}
+          <div class="zw__beeld zw__beeld--liggend" role="img" aria-label="Plaatshouder: foto zonder de lamp"></div>
+        {%- endif -%}
+
+        <div class="zw__vergelijk-na" data-zw-vergelijk-na>
+          {%- if section.settings.beeld_na != blank -%}
+            {{ section.settings.beeld_na | image_url: width: 1600
+               | image_tag: loading: 'lazy', widths: '600, 1000, 1600',
+                 sizes: '(min-width: 750px) 760px, 100vw',
+                 alt: section.settings.alt_na }}
+          {%- else -%}
+            <div class="zw__beeld zw__beeld--liggend" role="img" aria-label="Plaatshouder: foto met de lamp"></div>
+          {%- endif -%}
+        </div>
+
+        <span class="zw__vergelijk-greep" data-zw-vergelijk-greep aria-hidden="true"></span>
+
+        <label class="zw__srt" for="zw-vergelijk-{{ section.id }}">
+          {{ section.settings.sleper_label }}
+        </label>
+        <input class="zw__vergelijk-invoer"
+               data-zw-vergelijk-invoer
+               id="zw-vergelijk-{{ section.id }}"
+               type="range" min="0" max="100" value="50" step="1">
+
+        <span class="zw__vergelijk-label zw__vergelijk-label--links">{{ section.settings.label_na }}</span>
+        <span class="zw__vergelijk-label zw__vergelijk-label--rechts">{{ section.settings.label_voor }}</span>
+      </div>
+
+      {%- if section.settings.bijschrift != blank -%}
+        <p class="zw__bijschrift zw__centreer" style="margin-top:20px;max-width:64ch">
+          {{ section.settings.bijschrift }}
+        </p>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Voor en na",
+  "settings": [
+    { "type": "text", "id": "kop", "label": "Kop", "default": "Hetzelfde haakwerk, dezelfde avond" },
+    { "type": "image_picker", "id": "beeld_voor", "label": "Foto ZONDER de lamp" },
+    { "type": "text", "id": "alt_voor", "label": "Alt-tekst zonder lamp", "default": "Haakwerk bij het licht van een gewone schemerlamp" },
+    { "type": "image_picker", "id": "beeld_na", "label": "Foto MET de lamp" },
+    { "type": "text", "id": "alt_na", "label": "Alt-tekst met lamp", "default": "Hetzelfde haakwerk bij het licht van de Zichtwerk Daglamp" },
+    { "type": "text", "id": "label_na", "label": "Label links", "default": "Met de Daglamp" },
+    { "type": "text", "id": "label_voor", "label": "Label rechts", "default": "Gewone schemerlamp" },
+    { "type": "text", "id": "sleper_label", "label": "Label voor schermlezers", "default": "Sleep om de twee foto's te vergelijken" },
+    {
+      "type": "textarea", "id": "bijschrift", "label": "Bijschrift",
+      "default": "Links: een gewone schemerlamp op twee meter afstand. Rechts: de Zichtwerk Daglamp. Beide foto's zijn op dezelfde avond gemaakt, met dezelfde instellingen op de camera, zonder bewerking.",
+      "info": "Haal de laatste zin weg als dit niet letterlijk klopt."
+    }
+  ],
+  "presets": [{ "name": "Voor en na" }]
+}
+{% endschema %}
