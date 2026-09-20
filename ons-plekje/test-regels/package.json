@@ -1,0 +1,14 @@
+{
+  "name": "ons-plekje-regels-test",
+  "private": true,
+  "type": "module",
+  "description": "Test de Firestore-beveiligingsregels tegen de echte emulator.",
+  "scripts": {
+    "test": "cd .. && firebase emulators:exec --only firestore --project ons-plekje-test \"node test-regels/regels.test.mjs\""
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "firebase": "^12.19.0",
+    "firebase-tools": "^14.0.0"
+  }
+}

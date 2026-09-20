@@ -25,8 +25,16 @@ service cloud.firestore {
 
       // Lezen mag als je erop staat. Staat er nog maar één iemand op, dan mag
       // ook een ander de kaart bekijken: die is de code aan het invullen.
+      //
+      // Bestaat de kaart helemaal niet, dan mag je dat ook gewoon zien. Dat is
+      // nodig: bij het maken van een kaart kijkt de app of een verzonnen code
+      // nog vrij is, en wie een code verkeerd overtypt hoort "deze code kennen
+      // we niet" te krijgen in plaats van een foutmelding over rechten.
+      // Let op de volgorde: zonder de controle op null klapt resource.data om.
       allow get: if ingelogd() && (
-        ikStaErop(resource.data) || resource.data.ledenIds.size() < 2
+        resource == null
+        || request.auth.uid in resource.data.ledenIds
+        || resource.data.ledenIds.size() < 2
       );
 
       // Niemand mag door alle kaarten heen bladeren.

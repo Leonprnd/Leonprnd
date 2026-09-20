@@ -91,10 +91,15 @@ Play Store). Daarmee test je de app zonder dat je hem hoeft te publiceren.
 
 Dit is belangrijk: zonder deze regels kan iedereen bij jullie foto's.
 
-- **Firestore:** ga naar *Databases & Storage → Firestore → tabblad Rules*.
-  Verwijder wat er staat,
-  plak de inhoud van [`firestore.rules`](./firestore.rules) erin, klik
-  **Publiceren**.
+Ga naar *Databases & Storage → Firestore → tabblad Rules*. Verwijder wat er
+staat, plak de inhoud van [`firestore.rules`](./firestore.rules) erin, en klik
+**Publiceren**.
+
+Heb je de Firebase CLI, dan kan het ook in één commando:
+
+```bash
+npx firebase deploy --only firestore:rules
+```
 Wat die regels doen: een kaart hoort bij precies twee accounts. Alleen die
 twee kunnen de pinpoints en foto's zien of aanpassen. Iemand anders kan de
 kaart alleen openen op het moment dat er nog maar één persoon op staat — dat
@@ -358,6 +363,8 @@ ons-plekje/
 │
 ├── assets/                   het icoon (gemaakt door scripts/maak-iconen.mjs)
 ├── firestore.rules           wie mag wat in de database
+├── firebase.json             waar de regels staan, voor de Firebase CLI
+├── test-regels/              test die de regels tegen de emulator draait
 ├── storage.rules             wie mag wat met de foto's
 └── .env                      jouw sleutels (staat niet op GitHub)
 ```
@@ -398,6 +405,8 @@ op Android werkt de sleutel uit `.env` pas na `npx expo start -c`.
 
 **"Missing or insufficient permissions"** — de regels uit `firestore.rules`
 staan nog niet in de Firebase-console, of *Anoniem inloggen* staat nog uit.
+Heb je een oudere versie van de regels geplakt, haal dan even `git pull` en
+plak ze opnieuw.
 
 **Foto's versturen lukt niet** — de app zegt zelf wat er mis is. Meestal
 staat de upload-preset nog op *Signed* in plaats van *Unsigned*, of is de
