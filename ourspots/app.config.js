@@ -81,6 +81,13 @@ export default {
     ],
     extra: {
       heeftGoogleMapsSleutel: Boolean(googleMapsAndroid || googleMapsIos),
+      // Het project bij Expo waar de builds heen gaan. Normaal zet `eas init`
+      // dit er zelf in, maar dat lukt niet bij een config die JavaScript is —
+      // vandaar met de hand.
+      eas: {
+        projectId: 'e5e9d9c1-6974-432a-b063-3d265adf7620',
+      },
     },
+    owner: 'leonprnd',
   },
 };
