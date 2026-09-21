@@ -320,8 +320,26 @@ omleidingsregels voor Vercel en Netlify.
 
 4. Je krijgt een adres als `https://ourspots.vercel.app`.
 
-**Een nieuwe versie online zetten** gaat daarna met dezelfde vier stappen;
-het adres blijft hetzelfde.
+**Een nieuwe versie online zetten.** Let op *waar* je staat: bouwen doe je in
+de repo, publiceren doe je in de kopie. Dat zijn twee verschillende mappen, en
+dat is precies de bedoeling.
+
+```bash
+cd C:\Users\<jij>\ourspots                       # de repo: hier bouw je
+git pull origin claude/clever-bohr-kiluu9
+npm run build:web
+
+rmdir /s /q C:\Users\<jij>\ourspots-web\_expo   # oude bundel eruit
+xcopy /E /I /Y dist C:\Users\<jij>\ourspots-web
+
+cd C:\Users\<jij>\ourspots-web                   # de kopie: hier publiceer je
+vercel --prod
+```
+
+Het adres blijft hetzelfde. Gooi de map `ourspots-web` nooit in zijn geheel
+weg: daar zit een verborgen mapje `.vercel` in dat onthoudt bij welk project
+hij hoort. Weg is weg, en dan vraagt Vercel weer van voren af aan welk project
+het is.
 
 [Netlify](https://app.netlify.com/drop) kan ook: sleep de map `dist` gewoon
 het venster in. Daar speelt het git-probleem niet.
