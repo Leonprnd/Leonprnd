@@ -65,44 +65,47 @@ export const kaartHtml = `<!DOCTYPE html>
   .maplibregl-ctrl-attrib-button { opacity: 0.4; }
   .maplibregl-ctrl-attrib a { color: #9A7A86; }
 
-  /* --- De pin van een herinnering --- */
-  .pin { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+  /* --- De pin van een herinnering ---
+     Zonder foto: een gekleurde bol met het icoontje erin, wit randje eromheen.
+     Mét foto: de foto vult de bol en de kleur verhuist naar de rand, met het
+     witte randje erbuiten. Zo zie je nog steeds wat voor moment het is zonder
+     dat er iets vóór de foto staat. */
+  .pin {
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer; position: relative;
+  }
   .pin-bol {
-    width: 46px; height: 46px; border-radius: 50%;
+    width: 54px; height: 54px; border-radius: 50%;
     border: 3px solid #fff;
     display: flex; align-items: center; justify-content: center;
-    font-size: 21px; line-height: 1;
-    box-shadow: 0 4px 8px rgba(122,58,80,0.35);
+    font-size: 25px; line-height: 1;
+    box-shadow: 0 4px 9px rgba(122,58,80,0.35);
     position: relative;
     transition: transform .18s ease;
-    overflow: visible;
     box-sizing: border-box;
   }
   .pin-foto {
     width: 100%; height: 100%; border-radius: 50%;
     object-fit: cover; display: block;
   }
-  .pin-hoekje {
-    position: absolute; bottom: -2px; left: -4px;
-    width: 20px; height: 20px; border-radius: 50%;
-    border: 1.5px solid #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; line-height: 1;
+  .pin-metfoto {
+    border-color: currentColor;
+    box-shadow: 0 0 0 2px #fff, 0 4px 9px rgba(122,58,80,0.35);
+    overflow: hidden;
   }
-  .pin-bijzonder { border-color: #F3B03C; border-width: 3.5px; }
+  /* Bijzondere momenten krijgen een roze ring búiten de pin. Niet de rand zelf
+     roze maken: bij een pin die zelf al roze is zie je dat verschil niet, en
+     dan valt het witte randje weg dat de pin losmaakt van de kaart. */
+  .pin-bijzonder { box-shadow: 0 0 0 3px #E04E74, 0 4px 9px rgba(122,58,80,0.35); }
+  .pin-bijzonder.pin-metfoto {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 5px #E04E74, 0 4px 9px rgba(122,58,80,0.35);
+  }
   .pin-gekozen .pin-bol { transform: scale(1.22) translateY(-5px); }
-  .pin-ster { position: absolute; top: -10px; right: -8px; font-size: 15px; }
-  .pin-badge {
-    position: absolute; bottom: -4px; right: -7px;
-    min-width: 19px; height: 19px; padding: 0 4px;
-    border-radius: 10px; background: #fff; border: 1.5px solid #FFE3EC;
-    color: #E04E74; font: 700 10.5px system-ui, sans-serif;
-    display: flex; align-items: center; justify-content: center;
-  }
+  .pin-ster { position: absolute; top: -11px; right: -10px; font-size: 16px; }
   .pin-punt {
     width: 0; height: 0; margin-top: -2px;
-    border-left: 7px solid transparent; border-right: 7px solid transparent;
-    border-top: 11px solid currentColor;
+    border-left: 8px solid transparent; border-right: 8px solid transparent;
+    border-top: 13px solid currentColor;
   }
 
   /* --- De stip van je partner ---
@@ -319,11 +322,11 @@ export const kaartHtml = `<!DOCTYPE html>
     // grond komen, niet van een warm waas eroverheen — dat maakt alles alleen
     // maar sepia.
     if (kracht > 0.03 && tint >= 170 && tint < 265) {
-      return uitHsl(200, Math.max(kracht, 0.48), Math.min(0.9, licht + 0.02), doorzicht);
+      return uitHsl(202, Math.max(kracht, 0.62), Math.min(0.88, licht), doorzicht);
     }
     // Parken en bos zijn in positron vrijwel grijs; die worden weer groen.
     if (kracht > 0.03 && tint >= 80 && tint < 170) {
-      return uitHsl(104, Math.max(kracht, 0.36), Math.min(0.93, licht), doorzicht);
+      return uitHsl(108, Math.max(kracht, 0.48), Math.min(0.9, licht), doorzicht);
     }
     // Al duidelijk gekleurd: afblijven.
     if (kracht >= 0.18) return null;
@@ -331,10 +334,10 @@ export const kaartHtml = `<!DOCTYPE html>
     // En de rest is grijs. Die houden we bijna neutraal — net een zweem warmte,
     // zodat water en groen het werk doen — en donker grijs wordt de inktkleur
     // van de app.
-    if (licht > 0.9) return uitHsl(32, 0.22, Math.min(0.98, licht + 0.005), doorzicht);
-    if (licht > 0.6) return uitHsl(32, 0.18, licht, doorzicht);
-    if (licht > 0.32) return uitHsl(345, 0.16, licht, doorzicht);
-    return uitHsl(340, 0.2, licht, doorzicht);
+    if (licht > 0.9) return uitHsl(34, 0.34, Math.min(0.98, licht + 0.005), doorzicht);
+    if (licht > 0.6) return uitHsl(34, 0.26, licht, doorzicht);
+    if (licht > 0.32) return uitHsl(345, 0.18, licht, doorzicht);
+    return uitHsl(340, 0.22, licht, doorzicht);
   }
 
   // Een verfwaarde kan een kleur zijn, maar ook een expressie of een oude
@@ -447,28 +450,29 @@ export const kaartHtml = `<!DOCTYPE html>
 
   function pinHtml(moment) {
     var gekozen = moment.id === gekozenId;
-    var ster = moment.bijzonder ? '<span class="pin-ster">\\u2728</span>' : '';
-    var badge = moment.fotos > 1 ? '<span class="pin-badge">' + moment.fotos + '</span>' : '';
+    // Het hartje hangt buiten de bol, zodat het niets afdekt.
+    var ster = moment.bijzonder ? '<span class="pin-ster">\\uD83D\\uDC96</span>' : '';
 
-    // Is er een foto, dan is die veel herkenbaarder dan een icoontje. Het
-    // icoon verhuist dan naar een hoekje, zodat je nog ziet wat voor moment
-    // het is.
-    var binnen;
-    if (moment.foto) {
-      binnen =
-        '<img class="pin-foto" src="' + veilig(moment.foto) + '" alt="" />' +
-        '<span class="pin-hoekje" style="background:' + veilig(moment.kleur) + '">' +
-          veilig(moment.icoon) +
-        '</span>';
-    } else {
-      binnen = veilig(moment.icoon);
-    }
+    // Is er een foto, dan krijgt die de hele bol. Geen icoontje en geen
+    // telletje eroverheen: dat stond juist voor de foto.
+    var klassen = 'pin-bol';
+    if (moment.foto) klassen += ' pin-metfoto';
+    if (moment.bijzonder) klassen += ' pin-bijzonder';
+
+    var binnen = moment.foto
+      ? '<img class="pin-foto" src="' + veilig(moment.foto) + '" alt="" />'
+      : veilig(moment.icoon);
+
+    // Zonder foto is de bol zelf gekleurd; mét foto zit de kleur in de rand,
+    // en die pakt hij via currentColor van de pin.
+    var vulling = moment.foto ? '' : ' style="background:' + veilig(moment.kleur) + '"';
 
     return (
       '<div class="pin' + (gekozen ? ' pin-gekozen' : '') + '" style="color:' + veilig(moment.kleur) + '">' +
-        '<div class="pin-bol' + (moment.bijzonder ? ' pin-bijzonder' : '') + '" style="background:' + veilig(moment.kleur) + '">' +
-          binnen + ster + badge +
+        '<div class="' + klassen + '"' + vulling + '>' +
+          binnen +
         '</div>' +
+        ster +
         '<div class="pin-punt"></div>' +
       '</div>'
     );

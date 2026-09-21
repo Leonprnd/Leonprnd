@@ -205,12 +205,12 @@ van [OpenFreeMap](https://openfreemap.org) in de stijl *positron*: rustig en
 zonder de drukte van de gewone OpenStreetMap-plaatjes.
 
 Positron is alleen grijs — letterlijk een grijstintenkaart. Daarom kleurt de
-app hem na het laden om: grijs wordt warme grond, water blijft blauw maar
-zachter, parken krijgen net genoeg groen terug en de letters krijgen de
-inktkleur van de app. Wit blijft wit, want juist het verschil tussen witte
-wegen en warme grond houdt de kaart leesbaar. Dat recept staat in
-`verwarmKleur()` in `src/components/kaart/kaartHtml.js`; wil je een ander
-gevoel, dan draai je daar aan de tinten.
+app hem na het laden om: grijs wordt warme grond, water wordt duidelijk blauw,
+parken krijgen hun groen terug en de letters krijgen de inktkleur van de app.
+Wit blijft wit, want juist het verschil tussen witte wegen en warme grond houdt
+de kaart leesbaar. Dat recept staat in `verwarmKleur()` in
+`src/components/kaart/kaartHtml.js`; wil je een ander gevoel, dan draai je daar
+aan de tinten.
 
 Ligt OpenFreeMap er een keer uit, dan valt de kaart terug op de gewone
 OpenStreetMap-plaatjes, getemperd en warm gehouden. Een losse tegel die niet
@@ -455,10 +455,16 @@ jullie op dit moment uit elkaar zijn.
 kent (het café, het park), en die pas je aan naar wat je wilt. Dan de datum,
 het soort moment, wat er gebeurde, en de foto's.
 
-**De momenten met een gouden randje** — eerste date, eerste kus, verkering,
+**Een pin met een foto** laat die foto zien en verder niets: geen icoontje en
+geen telletje eroverheen, want dat stond juist voor waar je naar wilde kijken.
+De kleur van het moment verhuist dan naar de rand van de pin, zodat je nog
+steeds ziet wat voor moment het is.
+
+**De momenten met een roze ring** — eerste date, eerste kus, verkering,
 eerste keer *ik hou van jou*, de eerste keer dat jullie elkaar zagen, en
-jubilea. Die krijgen een sterretje op de kaart en staan apart in het
-Wij-scherm.
+jubilea. Die krijgen een hartje naast de pin en staan apart in het Wij-scherm.
+De ring ligt búiten de pin, zodat het witte randje blijft dat hem losmaakt van
+de kaart — een pin die zelf al roze is zou anders geen ring lijken te hebben.
 
 **De fotostapel** — bovenaan een herinnering liggen de foto's als polaroids
 op elkaar, een beetje scheef, met een stukje tape erop. Veeg de bovenste opzij
@@ -559,7 +565,7 @@ de hele app kleurt mee.
 { id: 'zwemmen', label: 'Zwemmen', icoon: '🏊', kleur: '#4FA3D9' },
 ```
 
-Zet `bijzonder: true` erbij en hij krijgt het gouden randje met het sterretje.
+Zet `bijzonder: true` erbij en hij krijgt de roze ring met het hartje.
 
 **Ander icoon?** Pas `scripts/maak-iconen.mjs` aan en draai `npm run icons`,
 of gooi je eigen PNG's in `assets/`.

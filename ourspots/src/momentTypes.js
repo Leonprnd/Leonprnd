@@ -3,8 +3,8 @@
 // Hier staat alleen wat taalonafhankelijk is: het icoon, de kleur, en of het
 // een mijlpaal is. De namen staan in src/taal/, zodat ze meevertalen.
 //
-// "bijzonder: true" geeft de pin op de kaart een gouden randje met een
-// sterretje — bedoeld voor de momenten die je maar één keer hebt.
+// "bijzonder: true" geeft de pin op de kaart een roze randje met een hartje
+// ernaast — bedoeld voor de momenten die je maar één keer hebt.
 
 export const momentTypes = [
   // --- De mijlpalen ---
@@ -15,7 +15,7 @@ export const momentTypes = [
   { id: 'ik-hou-van-jou', icoon: '💗', kleur: '#F0629B', bijzonder: true },
   { id: 'eerste-feestje', icoon: '🪩', kleur: '#8E7CE8', bijzonder: true },
   { id: 'eerste-logeren', icoon: '🌙', kleur: '#6C63B5', bijzonder: true },
-  { id: 'jubileum', icoon: '🎉', kleur: '#F3B03C', bijzonder: true },
+  { id: 'jubileum', icoon: '🎉', kleur: '#F2569B', bijzonder: true },
 
   // --- Gewone momenten ---
   { id: 'date', icoon: '💘', kleur: '#FF7EA8' },

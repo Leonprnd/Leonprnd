@@ -128,7 +128,7 @@ function MomentMarkering({ moment, gekozen, opPress }) {
       tracksViewChanges={tekent}
       zIndex={gekozen ? 500 : 1}
     >
-      <MomentPin moment={moment} gekozen={gekozen} aantalFotos={moment.fotos?.length || 0} />
+      <MomentPin moment={moment} gekozen={gekozen} />
     </Marker>
   );
 }

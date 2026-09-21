@@ -1,6 +1,12 @@
-// De pin zoals hij op de kaart staat. Bijzondere momenten (eerste date,
-// eerste kus, verkering...) krijgen een gouden randje met een sterretje,
-// zodat je meteen ziet welke plekjes de grote zijn.
+// De pin zoals hij op de kaart staat.
+//
+// Zonder foto: een gekleurde bol met het icoontje erin. Mét foto vult die de
+// hele bol en verhuist de kleur naar de rand — geen icoontje of telletje
+// eroverheen, want dat stond juist voor de foto die je wilde zien.
+//
+// Bijzondere momenten (eerste date, eerste kus, verkering...) krijgen een roze
+// rand met een hartje ernaast, zodat je meteen ziet welke plekjes de grote
+// zijn.
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, Animated, StyleSheet } from 'react-native';
@@ -10,7 +16,7 @@ import { useAnimatie } from '../utils/animatie';
 import { typeVan } from '../momentTypes';
 import { fotoUrl, MINI } from '../cloudinary';
 
-export default function MomentPin({ moment, gekozen, aantalFotos = 0 }) {
+export default function MomentPin({ moment, gekozen }) {
   const type = typeVan(moment.type);
   // Is er een foto, dan is die veel herkenbaarder dan een icoontje.
   const foto = moment.fotos?.[0]?.url || null;
@@ -36,8 +42,11 @@ export default function MomentPin({ moment, gekozen, aantalFotos = 0 }) {
         style={[
           stijl.bol,
           schaduw.pin,
-          { backgroundColor: type.kleur },
-          type.bijzonder && stijl.bijzonderRand,
+          foto
+            ? { borderColor: type.kleur, overflow: 'hidden' }
+            : { backgroundColor: type.kleur },
+          foto && !type.bijzonder && stijl.witteRing,
+          type.bijzonder && stijl.bijzonderRing,
         ]}
       >
         {foto ? (
@@ -51,23 +60,10 @@ export default function MomentPin({ moment, gekozen, aantalFotos = 0 }) {
         ) : (
           <Text style={stijl.icoon}>{type.icoon}</Text>
         )}
-
-        {/* Met een foto erin zou je niet meer zien wat voor moment het is,
-            dus verhuist het icoon naar een klein hoekje. */}
-        {foto ? (
-          <View style={[stijl.typeHoekje, { backgroundColor: type.kleur }]}>
-            <Text style={stijl.typeHoekjeIcoon}>{type.icoon}</Text>
-          </View>
-        ) : null}
-
-        {type.bijzonder ? <Text style={stijl.sterretje}>✨</Text> : null}
-
-        {aantalFotos > 1 ? (
-          <View style={stijl.fotoBadge}>
-            <Text style={stijl.fotoBadgeTekst}>{aantalFotos}</Text>
-          </View>
-        ) : null}
       </View>
+
+      {/* Buiten de bol, zodat het niets afdekt. */}
+      {type.bijzonder ? <Text style={stijl.hartje}>💖</Text> : null}
 
       <View style={[stijl.puntje, { borderTopColor: type.kleur }]} />
     </Animated.View>
@@ -143,70 +139,48 @@ export function useTekenEenKeer(afhankelijk) {
 const stijl = StyleSheet.create({
   omhulsel: { alignItems: 'center', paddingTop: 4 },
   bol: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
+    width: 54,
+    height: 54,
+    borderRadius: 27,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 3,
     borderColor: kleuren.wit,
   },
-  bijzonderRand: {
-    borderColor: kleuren.goud,
-    borderWidth: 3.5,
+  // Een ring búiten de pin. Niet de rand zelf roze maken: bij een pin die zelf
+  // al roze is zie je dat verschil niet, en dan valt het witte randje weg dat
+  // de pin losmaakt van de kaart.
+  bijzonderRing: {
+    outlineWidth: 3,
+    outlineColor: kleuren.rozeDiep,
+    outlineStyle: 'solid',
   },
-  icoon: { fontSize: 21 },
+  // Met een foto zit de kleur in de rand, dus komt het wit erbuiten.
+  witteRing: {
+    outlineWidth: 2,
+    outlineColor: kleuren.wit,
+    outlineStyle: 'solid',
+  },
+  icoon: { fontSize: 25 },
   fotoInPin: {
     width: '100%',
     height: '100%',
-    borderRadius: 20,
+    borderRadius: 27,
     backgroundColor: kleuren.rozeZacht,
   },
-  typeHoekje: {
+  hartje: {
     position: 'absolute',
-    bottom: -2,
-    left: -4,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 1.5,
-    borderColor: kleuren.wit,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  typeHoekjeIcoon: { fontSize: 10 },
-  sterretje: {
-    position: 'absolute',
-    top: -9,
-    right: -7,
-    fontSize: 15,
-  },
-  fotoBadge: {
-    position: 'absolute',
-    bottom: -3,
+    top: -5,
     right: -6,
-    minWidth: 19,
-    height: 19,
-    paddingHorizontal: 4,
-    borderRadius: 10,
-    backgroundColor: kleuren.wit,
-    borderWidth: 1.5,
-    borderColor: kleuren.rozeZacht,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  fotoBadgeTekst: {
-    fontFamily: letters.vet,
-    fontSize: 10.5,
-    color: kleuren.rozeDiep,
+    fontSize: 16,
   },
   puntje: {
     width: 0,
     height: 0,
     marginTop: -2,
-    borderLeftWidth: 7,
-    borderRightWidth: 7,
-    borderTopWidth: 11,
+    borderLeftWidth: 8,
+    borderRightWidth: 8,
+    borderTopWidth: 13,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
   },
