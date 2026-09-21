@@ -481,6 +481,21 @@ locatie.
 taal van je telefoon; daarna stel je hem in bij *Wij*. Alles gaat mee: de
 schermen, de namen van de momenten, de datums en de foutmeldingen.
 
+**Het blad onder de kaart** — de kaart vult het scherm; daaroverheen schuift
+een blad dat je met je duim omhoog trekt. Onderop zie je alleen het handvat en
+hoeveel plekken jullie hebben, een stand hoger wie waar is en de eerste
+plekken, helemaal open de hele lijst. Slepen kan, tikken op het streepje ook,
+en een zwiep brengt hem altijd één stand verder — dat laatste is met opzet:
+naar de dichtstbijzijnde stand springen voelt alsof de app je tegenwerkt.
+
+Tik je een plek aan, in de lijst of op de kaart, dan zakt het blad weg zodat je
+de kaart ziet, met bovenaan de foto en de naam van wat je koos. Nog een tik
+opent hem helemaal. In de lijst staat per plek hoe ver hij van je vandaan is,
+en je kunt wisselen tussen *recent* en *dichtbij*.
+
+Het schuiven zelf loopt volledig in de animatielaag, zonder React ertussen, dus
+het blijft soepel ook als de kaart eronder druk bezig is.
+
 **Zoeken** — boven aan de kaart staat een zoekbalkje. Typ "Efteling" of
 "Grote Markt Haarlem", wacht heel even, en tik het juiste resultaat aan: de
 kaart springt erheen en het scherm voor een nieuwe plek gaat open met de naam

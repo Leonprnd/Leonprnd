@@ -95,6 +95,12 @@ export default {
   },
 
   kaart: {
+    hier: 'aquí',
+    bladTitel: 'Nuestros lugares',
+    sorteerRecent: 'Recientes',
+    sorteerDichtbij: 'Cerca',
+    jouwLocatie: 'Estás compartiendo tu ubicación',
+    openen: 'Abrir',
     zoekPlaceholder: 'Busca un lugar',
     zoekBezig: 'Buscando…',
     zoekNiets: 'No encontramos nada. Prueba a escribirlo de otra forma.',

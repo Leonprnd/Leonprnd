@@ -1,17 +1,20 @@
 // Het startscherm: jullie kaart.
 //
-// Alle plekjes staan erop als pin. Onderin schuif je door de herinneringen;
-// wat je kiest, springt de kaart naartoe. Houd de kaart ergens ingedrukt om
-// daar een nieuw plekje te maken.
+// De kaart vult het scherm. Daaroverheen schuift een blad dat je met je duim
+// omhoog trekt: eerst zie je alleen wie waar is, daarna alle plekken. Tik je
+// een plek aan — in de lijst of op de kaart — dan zakt het blad weg zodat je
+// de kaart ziet, met bovenaan het blad wat je gekozen hebt.
+//
+// Houd de kaart ergens ingedrukt om daar een nieuw plekje te maken.
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
-  FlatList,
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  useWindowDimensions,
 } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -22,12 +25,23 @@ import { useApp } from '../../src/state/AppProvider';
 import Hartjes from '../../src/components/Hartjes';
 import { kleuren, letters, ruimte, rond, schaduw, verlopen } from '../../src/theme';
 import Kaartweergave from '../../src/components/kaart';
-import MomentKaartje from '../../src/components/MomentKaartje';
 import Zoekbalk from '../../src/components/Zoekbalk';
+import Blad from '../../src/components/Blad';
+import {
+  BladKop,
+  BladLijst,
+  GekozenKop,
+  REGEL_HOOGTE,
+} from '../../src/components/PlekkenBlad';
+import { afstandInMeter, afstandTekst } from '../../src/utils/afstand';
+import { naarDate } from '../../src/utils/datum';
 
-const KAART_BREEDTE = 300;
 const PIN_ZOOM = 16; // hoe dicht de kaart op een pin gaat staan
-const KAART_STAP = KAART_BREEDTE + ruimte.m;
+const MIJ_ZOOM = 15;
+
+// De hoogtes waarop het blad vastklikt.
+const KIEM = 88; // net het handvat en de kop, en verder niets
+const HALF = 330;
 
 export default function Kaart() {
   const {
@@ -36,18 +50,28 @@ export default function Kaart() {
     mijnPositie,
     partnerLocatie,
     partner,
+    gekoppeld,
     deeltLocatie,
     t,
   } = useApp();
 
   const rand = useSafeAreaInsets();
+  const { height: schermHoogte } = useWindowDimensions();
 
   const kaartRef = useRef(null);
   const lijstRef = useRef(null);
+  const bladRef = useRef(null);
   const middenRef = useRef({ lat: 52.1326, lng: 5.2913 });
   const alGepastRef = useRef(false);
+  const alGeopendRef = useRef(false);
 
   const [gekozenId, setGekozenId] = useState(null);
+  const [sortering, setSortering] = useState('recent');
+
+  const standen = useMemo(
+    () => [KIEM, HALF, Math.max(HALF + 40, schermHoogte * 0.72)],
+    [schermHoogte],
+  );
 
   // Komt je liefje er terwijl je de app open hebt? Dan mag dat gevierd worden.
   const [vorigePartner, setVorigePartner] = useState(partner?.uid || null);
@@ -58,6 +82,27 @@ export default function Kaart() {
     if (huidigePartner && !vorigePartner) setNetErbij(true);
   }
 
+  // --- De volgorde in het blad ---------------------------------------------
+
+  const gesorteerd = useMemo(() => {
+    const lijst = [...momenten];
+    if (sortering === 'dichtbij' && mijnPositie) {
+      return lijst.sort(
+        (a, b) =>
+          (afstandInMeter(mijnPositie, a) ?? Infinity) -
+          (afstandInMeter(mijnPositie, b) ?? Infinity),
+      );
+    }
+    return lijst.sort(
+      (a, b) => (naarDate(b.datum)?.getTime() || 0) - (naarDate(a.datum)?.getTime() || 0),
+    );
+  }, [momenten, sortering, mijnPositie]);
+
+  const gekozen = useMemo(
+    () => gesorteerd.find((m) => m.id === gekozenId) || null,
+    [gesorteerd, gekozenId],
+  );
+
   // --- De kaart netjes inkaderen bij het openen -----------------------------
 
   const pasKaartAan = useCallback(() => {
@@ -65,12 +110,11 @@ export default function Kaart() {
       .filter((m) => Number.isFinite(m.lat) && Number.isFinite(m.lng))
       .map((m) => ({ lat: m.lat, lng: m.lng }));
 
-    if (mijnPositie) {
-      punten.push({ lat: mijnPositie.lat, lng: mijnPositie.lng });
-    }
+    if (mijnPositie) punten.push({ lat: mijnPositie.lat, lng: mijnPositie.lng });
+    if (partnerLocatie) punten.push({ lat: partnerLocatie.lat, lng: partnerLocatie.lng });
 
     kaartRef.current?.pasAan(punten);
-  }, [momenten, mijnPositie]);
+  }, [momenten, mijnPositie, partnerLocatie]);
 
   useEffect(() => {
     if (alGepastRef.current) return;
@@ -82,33 +126,69 @@ export default function Kaart() {
     return () => clearTimeout(klus);
   }, [momentenGeladen, momenten.length, mijnPositie, pasKaartAan]);
 
+  // Nog geen enkele plek? Dan zetten we het blad één keer open, zodat je leest
+  // hoe je er een maakt in plaats van naar een lege kaart te kijken.
+  useEffect(() => {
+    if (alGeopendRef.current) return;
+    if (!momentenGeladen || momenten.length) return;
+
+    alGeopendRef.current = true;
+    const klus = setTimeout(() => bladRef.current?.naar(1), 700);
+    return () => clearTimeout(klus);
+  }, [momentenGeladen, momenten.length]);
+
   // --- Een plekje kiezen ----------------------------------------------------
 
   const kiesMoment = useCallback(
-    (moment, vanafLijst) => {
+    (moment) => {
       if (!moment) return;
-      setGekozenId(moment.id);
 
-      // Inzoomen op de pin: je wilt zien wáár het precies was.
+      // Tik je op wat al gekozen is, dan wil je het opendoen. Zo hoef je niet
+      // eerst naar de knop in de kop te zoeken.
+      if (moment.id === gekozenId) {
+        router.push(`/moment/${moment.id}`);
+        return;
+      }
+
+      setGekozenId(moment.id);
       kaartRef.current?.gaNaar(moment.lat, moment.lng, PIN_ZOOM);
 
-      if (!vanafLijst) {
-        const index = momenten.findIndex((m) => m.id === moment.id);
-        if (index >= 0) {
-          lijstRef.current?.scrollToOffset({ offset: index * KAART_STAP, animated: true });
-        }
+      // Het blad zakt weg: je wilt nu de kaart zien, niet de lijst. Bovenin
+      // blijft staan wat je gekozen hebt.
+      bladRef.current?.naar(0);
+
+      const index = gesorteerd.findIndex((m) => m.id === moment.id);
+      if (index >= 0) {
+        lijstRef.current?.scrollToOffset({
+          offset: Math.max(0, index * REGEL_HOOGTE - REGEL_HOOGTE),
+          animated: true,
+        });
       }
     },
-    [momenten],
+    [gesorteerd, gekozenId],
   );
 
-  function opLijstGestopt(e) {
-    const index = Math.round(e.nativeEvent.contentOffset.x / KAART_STAP);
-    const moment = momenten[index];
-    if (moment && moment.id !== gekozenId) {
-      Haptics.selectionAsync().catch(() => {});
-      kiesMoment(moment, true);
-    }
+  function naarMij() {
+    if (!mijnPositie) return;
+    Haptics.selectionAsync().catch(() => {});
+    setGekozenId(null);
+    kaartRef.current?.gaNaar(mijnPositie.lat, mijnPositie.lng, MIJ_ZOOM);
+    bladRef.current?.naar(0);
+  }
+
+  function naarPartner() {
+    if (!partnerLocatie) return;
+    Haptics.selectionAsync().catch(() => {});
+    setGekozenId(null);
+    kaartRef.current?.gaNaar(partnerLocatie.lat, partnerLocatie.lng, MIJ_ZOOM);
+    bladRef.current?.naar(0);
+  }
+
+  function allesInBeeld() {
+    Haptics.selectionAsync().catch(() => {});
+    setGekozenId(null);
+    pasKaartAan();
+    bladRef.current?.naar(0);
   }
 
   // --- Nieuw plekje ---------------------------------------------------------
@@ -150,12 +230,12 @@ export default function Kaart() {
         partnerLocatie={partnerLocatie}
         mijnPositie={mijnPositie}
         toonMij={deeltLocatie}
-        marges={{ boven: rand.top + 90, onder: 195 }}
+        marges={{ boven: rand.top + 96, onder: KIEM + 80 }}
         opMomentPress={(id) => {
           const moment = momenten.find((m) => m.id === id);
           if (!moment) return;
           Haptics.selectionAsync().catch(() => {});
-          kiesMoment(moment, false);
+          kiesMoment(moment);
         }}
         opLangDrukken={({ lat, lng }) => nieuwOpPlek(lat, lng)}
         opAchtergrond={() => setGekozenId(null)}
@@ -170,70 +250,100 @@ export default function Kaart() {
         style={{ top: rand.top + ruimte.s }}
       />
 
-      {/* --- Onderin: de herinneringen --- */}
-      <View style={stijl.onder} pointerEvents="box-none">
-        {!momentenGeladen ? (
-          <View style={[stijl.leegKaartje, schaduw.kaart]}>
-            <ActivityIndicator color={kleuren.roze} />
-          </View>
-        ) : momenten.length === 0 ? (
-          <Pressable onPress={nieuwOpMidden} style={[stijl.leegKaartje, schaduw.kaart]}>
-            <Text style={stijl.leegIcoon}>📍</Text>
-            <Text style={stijl.leegTitel}>{t.kaart.leegTitel}</Text>
-            <Text style={stijl.leegTekst}>{t.kaart.leegTekst}</Text>
+      {/* --- De knoppen, net boven het blad --- */}
+      <View style={[stijl.knoppen, { bottom: KIEM + ruimte.m }]} pointerEvents="box-none">
+        {/* De tekentjes zijn met opzet getekend en geen letter of emoji: een
+            teken dat het lettertype niet kent wordt een leeg blokje, en dat
+            zou hier midden op de kaart staan. */}
+        <Pressable
+          onPress={allesInBeeld}
+          style={({ pressed }) => [
+            stijl.rondje,
+            schaduw.kaart,
+            pressed && { transform: [{ scale: 0.92 }] },
+          ]}
+        >
+          <View style={stijl.kader} />
+        </Pressable>
+
+        {mijnPositie ? (
+          <Pressable
+            onPress={naarMij}
+            style={({ pressed }) => [
+              stijl.rondje,
+              schaduw.kaart,
+              pressed && { transform: [{ scale: 0.92 }] },
+            ]}
+          >
+            <View style={stijl.ring}>
+              <View style={stijl.ringStip} />
+            </View>
           </Pressable>
-        ) : (
-          <FlatList
-            ref={lijstRef}
-            data={momenten}
-            keyExtractor={(m) => m.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            snapToInterval={KAART_STAP}
-            decelerationRate="fast"
-            contentContainerStyle={stijl.lijst}
-            onMomentumScrollEnd={opLijstGestopt}
-            getItemLayout={(_, index) => ({
-              length: KAART_STAP,
-              offset: KAART_STAP * index,
-              index,
-            })}
-            renderItem={({ item }) => (
-              <MomentKaartje
-                moment={item}
-                breed
-                actief={gekozenId === item.id}
-                opPress={() => {
-                  if (gekozenId === item.id) {
-                    router.push(`/moment/${item.id}`);
-                  } else {
-                    kiesMoment(item, true);
-                  }
-                }}
-              />
-            )}
+        ) : null}
+
+        <Pressable
+          onPress={nieuwOpMidden}
+          style={({ pressed }) => [
+            stijl.plus,
+            schaduw.kaart,
+            pressed && { transform: [{ scale: 0.93 }] },
+          ]}
+        >
+          <LinearGradient
+            colors={verlopen.roze}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={StyleSheet.absoluteFill}
           />
-        )}
+          <Text style={stijl.plusTeken}>+</Text>
+        </Pressable>
       </View>
 
-      {/* --- De grote plus --- */}
-      <Pressable
-        onPress={nieuwOpMidden}
-        style={({ pressed }) => [
-          stijl.plus,
-          schaduw.kaart,
-          { bottom: 132 },
-          pressed && { transform: [{ scale: 0.93 }] },
-        ]}
+      {/* --- Het blad --- */}
+      <Blad
+        ref={bladRef}
+        standen={standen}
+        kop={
+          gekozen ? (
+            <GekozenKop
+              moment={gekozen}
+              afstand={
+                mijnPositie
+                  ? afstandTekst(afstandInMeter(mijnPositie, gekozen))
+                  : null
+              }
+              opOpenen={() => router.push(`/moment/${gekozen.id}`)}
+            />
+          ) : (
+            <BladKop
+              aantal={momenten.length}
+              sortering={sortering}
+              opSortering={setSortering}
+              kanDichtbij={Boolean(mijnPositie)}
+            />
+          )
+        }
       >
-        <LinearGradient
-          colors={verlopen.roze}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={StyleSheet.absoluteFill}
-        />
-        <Text style={stijl.plusTeken}>+</Text>
-      </Pressable>
+        {!momentenGeladen ? (
+          <View style={stijl.laden}>
+            <ActivityIndicator color={kleuren.roze} />
+          </View>
+        ) : (
+          <BladLijst
+            lijstRef={lijstRef}
+            momenten={gesorteerd}
+            gekozenId={gekozenId}
+            mijnPositie={mijnPositie}
+            partner={partner}
+            partnerLocatie={partnerLocatie}
+            gekoppeld={gekoppeld}
+            opPlek={kiesMoment}
+            opPartner={naarPartner}
+            opMij={naarMij}
+            onder={rand.bottom + ruimte.xl}
+          />
+        )}
+      </Blad>
 
       {netErbij ? (
         <View style={stijl.welkomVlak} pointerEvents="none">
@@ -253,32 +363,47 @@ export default function Kaart() {
 const stijl = StyleSheet.create({
   vol: { flex: 1, backgroundColor: kleuren.creme },
 
-  onder: { position: 'absolute', left: 0, right: 0, bottom: ruimte.l },
-  lijst: { paddingHorizontal: ruimte.l, gap: ruimte.m },
-
-  leegKaartje: {
-    marginHorizontal: ruimte.l,
-    backgroundColor: kleuren.wit,
-    borderRadius: rond.l,
-    padding: ruimte.xl,
-    alignItems: 'center',
-  },
-  leegIcoon: { fontSize: 30, marginBottom: 4 },
-  leegTitel: { fontFamily: letters.vet, fontSize: 16.5, color: kleuren.inkt },
-  leegTekst: {
-    fontFamily: letters.normaal,
-    fontSize: 13.5,
-    lineHeight: 19,
-    color: kleuren.inktZacht,
-    textAlign: 'center',
-    marginTop: 3,
-  },
-
-  plus: {
+  knoppen: {
     position: 'absolute',
     right: ruimte.l,
-    width: 52,
-    height: 52,
+    alignItems: 'center',
+    gap: ruimte.s,
+  },
+  rondje: {
+    width: 40,
+    height: 40,
+    borderRadius: rond.vol,
+    backgroundColor: 'rgba(255,255,255,0.96)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  // Een kadertje: alles in beeld.
+  kader: {
+    width: 17,
+    height: 17,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: kleuren.inktZacht,
+  },
+  // Een ringetje met een stip: naar waar jij bent.
+  ring: {
+    width: 18,
+    height: 18,
+    borderRadius: rond.vol,
+    borderWidth: 2,
+    borderColor: kleuren.inktZacht,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ringStip: {
+    width: 6,
+    height: 6,
+    borderRadius: rond.vol,
+    backgroundColor: kleuren.inktZacht,
+  },
+  plus: {
+    width: 54,
+    height: 54,
     borderRadius: rond.vol,
     alignItems: 'center',
     justifyContent: 'center',
@@ -287,10 +412,13 @@ const stijl = StyleSheet.create({
   },
   plusTeken: {
     fontFamily: letters.licht,
-    fontSize: 30,
-    lineHeight: 34,
+    fontSize: 31,
+    lineHeight: 35,
     color: kleuren.wit,
   },
+
+  laden: { paddingTop: ruimte.xl, alignItems: 'center' },
+
 
   welkomVlak: {
     ...StyleSheet.absoluteFillObject,

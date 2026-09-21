@@ -95,6 +95,12 @@ export default {
   },
 
   kaart: {
+    hier: 'here',
+    bladTitel: 'Our spots',
+    sorteerRecent: 'Recent',
+    sorteerDichtbij: 'Nearby',
+    jouwLocatie: 'You’re sharing your location',
+    openen: 'Open',
     zoekPlaceholder: 'Search for a place',
     zoekBezig: 'Searching…',
     zoekNiets: 'Nothing found. Try spelling it differently.',

@@ -37,7 +37,7 @@ export default function MomentKaartje({ moment, opPress, breed, actief }) {
           <Text style={[stijl.typeLabel, { color: type.kleur }]} numberOfLines={1}>
             {t.types[type.id].label}
           </Text>
-          {type.bijzonder ? <Text style={stijl.ster}>✨</Text> : null}
+          {type.bijzonder ? <Text style={stijl.ster}>💖</Text> : null}
         </View>
 
         <Text style={stijl.titel} numberOfLines={1}>

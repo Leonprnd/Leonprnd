@@ -82,7 +82,7 @@ export default function Tijdlijn() {
 
             <View style={stijl.chipRij}>
               {mijlpalen > 0 ? (
-                <Chip tekst={t.tijdlijn.mijlpalen(mijlpalen)} icoon="✨" kleur={kleuren.goud} klein />
+                <Chip tekst={t.tijdlijn.mijlpalen(mijlpalen)} icoon="💖" kleur={kleuren.rozeDiep} klein />
               ) : null}
               {eerste ? (
                 <Chip

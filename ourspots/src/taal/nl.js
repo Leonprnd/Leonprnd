@@ -96,6 +96,12 @@ export default {
   },
 
   kaart: {
+    hier: 'hier',
+    bladTitel: 'Onze plekken',
+    sorteerRecent: 'Recent',
+    sorteerDichtbij: 'Dichtbij',
+    jouwLocatie: 'Je deelt je locatie',
+    openen: 'Openen',
     zoekPlaceholder: 'Zoek een plek',
     zoekBezig: 'Zoeken…',
     zoekNiets: 'Niets gevonden. Probeer het anders te schrijven.',

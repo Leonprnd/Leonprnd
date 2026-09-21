@@ -279,7 +279,7 @@ export default function Wij() {
       <View style={stijl.weetjes}>
         <Weetje getal={momenten.length} tekst={t.wij.plekken} icoon="📍" />
         <Weetje getal={aantalFotos} tekst={t.wij.fotos} icoon="📸" />
-        <Weetje getal={bijzondere.length} tekst={t.wij.mijlpalen} icoon="✨" />
+        <Weetje getal={bijzondere.length} tekst={t.wij.mijlpalen} icoon="💖" />
       </View>
 
       {bijzondere.length > 0 ? (

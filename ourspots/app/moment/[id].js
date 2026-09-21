@@ -130,7 +130,7 @@ export default function MomentDetail() {
           <View style={stijl.chipRij}>
             <Chip tekst={t.types[type.id].label} icoon={type.icoon} kleur={type.kleur} />
             {type.bijzonder ? (
-              <Chip tekst={t.moment.mijlpaal} icoon="✨" kleur={kleuren.goud} />
+              <Chip tekst={t.moment.mijlpaal} icoon="💖" kleur={kleuren.rozeDiep} />
             ) : null}
           </View>
 
