@@ -57,7 +57,6 @@ export default {
     vraag: 'Wie ben jij?',
     uitleg: 'Je partner ziet straks deze naam en dit icoon op jullie kaart.',
     naamLabel: 'Je naam',
-    naamHint: 'Bijvoorbeeld Leon',
     jouwNaam: 'jouw naam',
     icoonKop: 'Kies je icoon',
     kleurKop: 'En je kleur',
@@ -166,8 +165,6 @@ export default {
     geluidKop: 'Geluid',
     geluidEffecten: 'Geluidjes',
     geluidEffectenTekst: 'Korte tonen bij opslaan en bladeren.',
-    geluidVogels: 'Vogels op de kaart',
-    geluidVogelsTekst: 'Rustige achtergrond terwijl je de kaart bekijkt.',
 
     herstelKop: 'Als iemand er niet meer in komt',
     herstelTekst: 'Raakt een van jullie toegang kwijt — nieuwe telefoon, app opnieuw geïnstalleerd, browsergegevens gewist — dan ziet de app die persoon als iemand nieuw. De kaart zit dan vol. Haal hem of haar hier van de kaart en laat de code opnieuw invullen; alle plekken blijven staan.',

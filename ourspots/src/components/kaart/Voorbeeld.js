@@ -23,6 +23,10 @@ export default function Voorbeeld({ lat, lng, type, style }) {
       {gebruiktOpenStreetMap ? (
         <>
           <Tegels lat={lat} lng={lng} />
+          {/* Twee laagjes: eerst wit om de kleuren van OpenStreetMap te
+              temperen, dan roze. Een echt filter kan hier niet, want dit is
+              geen webpagina maar een gewone afbeelding. */}
+          <View style={stijl.verbleek} pointerEvents="none" />
           <View style={stijl.waas} pointerEvents="none" />
           <View style={stijl.pinVlak} pointerEvents="none">
             <MomentPin moment={{ type }} gekozen />
@@ -86,7 +90,7 @@ function Tegels({ lat, lng }) {
           <Image
             key={`${tegel.x}-${tegel.y}`}
             source={{
-              uri: `https://a.basemaps.cartocdn.com/light_all/${ZOOM}/${tegel.x}/${tegel.y}.png`,
+              uri: `https://tile.openstreetmap.org/${ZOOM}/${tegel.x}/${tegel.y}.png`,
             }}
             style={{
               position: 'absolute',
@@ -110,11 +114,16 @@ const stijl = StyleSheet.create({
   leeg: { backgroundColor: kleuren.rozeZacht },
   tegelVlak: { ...StyleSheet.absoluteFillObject, overflow: 'hidden' },
 
+  verbleek: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: kleuren.wit,
+    opacity: 0.45,
+  },
   // Hetzelfde roze waasje als op de grote kaart.
   waas: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: kleuren.roze,
-    opacity: 0.12,
+    opacity: 0.16,
   },
 
   // De punt van de pin moet op het midden staan, niet het midden van de pin

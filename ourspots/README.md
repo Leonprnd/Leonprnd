@@ -196,10 +196,11 @@ Dat kiest de app zelf, aan de hand van je `.env`:
 Je hoeft dus nooit code aan te passen. Vul je later een sleutel in en start je
 opnieuw op met `npx expo start -c`, dan staat Google Maps er.
 
-De OpenStreetMap-kaart wordt getekend met Leaflet in een WebView, met tegels
-van CARTO. Die zijn bijna kleurloos, en daar legt de app met één CSS-filter
-hetzelfde zachte roze overheen. Je pins, de fotostapel en de live locatie
-werken precies hetzelfde.
+De OpenStreetMap-kaart wordt getekend met Leaflet, met tegels rechtstreeks van
+OpenStreetMap. Die worden eerst ontkleurd en dan roze gemaakt met een
+SVG-kleurmatrix; dat laatste omdat `sepia` en `hue-rotate` verzadiging nodig
+hebben die een lichte kaart niet heeft. Je pins, de fotostapel en de live
+locatie werken precies hetzelfde.
 
 ---
 
@@ -416,10 +417,10 @@ locatie.
 taal van je telefoon; daarna stel je hem in bij *Wij*. Alles gaat mee: de
 schermen, de namen van de momenten, de datums en de foutmeldingen.
 
-**Geluid** — korte tonen bij het opslaan en bladeren, en een rustige
-vogelachtergrond zolang je de kaart bekijkt. Allebei apart uit te zetten bij
-*Wij*. De geluiden worden gemaakt door `scripts/maak-geluiden.mjs`; wil je
-echte opnames, vervang dan de bestanden in `assets/geluid/`.
+**Geluid** — korte tonen bij het opslaan, bladeren en een plek zetten. Geen
+achtergrondgeluid; dat is een bewuste keuze. Uit te zetten bij *Wij*. De
+geluiden worden gemaakt door `scripts/maak-geluiden.mjs`; wil je echte
+opnames, vervang dan de bestanden in `assets/geluid/`.
 
 **Als iemand er niet meer in komt** — raakt een van jullie de toegang kwijt
 (nieuwe telefoon, app opnieuw geïnstalleerd, websitegegevens gewist), dan ziet

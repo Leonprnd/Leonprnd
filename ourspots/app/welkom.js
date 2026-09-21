@@ -73,7 +73,6 @@ export default function Welkom() {
           label={t.welkom.naamLabel}
           waarde={naam}
           opWijziging={setNaam}
-          hint={t.welkom.naamHint}
           maxLength={18}
           autoCapitalize="words"
           returnKeyType="done"

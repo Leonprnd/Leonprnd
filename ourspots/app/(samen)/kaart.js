@@ -20,7 +20,7 @@ import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../../src/state/AppProvider';
 import Hartjes from '../../src/components/Hartjes';
-import { speel, startVogels, stopVogels } from '../../src/services/geluid';
+import { speel } from '../../src/services/geluid';
 import { kaartHerkomst } from '../../src/kaartProvider';
 import { kleuren, letters, ruimte, rond, schaduw, verlopen } from '../../src/theme';
 import Kaartweergave from '../../src/components/kaart';
@@ -39,17 +39,10 @@ export default function Kaart() {
     partner,
     gekoppeld,
     deeltLocatie,
-    vogelsAan,
     t,
   } = useApp();
 
   const rand = useSafeAreaInsets();
-
-  // De vogels horen bij de kaart, dus ze beginnen en stoppen met dit scherm.
-  useEffect(() => {
-    startVogels();
-    return stopVogels;
-  }, [vogelsAan]);
 
   const kaartRef = useRef(null);
   const lijstRef = useRef(null);

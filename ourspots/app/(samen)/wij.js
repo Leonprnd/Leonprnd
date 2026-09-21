@@ -52,8 +52,6 @@ export default function Wij() {
     kiesTaal,
     geluidAan,
     setGeluidAan,
-    vogelsAan,
-    setVogelsAan,
     t,
   } = useApp();
 
@@ -435,20 +433,6 @@ export default function Wij() {
           />
         </View>
 
-        <View style={stijl.scheiding} />
-
-        <View style={stijl.schakelRij}>
-          <View style={{ flex: 1 }}>
-            <Text style={stijl.schakelTitel}>{t.wij.geluidVogels}</Text>
-            <Text style={stijl.schakelTekst}>{t.wij.geluidVogelsTekst}</Text>
-          </View>
-          <Switch
-            value={vogelsAan}
-            onValueChange={setVogelsAan}
-            trackColor={{ false: kleuren.lijn, true: kleuren.roze }}
-            thumbColor={kleuren.wit}
-          />
-        </View>
       </Kaartje>
 
       {gekoppeld ? (

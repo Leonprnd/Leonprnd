@@ -2,10 +2,12 @@
 //
 // Waarom zo? Google Maps geeft alleen een werkende sleutel als er een
 // betaalrekening aan je project hangt. Dit heeft dat niet nodig: geen sleutel,
-// geen account, niets. De tegels komen van CARTO ("Positron"), een bijna
-// grijze kaart. Juist omdat die zo kleurloos is, kunnen we er met één
-// CSS-filter een egaal roze waas overheen leggen zonder dat het water groen
-// wordt.
+// geen account, niets.
+//
+// De tegels komen rechtstreeks van OpenStreetMap. Eerder stonden hier die van
+// CARTO, maar die zijn in augustus 2026 een sleutel gaan eisen en zetten sinds
+// dien "API KEY REQUIRED" dwars over de kaart. OpenStreetMap doet dat al
+// twintig jaar niet.
 //
 // Praten met de app gaat twee kanten op, en op twee manieren, want dezelfde
 // pagina draait in een WebView (telefoon) én in een iframe (web):
@@ -28,8 +30,13 @@ export const leafletHtml = `<!DOCTYPE html>
      draaien, en een lichte kaart heeft die nauwelijks. Het resultaat was
      flets geel in plaats van roze. Een kleurmatrix rekent per kanaal, en kan
      bijna-wit dus wél opschuiven: groen en blauw iets omlaag, rood iets
-     omhoog. Wegen blijven licht en water blijft herkenbaar. */
-  .leaflet-tile-pane { filter: url(#rozeWaas); }
+     omhoog. Wegen blijven licht en water blijft herkenbaar.
+     De grayscale ervoor is er sinds we OpenStreetMap gebruiken: die kaart is
+     een stuk kleuriger dan de vorige, en zonder ontkleuren blijven de gele
+     wegen en groene parken door het roze heen schreeuwen. */
+  .leaflet-tile-pane {
+    filter: grayscale(0.9) brightness(1.08) url(#rozeWaas);
+  }
 
   .leaflet-control-attribution {
     font-size: 9px;
@@ -157,9 +164,9 @@ export const leafletHtml = `<!DOCTYPE html>
     tap: true,
   }).setView([52.1326, 5.2913], 7);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    attribution: '&copy; OpenStreetMap',
   }).addTo(kaart);
 
   var pinLaag = L.layerGroup().addTo(kaart);

@@ -15,7 +15,7 @@ import React, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { firebaseIsIngesteld, zorgVoorAccount, volgAccount } from '../firebase';
 import { woordenVan, taalVanTelefoon, zetActieveTaal } from '../taal';
-import { zetEffecten, zetVogels as zetVogelsGeluid, ruimOp } from '../services/geluid';
+import { zetEffecten, ruimOp } from '../services/geluid';
 import {
   maakKaart,
   doeMee,
@@ -71,7 +71,6 @@ export function AppProvider({ children }) {
   const [deeltLocatie, setDeeltLocatie] = useState(true);
   const [taal, setTaal] = useState(() => taalVanTelefoon());
   const [geluidAan, setGeluidAan] = useState(true);
-  const [vogelsAan, setVogelsAan] = useState(true);
   const [mijnPositie, setMijnPositie] = useState(null);
   const [partnerLocatie, setPartnerLocatie] = useState(null);
   const [fout, setFout] = useState(null);
@@ -103,7 +102,6 @@ export function AppProvider({ children }) {
             zetActieveTaal(bewaard.taal);
           }
           if (typeof bewaard.geluidAan === 'boolean') setGeluidAan(bewaard.geluidAan);
-          if (typeof bewaard.vogelsAan === 'boolean') setVogelsAan(bewaard.vogelsAan);
         }
       } catch {
         // Niets bewaard of onleesbaar: we beginnen gewoon opnieuw.
@@ -144,17 +142,13 @@ export function AppProvider({ children }) {
 
   useEffect(() => {
     if (!klaar) return;
-    bewaarLokaal({ profiel, code, deeltLocatie, taal, geluidAan, vogelsAan });
-  }, [klaar, profiel, code, deeltLocatie, taal, geluidAan, vogelsAan, bewaarLokaal]);
+    bewaarLokaal({ profiel, code, deeltLocatie, taal, geluidAan });
+  }, [klaar, profiel, code, deeltLocatie, taal, geluidAan, bewaarLokaal]);
 
   // De geluidsdienst is geen React-component, dus die moet het apart horen.
   useEffect(() => {
     zetEffecten(geluidAan);
   }, [geluidAan]);
-
-  useEffect(() => {
-    zetVogelsGeluid(vogelsAan);
-  }, [vogelsAan]);
 
   // Bij het afsluiten alle spelers netjes opruimen.
   useEffect(() => ruimOp, []);
@@ -395,12 +389,10 @@ export function AppProvider({ children }) {
       taal,
       t: woordenVan(taal),
       geluidAan,
-      vogelsAan,
       fout,
       setFout,
       kiesTaal,
       setGeluidAan,
-      setVogelsAan,
       bewaarProfiel,
       beginNieuweKaart,
       koppelMetCode,
@@ -412,7 +404,7 @@ export function AppProvider({ children }) {
     [
       klaar, uid, profiel, code, kaart, kaartGeladen, ik, partner, benLid, gekoppeld, momenten,
       momentenGeladen, mijnPositie, partnerLocatie, deeltLocatie, taal,
-      geluidAan, vogelsAan, fout, bewaarProfiel, beginNieuweKaart,
+      geluidAan, fout, bewaarProfiel, beginNieuweKaart,
       koppelMetCode, koppelLos, verwijderPartner, zetDelen, zetSamenSinds,
       kiesTaal,
     ],

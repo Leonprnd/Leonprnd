@@ -56,7 +56,6 @@ export default {
     vraag: 'Who are you?',
     uitleg: 'Your partner will see this name and icon on your map.',
     naamLabel: 'Your name',
-    naamHint: 'For example Alex',
     jouwNaam: 'your name',
     icoonKop: 'Pick your icon',
     kleurKop: 'And your colour',
@@ -165,8 +164,6 @@ export default {
     geluidKop: 'Sound',
     geluidEffecten: 'Sound effects',
     geluidEffectenTekst: 'Short tones when saving and browsing.',
-    geluidVogels: 'Birds on the map',
-    geluidVogelsTekst: 'A quiet background while you look at the map.',
 
     herstelKop: 'If someone gets locked out',
     herstelTekst: 'If one of you loses access — new phone, app reinstalled, browser data cleared — the app sees that person as someone new, and the map is full. Remove them here and let them enter the code again; every spot stays.',

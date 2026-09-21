@@ -42,7 +42,7 @@ export const kleurthemaWerkt = heeftGoogleSleutel;
 // Kort zinnetje voor onder in beeld, zodat je weet waar je naar kijkt.
 export function kaartHerkomst() {
   if (heeftGoogleSleutel) return null;
-  if (opWeb) return '© OpenStreetMap · CARTO';
+  if (opWeb) return '© OpenStreetMap';
   if (appleMapsInExpoGo) return 'Apple Maps · vul een Google-sleutel in voor het roze thema';
-  return '© OpenStreetMap · CARTO';
+  return '© OpenStreetMap';
 }

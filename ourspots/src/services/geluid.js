@@ -1,8 +1,8 @@
 // De geluiden van de app.
 //
-// Twee soorten: korte tonen bij wat je doet (opslaan, bladeren, een plek
-// zetten), en een rustige vogelachtergrond op de kaart. Allebei apart uit te
-// zetten in het Wij-scherm.
+// Korte tonen bij wat je doet: opslaan, bladeren, een plek zetten. Meer niet
+// — achtergrondgeluid heeft de app bewust niet. Uit te zetten in het
+// Wij-scherm.
 //
 // De spelers worden één keer gemaakt en daarna hergebruikt; telkens opnieuw
 // laden geeft een hoorbare vertraging. Lukt het afspelen niet — een oudere
@@ -19,8 +19,6 @@ const bestanden = {
   samen: require('../../assets/geluid/samen.wav'),
 };
 
-const vogelbestand = require('../../assets/geluid/vogels.wav');
-
 // Hoe hard elk geluidje mag zijn. Subtiel is het uitgangspunt.
 const sterkte = {
   tik: 0.25,
@@ -30,13 +28,9 @@ const sterkte = {
   samen: 0.6,
 };
 
-const VOGELS_STERKTE = 0.22;
-
 let ingesteld = false;
 const spelers = {};
-let vogels = null;
 let effectenAan = true;
-let vogelsAan = true;
 
 async function zorgVoorAudiomodus() {
   if (ingesteld) return;
@@ -71,11 +65,6 @@ export function zetEffecten(aan) {
   effectenAan = Boolean(aan);
 }
 
-export function zetVogels(aan) {
-  vogelsAan = Boolean(aan);
-  if (!vogelsAan) stopVogels();
-}
-
 // --- Korte geluidjes --------------------------------------------------------
 
 export function speel(naam) {
@@ -94,70 +83,8 @@ export function speel(naam) {
   }
 }
 
-// --- De vogels op de kaart --------------------------------------------------
-
-export async function startVogels() {
-  if (!vogelsAan) return;
-
-  await zorgVoorAudiomodus();
-
-  try {
-    if (!vogels) {
-      vogels = createAudioPlayer(vogelbestand);
-      vogels.loop = true;
-      vogels.volume = 0;
-    }
-    vogels.play();
-    vervaag(VOGELS_STERKTE, 900);
-  } catch {
-    vogels = null;
-  }
-}
-
-export function stopVogels() {
-  if (!vogels) return;
-  // Niet abrupt afkappen: dat hoor je meteen.
-  vervaag(0, 500, () => {
-    try {
-      vogels?.pause();
-    } catch {
-      // Speler is al opgeruimd.
-    }
-  });
-}
-
-let vervaagKlus = null;
-
-function vervaag(naar, milliseconden, klaar) {
-  if (vervaagKlus) clearInterval(vervaagKlus);
-  if (!vogels) return;
-
-  const van = vogels.volume ?? 0;
-  const stappen = Math.max(1, Math.round(milliseconden / 50));
-  let stap = 0;
-
-  vervaagKlus = setInterval(() => {
-    stap += 1;
-    try {
-      if (!vogels) throw new Error('weg');
-      vogels.volume = van + (naar - van) * (stap / stappen);
-    } catch {
-      clearInterval(vervaagKlus);
-      vervaagKlus = null;
-      return;
-    }
-    if (stap >= stappen) {
-      clearInterval(vervaagKlus);
-      vervaagKlus = null;
-      if (klaar) klaar();
-    }
-  }, 50);
-}
-
 // Alles opruimen; bij het afsluiten van de app.
 export function ruimOp() {
-  if (vervaagKlus) clearInterval(vervaagKlus);
-  vervaagKlus = null;
   Object.values(spelers).forEach((s) => {
     try {
       s.remove();
@@ -166,10 +93,4 @@ export function ruimOp() {
     }
   });
   Object.keys(spelers).forEach((naam) => delete spelers[naam]);
-  try {
-    vogels?.remove();
-  } catch {
-    // Al weg.
-  }
-  vogels = null;
 }

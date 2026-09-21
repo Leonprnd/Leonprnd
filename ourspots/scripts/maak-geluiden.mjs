@@ -3,9 +3,9 @@
 //   node scripts/maak-geluiden.mjs
 //
 // Alles wordt hier uitgerekend; er zijn geen opnames of bibliotheken nodig.
-// De korte tonen zijn zachte sinussen met een nette in- en uitloop, zodat je
-// geen klik hoort. De vogels zijn nagebootst: een vogelroep is in de kern een
-// toon die snel in hoogte op en neer gaat, en dat is goed na te maken.
+// Het zijn zachte sinussen met een nette in- en uitloop, zodat je geen klik
+// hoort. Alleen korte tonen bij wat je doet; achtergrondgeluid heeft de app
+// niet.
 //
 // Wil je liever echte opnames? Vervang gewoon de bestanden in assets/geluid/.
 
@@ -70,40 +70,6 @@ function toon(monsters, beginSec, duur, hertz, sterkte = 0.3, eindHertz = null) 
   }
 }
 
-// Een vogelroep: een toon die in een paar honderdste seconden op en neer
-// glijdt, met een zweempje boventoon erbij.
-function roep(monsters, beginSec, opties = {}) {
-  const {
-    duur = 0.09,
-    laag = 2400,
-    hoog = 3900,
-    sterkte = 0.16,
-    vorm = 'op-neer',
-  } = opties;
-
-  const begin = Math.round(beginSec * TEMPO);
-  const lengte = Math.round(duur * TEMPO);
-  let fase = 0;
-
-  for (let i = 0; i < lengte; i += 1) {
-    const plek = begin + i;
-    if (plek >= monsters.length) break;
-
-    const deel = i / lengte;
-    let frequentie;
-    if (vorm === 'op') frequentie = laag + (hoog - laag) * deel;
-    else if (vorm === 'neer') frequentie = hoog - (hoog - laag) * deel;
-    else frequentie = laag + (hoog - laag) * Math.sin(Math.PI * deel);
-
-    fase += (2 * Math.PI * frequentie) / TEMPO;
-
-    // Bol omhulsel: een vogel begint en eindigt niet abrupt.
-    const omhulsel = Math.sin(Math.PI * deel) ** 1.4;
-    monsters[plek] +=
-      (Math.sin(fase) * 0.85 + Math.sin(fase * 2) * 0.15) * sterkte * omhulsel;
-  }
-}
-
 function normaliseer(monsters, doel = 0.85) {
   let hoogste = 0;
   for (const waarde of monsters) hoogste = Math.max(hoogste, Math.abs(waarde));
@@ -154,51 +120,6 @@ function samen() {
   return normaliseer(m, 0.8);
 }
 
-// Een rustige achtergrond van twintig seconden die naadloos rond loopt.
-function vogels() {
-  const duur = 20;
-  const m = leeg(duur);
-
-  // Heel zacht ruisbed, als wind door bladeren. Laagdoorlaat door het
-  // gemiddelde met het vorige monster te nemen.
-  let vorige = 0;
-  for (let i = 0; i < m.length; i += 1) {
-    const ruis = (Math.random() * 2 - 1) * 0.06;
-    vorige = vorige * 0.93 + ruis * 0.07;
-    m[i] += vorige;
-  }
-
-  // Een paar soorten vogels door elkaar, op willekeurige momenten.
-  const soorten = [
-    { duur: 0.07, laag: 2600, hoog: 4200, vorm: 'op-neer', sterkte: 0.15 },
-    { duur: 0.11, laag: 1900, hoog: 3100, vorm: 'neer', sterkte: 0.12 },
-    { duur: 0.05, laag: 3400, hoog: 4800, vorm: 'op', sterkte: 0.1 },
-    { duur: 0.15, laag: 2200, hoog: 2900, vorm: 'op-neer', sterkte: 0.09 },
-  ];
-
-  let wanneer = 0.4;
-  while (wanneer < duur - 0.6) {
-    const soort = soorten[Math.floor(Math.random() * soorten.length)];
-
-    // Vogels roepen vaak twee of drie keer kort achter elkaar.
-    const herhalingen = 1 + Math.floor(Math.random() * 3);
-    for (let i = 0; i < herhalingen; i += 1) {
-      roep(m, wanneer + i * (soort.duur + 0.05 + Math.random() * 0.06), soort);
-    }
-
-    wanneer += 0.7 + Math.random() * 2.2;
-  }
-
-  // De laatste halve seconde overvloeien in de eerste, zodat de lus niet hapert.
-  const overgang = Math.round(0.5 * TEMPO);
-  for (let i = 0; i < overgang; i += 1) {
-    const deel = i / overgang;
-    const eind = m.length - overgang + i;
-    m[i] = m[i] * deel + m[eind] * (1 - deel);
-  }
-  return normaliseer(m.slice(0, m.length - overgang), 0.55);
-}
-
 // --- Wegschrijven -----------------------------------------------------------
 
 const bestanden = [
@@ -207,7 +128,6 @@ const bestanden = [
   ['bewaard.wav', bewaard()],
   ['blader.wav', blader()],
   ['samen.wav', samen()],
-  ['vogels.wav', vogels()],
 ];
 
 for (const [naam, monsters] of bestanden) {
