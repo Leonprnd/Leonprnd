@@ -70,10 +70,54 @@ async function verklein(asset) {
   );
 }
 
+// Het versturen zelf gaat via XMLHttpRequest en niet via fetch.
+//
+// Dat is geen ouderwetsheid maar noodzaak: Expo vervangt de globale fetch door
+// een eigen, strikte versie die alleen tekst of echte Blobs accepteert. Een
+// bestandsadres ("file:///...") kent die niet, en dan krijg je de melding
+// "Unsupported FormDataPart implementation". XMLHttpRequest loopt via de
+// netwerklaag van React Native zelf, en die weet wél wat een bestandsadres is.
+//
+// Mooi meegenomen: zo krijgen we ook echte voortgang tijdens het versturen.
+function verstuur(formulier, bijVoortgang) {
+  return new Promise((gelukt, mislukt) => {
+    const verzoek = new XMLHttpRequest();
+    verzoek.open('POST', uploadAdres);
+    verzoek.timeout = 90000;
+
+    if (verzoek.upload) {
+      verzoek.upload.onprogress = (gebeurtenis) => {
+        if (bijVoortgang && gebeurtenis.lengthComputable && gebeurtenis.total > 0) {
+          bijVoortgang(gebeurtenis.loaded / gebeurtenis.total);
+        }
+      };
+    }
+
+    verzoek.onload = () => {
+      if (verzoek.status >= 200 && verzoek.status < 300) {
+        try {
+          gelukt(JSON.parse(verzoek.responseText));
+        } catch {
+          mislukt(new Error('Cloudinary gaf een antwoord dat we niet begrijpen.'));
+        }
+      } else {
+        mislukt(new Error(leesFout(verzoek.responseText, verzoek.status)));
+      }
+    };
+
+    verzoek.onerror = () =>
+      mislukt(new Error('Versturen lukte niet. Check je internetverbinding.'));
+    verzoek.ontimeout = () =>
+      mislukt(new Error('Het versturen duurde te lang. Probeer het nog eens.'));
+
+    verzoek.send(formulier);
+  });
+}
+
 // Zet één gekozen foto bij Cloudinary neer en geef terug wat we in Firestore
 // bewaren. De mapnaam bevat jullie koppelcode en het nummer van het moment,
 // zodat je in Cloudinary terugziet waar een foto bij hoort.
-export async function uploadFoto(code, momentId, asset) {
+export async function uploadFoto(code, momentId, asset, bijVoortgang) {
   if (!cloudinaryIsIngesteld) {
     throw new Error(
       'Cloudinary is nog niet ingesteld. Vul EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME en EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET in je .env in.',
@@ -91,15 +135,7 @@ export async function uploadFoto(code, momentId, asset) {
   formulier.append('upload_preset', uploadPreset);
   formulier.append('folder', `ons-plekje/${normaliseerCode(code)}/${momentId}`);
 
-  // Geen Content-Type meegeven: fetch zet die zelf goed, inclusief de
-  // scheidingstekens die bij een formulier horen.
-  const antwoord = await fetch(uploadAdres, { method: 'POST', body: formulier });
-
-  if (!antwoord.ok) {
-    throw new Error(leesFout(await antwoord.text(), antwoord.status));
-  }
-
-  const gegevens = await antwoord.json();
+  const gegevens = await verstuur(formulier, bijVoortgang);
 
   return {
     url: gegevens.secure_url,
@@ -113,9 +149,11 @@ export async function uploadFotos(code, momentId, assets, bijVoortgang) {
   const klaar = [];
   for (let i = 0; i < assets.length; i += 1) {
     // Eén voor één: tegelijk versturen vreet geheugen op een telefoon.
-    const foto = await uploadFoto(code, momentId, assets[i]);
+    const foto = await uploadFoto(code, momentId, assets[i], (deel) => {
+      if (bijVoortgang) bijVoortgang(i, assets.length, deel);
+    });
     klaar.push(foto);
-    if (bijVoortgang) bijVoortgang(i + 1, assets.length);
+    if (bijVoortgang) bijVoortgang(i + 1, assets.length, 0);
   }
   return klaar;
 }

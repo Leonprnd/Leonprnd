@@ -161,8 +161,11 @@ export default function NieuwMoment() {
       let alleFotos = oudeFotos;
       if (nieuweFotos.length) {
         setVoortgang({ klaar: 0, totaal: nieuweFotos.length });
-        const geupload = await uploadFotos(code, momentId, nieuweFotos, (klaar, totaal) =>
-          setVoortgang({ klaar, totaal }),
+        const geupload = await uploadFotos(
+          code,
+          momentId,
+          nieuweFotos,
+          (klaar, totaal, deel) => setVoortgang({ klaar, totaal, deel: deel || 0 }),
         );
         alleFotos = [...oudeFotos, ...geupload];
       }
@@ -296,10 +299,25 @@ export default function NieuwMoment() {
       <View style={[stijl.onderbalk, { paddingBottom: rand.bottom + ruimte.m }]}>
         {voortgang ? (
           <View style={stijl.voortgang}>
-            <ActivityIndicator color={kleuren.roze} />
-            <Text style={stijl.voortgangTekst}>
-              Foto {voortgang.klaar + 1} van {voortgang.totaal} aan het versturen...
-            </Text>
+            <View style={stijl.voortgangRij}>
+              <ActivityIndicator color={kleuren.roze} />
+              <Text style={stijl.voortgangTekst}>
+                Foto {Math.min(voortgang.klaar + 1, voortgang.totaal)} van{' '}
+                {voortgang.totaal} aan het versturen...
+              </Text>
+            </View>
+            <View style={stijl.balkAchter}>
+              <View
+                style={[
+                  stijl.balkVoor,
+                  {
+                    width: `${Math.round(
+                      ((voortgang.klaar + (voortgang.deel || 0)) / voortgang.totaal) * 100,
+                    )}%`,
+                  },
+                ]}
+              />
+            </View>
           </View>
         ) : (
           <Knop
@@ -493,6 +511,14 @@ const stijl = StyleSheet.create({
     color: kleuren.inktZacht,
     marginTop: ruimte.m,
   },
-  voortgang: { flexDirection: 'row', alignItems: 'center', gap: ruimte.m, height: 54 },
+  voortgang: { height: 54, justifyContent: 'center', gap: 8 },
+  voortgangRij: { flexDirection: 'row', alignItems: 'center', gap: ruimte.m },
+  balkAchter: {
+    height: 5,
+    borderRadius: rond.vol,
+    backgroundColor: kleuren.rozeZacht,
+    overflow: 'hidden',
+  },
+  balkVoor: { height: '100%', borderRadius: rond.vol, backgroundColor: kleuren.roze },
   voortgangTekst: { fontFamily: letters.halfvet, fontSize: 14.5, color: kleuren.inkt },
 });

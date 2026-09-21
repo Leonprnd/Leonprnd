@@ -420,6 +420,12 @@ plak ze opnieuw.
 staat de upload-preset nog op *Signed* in plaats van *Unsigned*, of is de
 naam van de preset of de cloud name verkeerd overgetypt (let op hoofdletters).
 
+**"Unsupported FormDataPart implementation"** — die hoort er niet meer te
+zijn. Kwam je hem tegen op een oudere versie: haal `git pull` en start opnieuw
+op. Expo vervangt de globale `fetch` door een strikte variant die geen
+bestandsadressen accepteert; de app verstuurt foto's daarom via
+XMLHttpRequest.
+
 **"Deze code kennen we niet"** — in onze codes zitten nooit een B, I, L, O, S
 of Z; die lijken te veel op 8, 1, 0, 5 en 2. Kijk dus nog eens goed naar de
 code die je overtypt.
