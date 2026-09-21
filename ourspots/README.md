@@ -325,21 +325,28 @@ de repo, publiceren doe je in de kopie. Dat zijn twee verschillende mappen, en
 dat is precies de bedoeling.
 
 ```bash
-cd C:\Users\<jij>\ourspots                       # de repo: hier bouw je
+cd C:\Users\<jij>\ourspots                  # de repo: hier bouw je
 git pull origin claude/clever-bohr-kiluu9
 npm run build:web
 
-rmdir /s /q C:\Users\<jij>\ourspots-web\_expo   # oude bundel eruit
 xcopy /E /I /Y dist C:\Users\<jij>\ourspots-web
 
-cd C:\Users\<jij>\ourspots-web                   # de kopie: hier publiceer je
+cd C:\Users\<jij>\ourspots-web              # de kopie: hier publiceer je
 vercel --prod
 ```
 
-Het adres blijft hetzelfde. Gooi de map `ourspots-web` nooit in zijn geheel
-weg: daar zit een verborgen mapje `.vercel` in dat onthoudt bij welk project
-hij hoort. Weg is weg, en dan vraagt Vercel weer van voren af aan welk project
-het is.
+Het adres blijft hetzelfde. Twee dingen die je beter niet doet:
+
+* **Gooi `ourspots-web` niet weg** voordat je kopieert. Daar zit een verborgen
+  mapje `.vercel` in dat onthoudt bij welk project hij hoort. Weg is weg, en
+  dan vraagt Vercel weer van voren af aan welk project het is.
+* **Leeg de map `_expo` niet** "om schoon te beginnen". `xcopy` schrijft er
+  gewoon overheen, dus dat is nergens voor nodig — en gaat het kopiëren
+  daarna mis, dan staat de app online zonder bundel. Dat geeft een spierwitte
+  pagina zonder foutmelding, want alles wat niet gevonden wordt kreeg
+  `index.html` terug, ook de JavaScript. Sinds deze versie sluit `vercel.json`
+  de echte bestanden uit van die regel, zodat je dan een eerlijke 404 ziet, en
+  stopt `npm run build:web` met een foutmelding als er iets mist.
 
 [Netlify](https://app.netlify.com/drop) kan ook: sleep de map `dist` gewoon
 het venster in. Daar speelt het git-probleem niet.

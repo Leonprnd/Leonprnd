@@ -89,9 +89,35 @@ console.log('manifest.json geschreven.');
 
 // --- Zodat verversen op een subpagina geen 404 geeft ------------------------
 
-const vercel = { rewrites: [{ source: '/(.*)', destination: '/index.html' }] };
+// Alles naar index.html, behálve de echte bestanden. Die uitzondering is geen
+// franje: verstuur je per ongeluk een kopie zonder de map _expo, dan zou de
+// bundel óók index.html krijgen. De browser krijgt dan HTML waar hij
+// JavaScript verwacht, weigert dat uit te voeren, en je ziet een spierwitte
+// pagina zonder één foutmelding. Met deze uitzondering krijg je een eerlijke
+// 404 en weet je meteen wat er mist.
+const EIGEN_BESTANDEN = ['_expo/', 'assets/', 'favicon\\.ico', 'manifest\\.json', 'icon\\.png'];
+const vercel = {
+  rewrites: [
+    { source: `/((?!${EIGEN_BESTANDEN.join('|')}).*)`, destination: '/index.html' },
+  ],
+};
 writeFileSync(join(UIT, 'vercel.json'), `${JSON.stringify(vercel, null, 2)}\n`);
-writeFileSync(join(UIT, '_redirects'), '/*    /index.html   200\n');
+writeFileSync(
+  join(UIT, '_redirects'),
+  '# Netlify kijkt eerst of het bestand bestaat, en pas daarna hier.\n' +
+    '/*    /index.html   200\n',
+);
 console.log('vercel.json en _redirects geschreven (voor Vercel en Netlify).');
+
+// --- Staat er ook echt in wat index.html opvraagt? --------------------------
+
+// Een bundel die ontbreekt kost je anders een deploy en een halfuur zoeken.
+const gevraagd = [...html.matchAll(/(?:src|href)="(\/[^"]+)"/g)].map((m) => m[1]);
+const kwijt = gevraagd.filter((pad) => !existsSync(join(UIT, pad.slice(1))));
+if (kwijt.length) {
+  console.error(`\nindex.html vraagt om bestanden die er niet zijn:`);
+  kwijt.forEach((pad) => console.error(`  ${pad}`));
+  process.exit(1);
+}
 
 console.log(`\nKlaar. De webversie staat in ${UIT}.`);
