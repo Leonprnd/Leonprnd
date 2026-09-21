@@ -1,0 +1,16 @@
+{
+  "name": "ourspots-regels-test",
+  "private": true,
+  "type": "module",
+  "description": "Test de Firestore-beveiligingsregels tegen de echte emulator.",
+  "scripts": {
+    "test": "cd .. && firebase emulators:exec --only firestore --project ourspots-test \"node test-regels/regels.test.mjs\"",
+    "test:taal": "node --test taal.test.mjs",
+    "test:alles": "npm run test:taal && npm test"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "firebase": "^12.19.0",
+    "firebase-tools": "^14.0.0"
+  }
+}

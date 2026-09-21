@@ -2,10 +2,11 @@
 
 In dit repository staan twee losse projecten.
 
-* **[`ons-plekje/`](./ons-plekje)** — een telefoon-app voor stelletjes: een
-  kaart waarop je samen plekjes vastlegt met datum, verhaal en foto's, plus
-  live locatie delen. Expo + Firebase + Google Maps. Opzetten staat in
-  [`ons-plekje/README.md`](./ons-plekje/README.md).
+* **[`ourspots/`](./ourspots)** — een telefoon-app voor stelletjes: een kaart
+  waarop je samen plekken vastlegt met datum, verhaal en foto's, plus live
+  locatie delen. In het Nederlands, Engels en Spaans. Expo + Firebase +
+  Cloudinary, met OpenStreetMap of Google Maps. Opzetten staat in
+  [`ourspots/README.md`](./ourspots/README.md).
 * De rest van dit repository is **Onderdelenbeheer PUUUR**, hieronder
   beschreven.
 
