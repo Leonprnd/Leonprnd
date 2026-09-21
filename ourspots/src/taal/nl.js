@@ -99,7 +99,6 @@ export default {
     tabblad: 'Kaart',
     leegTitel: 'Nog geen plekken',
     leegTekst: 'Houd de kaart ingedrukt op een plek waar jullie samen waren, of tik hier.',
-    geheimChip: 'Alleen jij ziet deze kaart — tik om de code te delen',
     partnerGeenLocatie: (naam) => `${naam} deelt nu geen locatie`,
     jijGeenLocatie: 'Je deelt je locatie niet',
     erbij: (naam) => `${naam} is erbij`,
@@ -162,9 +161,6 @@ export default {
     kleur: 'Kleur',
 
     taalKop: 'Taal',
-    geluidKop: 'Geluid',
-    geluidEffecten: 'Geluidjes',
-    geluidEffectenTekst: 'Korte tonen bij opslaan en bladeren.',
 
     herstelKop: 'Als iemand er niet meer in komt',
     herstelTekst: 'Raakt een van jullie toegang kwijt — nieuwe telefoon, app opnieuw geïnstalleerd, browsergegevens gewist — dan ziet de app die persoon als iemand nieuw. De kaart zit dan vol. Haal hem of haar hier van de kaart en laat de code opnieuw invullen; alle plekken blijven staan.',

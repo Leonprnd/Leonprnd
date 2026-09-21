@@ -18,6 +18,7 @@ import {
 import { Caveat_600SemiBold, Caveat_700Bold } from '@expo-google-fonts/caveat';
 
 import { AppProvider } from '../src/state/AppProvider';
+import { MeldingProvider } from '../src/components/Melding';
 import { kleuren } from '../src/theme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -46,32 +47,34 @@ export default function Schil() {
     <GestureHandlerRootView style={stijl.vol}>
       <SafeAreaProvider>
         <AppProvider>
-          <StatusBar style="dark" />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: kleuren.rozeWolk },
-              animation: 'slide_from_right',
-            }}
-          >
-            <Stack.Screen name="index" options={{ animation: 'fade' }} />
-            <Stack.Screen name="welkom" options={{ animation: 'fade' }} />
-            <Stack.Screen name="koppelen" />
-            <Stack.Screen name="(samen)" options={{ animation: 'fade' }} />
-            <Stack.Screen
-              name="moment/nieuw"
-              options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
-            />
-            <Stack.Screen
-              name="moment/[id]"
-              options={{
-                animation: 'slide_from_bottom',
-                // Geen wegveeggebaar: dat pakte de veeg van de fotostapel af,
-                // waardoor je halverwege het bladeren terugsprong naar de kaart.
-                gestureEnabled: false,
+          <MeldingProvider>
+            <StatusBar style="dark" />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: kleuren.rozeWolk },
+                animation: 'slide_from_right',
               }}
-            />
-          </Stack>
+            >
+              <Stack.Screen name="index" options={{ animation: 'fade' }} />
+              <Stack.Screen name="welkom" options={{ animation: 'fade' }} />
+              <Stack.Screen name="koppelen" />
+              <Stack.Screen name="(samen)" options={{ animation: 'fade' }} />
+              <Stack.Screen
+                name="moment/nieuw"
+                options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+              />
+              <Stack.Screen
+                name="moment/[id]"
+                options={{
+                  animation: 'slide_from_bottom',
+                  // Geen wegveeggebaar: dat pakte de veeg van de fotostapel af,
+                  // waardoor je halverwege het bladeren terugsprong naar de kaart.
+                  gestureEnabled: false,
+                }}
+              />
+            </Stack>
+          </MeldingProvider>
         </AppProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

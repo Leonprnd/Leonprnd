@@ -5,6 +5,7 @@
 // een telefoonscherm mooi te blijven; Cloudinary maakt daar daarna zelf de
 // juiste maat van voor waar de foto getoond wordt.
 
+import { Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import {
@@ -70,6 +71,22 @@ async function verklein(asset) {
   );
 }
 
+// Een foto in de vorm die het formulier hier begrijpt.
+//
+// Op een telefoon is dat {uri, type, name}: de netwerklaag van React Native
+// leest het bestand dan zelf van schijf. In een browser bestaat die vorm niet.
+// Daar wordt zo'n object gewoon tekst — je stuurt dan letterlijk "[object
+// Object]" naar Cloudinary in plaats van een foto, en de upload mislukt altijd.
+// Een browser wil een Blob, en die halen we op bij het adres dat de
+// fotokiezer ons gaf (data: of blob:, allebei gewoon op te halen).
+async function alsBestand(uri) {
+  if (Platform.OS !== 'web') {
+    return { uri, type: 'image/jpeg', name: 'foto.jpg' };
+  }
+  const antwoord = await fetch(uri);
+  return antwoord.blob();
+}
+
 // Het versturen zelf gaat via XMLHttpRequest en niet via fetch.
 //
 // Dat is geen ouderwetsheid maar noodzaak: Expo vervangt de globale fetch door
@@ -126,12 +143,14 @@ export async function uploadFoto(code, momentId, asset, bijVoortgang) {
 
   const klein = await verklein(asset);
 
+  const bestand = await alsBestand(klein.uri);
+
   const formulier = new FormData();
-  formulier.append('file', {
-    uri: klein.uri,
-    type: 'image/jpeg',
-    name: 'foto.jpg',
-  });
+  if (Platform.OS === 'web') {
+    formulier.append('file', bestand, 'foto.jpg');
+  } else {
+    formulier.append('file', bestand);
+  }
   formulier.append('upload_preset', uploadPreset);
   formulier.append('folder', `ourspots/${normaliseerCode(code)}/${momentId}`);
 

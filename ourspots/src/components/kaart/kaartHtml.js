@@ -315,21 +315,24 @@ export const kaartHtml = `<!DOCTYPE html>
     // precies wat de kaart leesbaar houdt.
     if (licht >= 0.99) return null;
 
-    // Water houdt zijn blauw, maar vriendelijker.
+    // Water krijgt zijn blauw stevig terug. De kleur op de kaart moet van de
+    // grond komen, niet van een warm waas eroverheen — dat maakt alles alleen
+    // maar sepia.
     if (kracht > 0.03 && tint >= 170 && tint < 265) {
-      return uitHsl(198, Math.max(kracht, 0.34), Math.min(0.92, licht + 0.04), doorzicht);
+      return uitHsl(200, Math.max(kracht, 0.48), Math.min(0.9, licht + 0.02), doorzicht);
     }
-    // Parken en bos zijn in positron vrijwel grijs; net genoeg groen terug.
+    // Parken en bos zijn in positron vrijwel grijs; die worden weer groen.
     if (kracht > 0.03 && tint >= 80 && tint < 170) {
-      return uitHsl(96, Math.min(0.3, Math.max(kracht, 0.24)), Math.min(0.95, licht + 0.02), doorzicht);
+      return uitHsl(104, Math.max(kracht, 0.36), Math.min(0.93, licht), doorzicht);
     }
     // Al duidelijk gekleurd: afblijven.
     if (kracht >= 0.18) return null;
 
-    // En de rest is grijs. Licht grijs wordt warme grond, donker grijs wordt
-    // de inktkleur van de app.
-    if (licht > 0.9) return uitHsl(26, 0.4, Math.min(0.98, licht + 0.005), doorzicht);
-    if (licht > 0.6) return uitHsl(26, 0.26, licht, doorzicht);
+    // En de rest is grijs. Die houden we bijna neutraal — net een zweem warmte,
+    // zodat water en groen het werk doen — en donker grijs wordt de inktkleur
+    // van de app.
+    if (licht > 0.9) return uitHsl(32, 0.22, Math.min(0.98, licht + 0.005), doorzicht);
+    if (licht > 0.6) return uitHsl(32, 0.18, licht, doorzicht);
     if (licht > 0.32) return uitHsl(345, 0.16, licht, doorzicht);
     return uitHsl(340, 0.2, licht, doorzicht);
   }

@@ -398,8 +398,6 @@ daarna jullie code in. Verder niets.
 
 **Waar je op moet rekenen:**
 
-* Het geluid begint pas na je eerste tik op het scherm. Safari staat geen
-  geluid toe voordat je iets hebt aangeraakt; daar is niets aan te doen.
 * Je locatie delen werkt, maar alleen zolang de app open is — net als in de
   telefoonversie.
 * **Wis de websitegegevens van dit adres niet.** Je inlog zit daarin, en je
@@ -477,10 +475,10 @@ locatie.
 taal van je telefoon; daarna stel je hem in bij *Wij*. Alles gaat mee: de
 schermen, de namen van de momenten, de datums en de foutmeldingen.
 
-**Geluid** — korte tonen bij het opslaan, bladeren en een plek zetten. Geen
-achtergrondgeluid; dat is een bewuste keuze. Uit te zetten bij *Wij*. De
-geluiden worden gemaakt door `scripts/maak-geluiden.mjs`; wil je echte
-opnames, vervang dan de bestanden in `assets/geluid/`.
+**Geen geluid** — de app maakt bewust geen enkel geluidje. Dat klinkt streng,
+maar op een telefoon onderbreekt elk app-geluid de muziek die je aan het
+luisteren bent, en daar is een kaart vol herinneringen het niet waard. Wat er
+overblijft is de trilling bij een tik, en die stoort niets.
 
 **Als iemand er niet meer in komt** — raakt een van jullie de toegang kwijt
 (nieuwe telefoon, app opnieuw geïnstalleerd, websitegegevens gewist), dan ziet

@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Switch,
   Pressable,
-  Alert,
   Share,
 } from 'react-native';
 import { router } from 'expo-router';
@@ -26,7 +25,7 @@ import Hartjes from '../../src/components/Hartjes';
 import { typeVan } from '../../src/momentTypes';
 import { toonCode } from '../../src/utils/code';
 import { talen } from '../../src/taal';
-import { speel } from '../../src/services/geluid';
+import { useMelding } from '../../src/components/Melding';
 import { dagenSinds, langeDatum, volgendeMijlpaal, geledenKort } from '../../src/utils/datum';
 import { telFotos, eersteMoment } from '../../src/services/momenten';
 import { afstandInMeter, afstandTekst } from '../../src/utils/afstand';
@@ -50,10 +49,9 @@ export default function Wij() {
     verwijderPartner,
     taal,
     kiesTaal,
-    geluidAan,
-    setGeluidAan,
     t,
   } = useApp();
+  const { meld, vraag } = useMelding();
 
   const rand = useSafeAreaInsets();
   const [gekopieerd, setGekopieerd] = useState(false);
@@ -96,7 +94,7 @@ export default function Wij() {
     Haptics.selectionAsync().catch(() => {});
     const gelukt = await zetDelen(aan);
     if (aan && !gelukt) {
-      Alert.alert(t.wij.geenToegangTitel, t.wij.geenToegangTekst);
+      meld(t.wij.geenToegangTitel, t.wij.geenToegangTekst);
     }
   }
 
@@ -106,33 +104,26 @@ export default function Wij() {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
   }
 
-  function vraagPartnerVerwijderen() {
-    Alert.alert(t.wij.herstelTitel, t.wij.herstelBevestig, [
-      { text: t.algemeen.laten, style: 'cancel' },
-      {
-        text: t.algemeen.weggooien,
-        style: 'destructive',
-        onPress: () => verwijderPartner(),
-      },
-    ]);
+  async function vraagPartnerVerwijderen() {
+    const zeker = await vraag({
+      titel: t.wij.herstelTitel,
+      tekst: t.wij.herstelBevestig,
+      bevestig: t.algemeen.weggooien,
+      gevaarlijk: true,
+    });
+    if (zeker) await verwijderPartner();
   }
 
-  function vraagLoskoppelen() {
-    Alert.alert(
-      t.wij.loskoppelenTitel,
-      t.wij.loskoppelenTekst,
-      [
-        { text: t.algemeen.laten, style: 'cancel' },
-        {
-          text: t.algemeen.weggooien,
-          style: 'destructive',
-          onPress: async () => {
-            await koppelLos();
-            router.replace('/');
-          },
-        },
-      ],
-    );
+  async function vraagLoskoppelen() {
+    const zeker = await vraag({
+      titel: t.wij.loskoppelenTitel,
+      tekst: t.wij.loskoppelenTekst,
+      bevestig: t.algemeen.weggooien,
+      gevaarlijk: true,
+    });
+    if (!zeker) return;
+    await koppelLos();
+    router.replace('/');
   }
 
   return (
@@ -394,7 +385,6 @@ export default function Wij() {
             key={keuze.code}
             onPress={() => {
               Haptics.selectionAsync().catch(() => {});
-              speel('tik');
               kiesTaal(keuze.code);
             }}
             style={({ pressed }) => [
@@ -413,27 +403,6 @@ export default function Wij() {
           </Pressable>
         ))}
       </View>
-
-      {/* --- Geluid --- */}
-      <Kopje>{t.wij.geluidKop}</Kopje>
-      <Kaartje>
-        <View style={stijl.schakelRij}>
-          <View style={{ flex: 1 }}>
-            <Text style={stijl.schakelTitel}>{t.wij.geluidEffecten}</Text>
-            <Text style={stijl.schakelTekst}>{t.wij.geluidEffectenTekst}</Text>
-          </View>
-          <Switch
-            value={geluidAan}
-            onValueChange={(aan) => {
-              setGeluidAan(aan);
-              if (aan) setTimeout(() => speel('tik'), 60);
-            }}
-            trackColor={{ false: kleuren.lijn, true: kleuren.roze }}
-            thumbColor={kleuren.wit}
-          />
-        </View>
-
-      </Kaartje>
 
       {gekoppeld ? (
         <>

@@ -7,14 +7,12 @@ import * as Haptics from 'expo-haptics';
 import { kleuren, letters, ruimte, rond, schaduw } from '../theme';
 import { bijzondereTypes, gewoneTypes } from '../momentTypes';
 import { useApp } from '../state/AppProvider';
-import { speel } from '../services/geluid';
 
 export default function TypeKiezer({ gekozen, opKiezen }) {
   const { t } = useApp();
 
   function kies(id) {
     Haptics.selectionAsync().catch(() => {});
-    speel('tik');
     opKiezen(id);
   }
 

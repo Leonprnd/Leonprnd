@@ -31,7 +31,6 @@ import { useAnimatie, useAnimatieXY } from '../utils/animatie';
 import { fotoUrl, STAPEL, GROOT } from '../cloudinary';
 import { korteDatum } from '../utils/datum';
 import { useApp } from '../state/AppProvider';
-import { speel } from '../services/geluid';
 
 const SCHERM = Dimensions.get('window');
 const ZICHTBAAR = 4; // zoveel polaroids zie je in de stapel
@@ -99,7 +98,6 @@ export default function FotoStapel({ fotos, datum, hoogte = 300, sleutel = 'stap
       if (verGenoeg && !bezigRef.current) {
         bezigRef.current = true;
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-        speel('blader');
         Animated.timing(pan, {
           toValue: {
             x: translationX > 0 ? SCHERM.width : -SCHERM.width,
@@ -184,7 +182,6 @@ export default function FotoStapel({ fotos, datum, hoogte = 300, sleutel = 'stap
               onPress={() => {
                 if (!isBovenste) return;
                 Haptics.selectionAsync().catch(() => {});
-                speel('tik');
                 setGroot(fotoIndex);
               }}
               style={stijl.polaroidBinnen}

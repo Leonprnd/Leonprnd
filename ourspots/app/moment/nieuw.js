@@ -11,7 +11,6 @@ import {
   ScrollView,
   StyleSheet,
   Pressable,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
@@ -38,11 +37,12 @@ import {
   MAX_FOTOS_PER_MOMENT,
 } from '../../src/services/fotos';
 import { vandaagSleutel } from '../../src/utils/datum';
-import { speel } from '../../src/services/geluid';
+import { useMelding } from '../../src/components/Melding';
 
 export default function NieuwMoment() {
   const { lat, lng, bewerk } = useLocalSearchParams();
   const { code, uid, profiel, momenten, t } = useApp();
+  const { meld, vraag } = useMelding();
   const rand = useSafeAreaInsets();
 
   const bestaand = bewerk ? momenten.find((m) => m.id === bewerk) : null;
@@ -96,7 +96,7 @@ export default function NieuwMoment() {
   const voegFotosToe = useCallback(
     async (bron) => {
       if (ruimteOver <= 0) {
-        Alert.alert(t.algemeen.oeps, t.moment.vol(MAX_FOTOS_PER_MOMENT));
+        meld(t.algemeen.oeps, t.moment.vol(MAX_FOTOS_PER_MOMENT));
         return;
       }
 
@@ -104,7 +104,7 @@ export default function NieuwMoment() {
         bron === 'camera' ? await maakMetCamera() : await kiesUitGalerij(ruimteOver);
 
       if (resultaat.geweigerd) {
-        Alert.alert(
+        meld(
           t.algemeen.oeps,
           bron === 'camera' ? t.moment.geenToegangCamera : t.moment.geenToegangFotos,
         );
@@ -116,7 +116,7 @@ export default function NieuwMoment() {
         setNieuweFotos((oud) => [...oud, ...resultaat.fotos].slice(0, MAX_FOTOS_PER_MOMENT));
       }
     },
-    [ruimteOver, t],
+    [ruimteOver, t, meld],
   );
 
   function gooiNieuweWeg(index) {
@@ -132,7 +132,7 @@ export default function NieuwMoment() {
   async function bewaar() {
     if (!code || !uid) return;
     if (!Number.isFinite(breedte) || !Number.isFinite(lengte)) {
-      Alert.alert(t.algemeen.oeps, t.moment.opslaanMislukt);
+      meld(t.algemeen.oeps, t.moment.opslaanMislukt);
       return;
     }
 
@@ -173,7 +173,6 @@ export default function NieuwMoment() {
 
       setVoortgang(null);
       setFeest(true);
-      speel(bestaand ? 'bewaard' : 'pin');
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
 
       setTimeout(() => {
@@ -183,32 +182,27 @@ export default function NieuwMoment() {
     } catch (e) {
       setBezig(false);
       setVoortgang(null);
-      Alert.alert(t.algemeen.oeps, e?.message || t.moment.opslaanMislukt);
+      meld(t.algemeen.oeps, e?.message || t.moment.opslaanMislukt);
     }
   }
 
-  function gooiMomentWeg() {
-    Alert.alert(
-      t.moment.weggooienTitel,
-      t.moment.weggooienTekst,
-      [
-        { text: t.algemeen.laten, style: 'cancel' },
-        {
-          text: t.algemeen.weggooien,
-          style: 'destructive',
-          onPress: async () => {
-            setBezig(true);
-            try {
-              await verwijderMoment(code, bestaand);
-              router.replace('/(samen)/kaart');
-            } catch {
-              setBezig(false);
-              Alert.alert(t.algemeen.oeps, t.algemeen.oeps);
-            }
-          },
-        },
-      ],
-    );
+  async function gooiMomentWeg() {
+    const zeker = await vraag({
+      titel: t.moment.weggooienTitel,
+      tekst: t.moment.weggooienTekst,
+      bevestig: t.algemeen.weggooien,
+      gevaarlijk: true,
+    });
+    if (!zeker) return;
+
+    setBezig(true);
+    try {
+      await verwijderMoment(code, bestaand);
+      router.replace('/(samen)/kaart');
+    } catch (e) {
+      setBezig(false);
+      meld(t.algemeen.oeps, e?.message || t.moment.opslaanMislukt);
+    }
   }
 
   const gekozenType = typeVan(type);

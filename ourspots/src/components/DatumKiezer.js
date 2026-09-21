@@ -7,7 +7,6 @@ import * as Haptics from 'expo-haptics';
 import { kleuren, letters, ruimte, rond, schaduw } from '../theme';
 import { naarDate, naarDatumSleutel, langeDatum, vandaagSleutel } from '../utils/datum';
 import { useApp } from '../state/AppProvider';
-import { speel } from '../services/geluid';
 
 
 
@@ -146,7 +145,6 @@ function Kalender({ t, open, datum, opKiezen, opSluiten }) {
                       key={sleutel}
                       onPress={() => {
                         Haptics.selectionAsync().catch(() => {});
-                        speel('tik');
                         opKiezen(sleutel);
                       }}
                       style={[

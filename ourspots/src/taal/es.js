@@ -98,7 +98,6 @@ export default {
     tabblad: 'Mapa',
     leegTitel: 'Aún no hay lugares',
     leegTekst: 'Mantén pulsado el mapa donde estuvisteis juntos, o toca aquí.',
-    geheimChip: 'Solo tú ves este mapa — toca para compartir el código',
     partnerGeenLocatie: (naam) => `${naam} no comparte su ubicación`,
     jijGeenLocatie: 'No compartes tu ubicación',
     erbij: (naam) => `${naam} se ha unido`,
@@ -161,9 +160,6 @@ export default {
     kleur: 'Color',
 
     taalKop: 'Idioma',
-    geluidKop: 'Sonido',
-    geluidEffecten: 'Efectos de sonido',
-    geluidEffectenTekst: 'Tonos cortos al guardar y navegar.',
 
     herstelKop: 'Si alguien pierde el acceso',
     herstelTekst: 'Si uno de vosotros pierde el acceso — móvil nuevo, app reinstalada, datos del navegador borrados — la app ve a esa persona como alguien nuevo, y el mapa está lleno. Quítala aquí y deja que introduzca el código otra vez; todos los lugares se quedan.',

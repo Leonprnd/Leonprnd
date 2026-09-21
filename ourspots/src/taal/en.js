@@ -98,7 +98,6 @@ export default {
     tabblad: 'Map',
     leegTitel: 'No spots yet',
     leegTekst: 'Press and hold the map somewhere you were together, or tap here.',
-    geheimChip: 'Only you can see this map — tap to share the code',
     partnerGeenLocatie: (naam) => `${naam} isn’t sharing a location`,
     jijGeenLocatie: 'You’re not sharing your location',
     erbij: (naam) => `${naam} joined`,
@@ -161,9 +160,6 @@ export default {
     kleur: 'Colour',
 
     taalKop: 'Language',
-    geluidKop: 'Sound',
-    geluidEffecten: 'Sound effects',
-    geluidEffectenTekst: 'Short tones when saving and browsing.',
 
     herstelKop: 'If someone gets locked out',
     herstelTekst: 'If one of you loses access — new phone, app reinstalled, browser data cleared — the app sees that person as someone new, and the map is full. Remove them here and let them enter the code again; every spot stays.',

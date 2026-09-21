@@ -20,7 +20,6 @@ import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../../src/state/AppProvider';
 import Hartjes from '../../src/components/Hartjes';
-import { speel } from '../../src/services/geluid';
 import { kleuren, letters, ruimte, rond, schaduw, verlopen } from '../../src/theme';
 import Kaartweergave from '../../src/components/kaart';
 import MomentKaartje from '../../src/components/MomentKaartje';
@@ -36,7 +35,6 @@ export default function Kaart() {
     mijnPositie,
     partnerLocatie,
     partner,
-    gekoppeld,
     deeltLocatie,
     t,
   } = useApp();
@@ -116,7 +114,6 @@ export default function Kaart() {
 
   function nieuwOpPlek(lat, lng) {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-    speel('tik');
     router.push({
       pathname: '/moment/nieuw',
       params: { lat: String(lat), lng: String(lng) },
@@ -138,7 +135,7 @@ export default function Kaart() {
         partnerLocatie={partnerLocatie}
         mijnPositie={mijnPositie}
         toonMij={deeltLocatie}
-        marges={{ boven: rand.top + 90, onder: 210 }}
+        marges={{ boven: rand.top + 90, onder: 195 }}
         opMomentPress={(id) => {
           const moment = momenten.find((m) => m.id === id);
           if (!moment) return;
@@ -154,15 +151,6 @@ export default function Kaart() {
 
       {/* --- Onderin: de herinneringen --- */}
       <View style={stijl.onder} pointerEvents="box-none">
-        {!gekoppeld ? (
-          <Pressable
-            onPress={() => router.push('/(samen)/wij')}
-            style={({ pressed }) => [stijl.geheimChip, pressed && { opacity: 0.7 }]}
-          >
-            <Text style={stijl.geheimTekst}>{t.kaart.geheimChip}</Text>
-          </Pressable>
-        ) : null}
-
         {!momentenGeladen ? (
           <View style={[stijl.leegKaartje, schaduw.kaart]}>
             <ActivityIndicator color={kleuren.roze} />
@@ -213,7 +201,7 @@ export default function Kaart() {
         style={({ pressed }) => [
           stijl.plus,
           schaduw.kaart,
-          { bottom: 210 },
+          { bottom: 132 },
           pressed && { transform: [{ scale: 0.93 }] },
         ]}
       >
@@ -245,15 +233,6 @@ const stijl = StyleSheet.create({
   vol: { flex: 1, backgroundColor: kleuren.creme },
 
   onder: { position: 'absolute', left: 0, right: 0, bottom: ruimte.l },
-  geheimChip: {
-    alignSelf: 'center',
-    marginBottom: ruimte.s,
-    backgroundColor: 'rgba(255,255,255,0.94)',
-    borderRadius: rond.vol,
-    paddingHorizontal: ruimte.m,
-    paddingVertical: 6,
-  },
-  geheimTekst: { fontFamily: letters.halfvet, fontSize: 12, color: kleuren.rozeDiep },
   lijst: { paddingHorizontal: ruimte.l, gap: ruimte.m },
 
   leegKaartje: {
@@ -277,8 +256,8 @@ const stijl = StyleSheet.create({
   plus: {
     position: 'absolute',
     right: ruimte.l,
-    width: 58,
-    height: 58,
+    width: 52,
+    height: 52,
     borderRadius: rond.vol,
     alignItems: 'center',
     justifyContent: 'center',
@@ -287,8 +266,8 @@ const stijl = StyleSheet.create({
   },
   plusTeken: {
     fontFamily: letters.licht,
-    fontSize: 34,
-    lineHeight: 39,
+    fontSize: 30,
+    lineHeight: 34,
     color: kleuren.wit,
   },
 

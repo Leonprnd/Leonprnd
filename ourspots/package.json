@@ -11,7 +11,6 @@
     "icons": "node scripts/maak-iconen.mjs",
     "doctor": "npx expo-doctor",
     "lint": "eslint .",
-    "geluiden": "node scripts/maak-geluiden.mjs",
     "build:web": "expo export --platform web --output-dir dist && node scripts/maak-webversie.mjs dist"
   },
   "dependencies": {
@@ -20,7 +19,6 @@
     "@expo/metro-runtime": "^57.0.16",
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~57.0.24",
-    "expo-audio": "~57.0.5",
     "expo-clipboard": "~57.0.2",
     "expo-constants": "~57.0.19",
     "expo-font": "~57.0.4",
