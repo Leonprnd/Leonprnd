@@ -173,6 +173,16 @@ project en de app.
 
 **Heb je die niet:** laat de twee Maps-regels in je `.env` leeg. Klaar.
 
+> **Let op als Google om een vooruitbetaling vraagt.** Bij sommige accounts
+> eist Google een *prepayment* van zo'n €25 voordat de proefperiode begint.
+> Dat is geen kostenpost maar tegoed — alleen: je maakt het nooit op. De Maps
+> SDK voor Android en iOS is gratis en onbeperkt, dus deze app verbruikt er
+> niets van. Dat tegoed is bovendien niet terug te vragen en vervalt na een
+> jaar, tenzij je later overstapt naar achteraf betalen.
+>
+> Met andere woorden: die €25 levert je alleen een andere ondergrond op de
+> kaart op. Sla het over en gebruik OpenStreetMap.
+
 ### Welke kaart krijg ik dan?
 
 Dat kiest de app zelf, aan de hand van je `.env`:
