@@ -48,6 +48,8 @@ export default {
     fotosKop: 'En voor de foto’s',
     fotosTekst:
       'Maak een gratis account op cloudinary.com, zet onder Settings > Upload een upload-preset op "Unsigned", en vul je cloud name en die presetnaam in je .env in.',
+    mistKop: 'Dit staat nog niet in je .env',
+    mistTekst: 'Vul deze regels in het bestand .env in en start opnieuw op met npx expo start -c.',
     leesmij: 'In README.md staat elke stap uitgeschreven.',
   },
 

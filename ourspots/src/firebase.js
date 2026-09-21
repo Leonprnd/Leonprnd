@@ -25,6 +25,21 @@ export const firebaseIsIngesteld = Boolean(
   config.apiKey && config.projectId && config.appId,
 );
 
+// Welke regels uit .env zijn nog leeg? Handig op het instelscherm: dan hoef je
+// niet te raden wat er mist.
+export function ontbrekendeSleutels() {
+  const nodig = {
+    EXPO_PUBLIC_FIREBASE_API_KEY: config.apiKey,
+    EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN: config.authDomain,
+    EXPO_PUBLIC_FIREBASE_PROJECT_ID: config.projectId,
+    EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: config.messagingSenderId,
+    EXPO_PUBLIC_FIREBASE_APP_ID: config.appId,
+  };
+  return Object.entries(nodig)
+    .filter(([, waarde]) => !waarde)
+    .map(([naam]) => naam);
+}
+
 let app = null;
 let auth = null;
 let db = null;

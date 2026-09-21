@@ -47,6 +47,8 @@ export default {
     fotosKop: 'Y para las fotos',
     fotosTekst:
       'Crea una cuenta gratuita en cloudinary.com, pon un upload preset en "Unsigned" bajo Settings > Upload, y añade tu cloud name y ese nombre de preset a tu .env.',
+    mistKop: 'Falta en tu .env',
+    mistTekst: 'Rellena estas líneas en tu archivo .env y reinicia con npx expo start -c.',
     leesmij: 'README.md explica cada paso.',
   },
 

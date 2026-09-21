@@ -1,0 +1,22 @@
+# Wat er NIET mee hoeft naar de bouwserver van Expo.
+#
+# Let op: zodra dit bestand bestaat, gebruikt EAS het in plaats van
+# .gitignore. Dat is precies de bedoeling: .env staat hier expres NIET in,
+# zodat je sleutels wél meegaan naar de build. Zonder dat start de app op je
+# telefoon met een leeg instelscherm.
+#
+# Dat is veilig: alles met EXPO_PUBLIC_ ervoor komt sowieso in de app terecht
+# en is dus uit te lezen door wie de app heeft. Echte geheimen horen er ook
+# niet in — die staan bij Firebase en Cloudinary achter hun eigen regels.
+
+node_modules/
+.expo/
+dist/
+web-build/
+*.log
+android/
+ios/
+test-regels/
+scripts/
+firebase-debug.log
+firestore-debug.log

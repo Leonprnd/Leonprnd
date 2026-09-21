@@ -266,38 +266,70 @@ nodig — zie hieronder.
 
 ## De app echt op jullie telefoons zetten
 
-Expo Go is prima om te testen, maar als cadeau wil je een echte app met het
-eigen icoontje. Dat gaat met **EAS Build** (gratis voor een paar builds per
-maand):
+Expo Go is om te testen: jij scant een QR-code, en de app draait binnen Expo
+Go. Je partner kan daar niets mee — die heeft een echte app nodig met een
+eigen icoon, die gewoon op het beginscherm staat.
+
+Dat regel je met **EAS Build**: Expo bouwt de app in de cloud, zodat je zelf
+geen Android Studio of Xcode nodig hebt. Gratis voor een paar builds per
+maand.
+
+### Eenmalig klaarzetten
 
 ```bash
 npm install -g eas-cli
-eas login              # maak gratis een account op expo.dev
-eas build:configure
+eas login            # gratis account op expo.dev
+eas init             # koppelt deze map aan een project bij Expo
 ```
 
-**Android** (makkelijkst — je krijgt een bestand dat je kunt installeren):
+`eas.json` staat al in het project, dus `eas build:configure` hoef je niet.
+
+> **Belangrijk:** de bouwserver krijgt jouw `.env` alleen mee dankzij het
+> bestand `.easignore` dat hier staat. Zodra dat bestand bestaat, gebruikt EAS
+> dat in plaats van `.gitignore`, en daar staat `.env` expres niet in. Gooi
+> `.easignore` dus niet weg — dan start de gebouwde app met een leeg
+> instelscherm.
+
+### Android: een bestand dat je kunt doorsturen
 
 ```bash
 eas build --platform android --profile preview
 ```
 
-Je krijgt een link naar een `.apk`. Die stuur je naar je liefje; op Android
-installeer je hem rechtstreeks (even "onbekende bronnen" toestaan).
+Na een minuut of tien krijg je een link naar een `.apk`. Die stuur je naar je
+partner. Op Android open je hem gewoon; de telefoon vraagt één keer om
+installeren uit onbekende bron toe te staan.
 
-**iPhone** is strenger: daarvoor heb je een Apple Developer-account nodig
-(€99 per jaar) óf je gebruikt een gratis build op je eigen telefoon die na
-zeven dagen verloopt:
+Dit is verreweg de makkelijkste route, en genoeg om de app met z'n tweeën te
+gebruiken.
+
+### iPhone: lastiger
+
+Apple laat niet zomaar apps van buiten de App Store toe. Je hebt een
+**Apple Developer-account** nodig (€99 per jaar) om een app aan iemand anders
+te geven:
+
+```bash
+eas build --platform ios --profile preview
+```
+
+Zonder dat account kun je alleen op je eigen iPhone testen met een build die
+na zeven dagen verloopt:
 
 ```bash
 eas build --platform ios --profile development
 ```
 
-Wil je liever eerst gewoon lokaal draaien met Google Maps erbij:
+Heeft je partner een iPhone en wil je die €99 niet uitgeven, dan blijft Expo
+Go de enige optie: jullie scannen dan allebei de QR-code als jij `npm start`
+draait. Dat werkt, maar alleen zolang jouw computer aanstaat.
 
-```bash
-npx expo run:android      # of: npx expo run:ios
-```
+### Later een nieuwe versie
+
+Pas je iets aan, dan bouw je opnieuw met hetzelfde commando en stuur je de
+nieuwe `.apk` door. Voor kleine wijzigingen kun je ook
+[EAS Update](https://docs.expo.dev/eas-update/introduction/) gebruiken; dan
+haalt de app zelf de nieuwe versie op zonder opnieuw te installeren.
 
 ---
 

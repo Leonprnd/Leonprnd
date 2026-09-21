@@ -9,6 +9,7 @@ import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-nat
 import { router } from 'expo-router';
 import { useApp } from '../src/state/AppProvider';
 import { cloudinaryIsIngesteld } from '../src/cloudinary';
+import { ontbrekendeSleutels } from '../src/firebase';
 import { kleuren, letters, ruimte, rond } from '../src/theme';
 import { Titel, Lopend, Kaartje } from '../src/components/basis';
 
@@ -44,6 +45,8 @@ export default function Start() {
 // Zolang de Firebase-sleutels nog niet ingevuld zijn, leggen we hier uit wat
 // er nog moet gebeuren in plaats van een onbegrijpelijke foutmelding te geven.
 function NogInstellen({ t }) {
+  const ontbreekt = ontbrekendeSleutels();
+
   return (
     <ScrollView contentContainerStyle={stijl.uitleg}>
       <Text style={stijl.logo}>🔧</Text>
@@ -52,7 +55,21 @@ function NogInstellen({ t }) {
         {t.instellen.tekst}
       </Lopend>
 
-      <Kaartje style={{ marginTop: ruimte.xl, width: '100%' }}>
+      {ontbreekt.length ? (
+        <Kaartje style={{ marginTop: ruimte.l, width: '100%' }}>
+          <Text style={stijl.stapKop}>{t.instellen.mistKop}</Text>
+          {ontbreekt.map((naam) => (
+            <Text key={naam} style={stijl.sleutel}>
+              {naam}
+            </Text>
+          ))}
+          <Text style={[stijl.stapTekst, { marginTop: ruimte.s }]}>
+            {t.instellen.mistTekst}
+          </Text>
+        </Kaartje>
+      ) : null}
+
+      <Kaartje style={{ marginTop: ruimte.l, width: '100%' }}>
         <Text style={stijl.stapKop}>{t.instellen.kop}</Text>
         {t.instellen.stappen.map((stap, i) => (
           <View key={stap} style={stijl.stap}>
@@ -119,6 +136,12 @@ const stijl = StyleSheet.create({
     justifyContent: 'center',
   },
   stapNummer: { fontFamily: letters.vet, fontSize: 12.5, color: kleuren.rozeDiep },
+  sleutel: {
+    fontFamily: letters.normaal,
+    fontSize: 12,
+    color: kleuren.rood,
+    marginBottom: 2,
+  },
   stapTekst: {
     flex: 1,
     fontFamily: letters.normaal,
