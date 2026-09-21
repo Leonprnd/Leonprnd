@@ -10,6 +10,7 @@ import {
   Switch,
   Pressable,
   Alert,
+  Share,
 } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -39,6 +40,7 @@ export default function Wij() {
     deeltLocatie,
     partnerLocatie,
     mijnPositie,
+    gekoppeld,
     bewaarProfiel,
     zetDelen,
     zetSamenSinds,
@@ -69,6 +71,19 @@ export default function Wij() {
     setGekopieerd(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
     setTimeout(() => setGekopieerd(false), 1800);
+  }
+
+  async function deelCode() {
+    try {
+      await Share.share({
+        message:
+          `Ik heb een kaartje voor ons gemaakt in Ons Plekje 💗\n\n` +
+          `Onze code is ${toonCode(code)} — download de app en vul 'm in, ` +
+          `dan staan al onze plekjes erop.`,
+      });
+    } catch {
+      // Delen afgebroken, verder niets aan de hand.
+    }
   }
 
   async function wisselDelen(aan) {
@@ -139,13 +154,13 @@ export default function Wij() {
               setTimeout(() => setFeest(false), 2800);
             }}
           >
-            <Text style={stijl.groteHart}>💞</Text>
+            <Text style={stijl.groteHart}>{gekoppeld ? '💞' : '🤍'}</Text>
           </Pressable>
 
           <View style={stijl.persoon}>
-            <Bolletje emoji={partner?.emoji} kleur={kleuren.wit} maat={62} />
+            <Bolletje emoji={gekoppeld ? partner?.emoji : '🎁'} kleur={kleuren.wit} maat={62} />
             <Text style={stijl.persoonNaam} numberOfLines={1}>
-              {partner?.naam || 'Je liefje'}
+              {gekoppeld ? partner?.naam : 'nog geheim'}
             </Text>
           </View>
         </View>
@@ -165,6 +180,43 @@ export default function Wij() {
           </Text>
         ) : null}
       </View>
+
+      {!gekoppeld ? (
+        <>
+          <Kopje>Het cadeau</Kopje>
+          <Kaartje>
+            <Text style={stijl.cadeauIcoon}>🎁</Text>
+            <Text style={stijl.cadeauTitel}>Je liefje is er nog niet</Text>
+            <Text style={stijl.cadeauTekst}>
+              Neem gerust je tijd. Vul de kaart met al jullie plekjes, en geef
+              de code pas weg als het af is. Tot die tijd ziet niemand anders
+              iets.
+            </Text>
+
+            <View style={stijl.cadeauCode}>
+              <Text style={stijl.cadeauCodeTekst}>{code ? toonCode(code) : '—'}</Text>
+            </View>
+
+            <View style={{ flexDirection: 'row', gap: ruimte.m, marginTop: ruimte.m }}>
+              <Knop
+                titel={gekopieerd ? 'Gekopieerd!' : 'Kopiëren'}
+                icoon={gekopieerd ? '✓' : '📋'}
+                soort="rand"
+                klein
+                onPress={kopieerCode}
+                style={{ flex: 1 }}
+              />
+              <Knop
+                titel="Weggeven"
+                icoon="💌"
+                klein
+                onPress={deelCode}
+                style={{ flex: 1 }}
+              />
+            </View>
+          </Kaartje>
+        </>
+      ) : null}
 
       {/* --- Samen sinds --- */}
       <Kopje>Samen sinds</Kopje>
@@ -189,9 +241,11 @@ export default function Wij() {
           <View style={{ flex: 1 }}>
             <Text style={stijl.schakelTitel}>Deel mijn locatie</Text>
             <Text style={stijl.schakelTekst}>
-              {deeltLocatie
-                ? `${partner?.naam || 'Je liefje'} ziet waar je bent.`
-                : 'Je staat nu niet op de kaart bij je liefje.'}
+              {!gekoppeld
+                ? 'Zodra je liefje meedoet, ziet die waar je bent.'
+                : deeltLocatie
+                  ? `${partner?.naam} ziet waar je bent.`
+                  : 'Je staat nu niet op de kaart bij je liefje.'}
             </Text>
           </View>
           <Switch
@@ -202,8 +256,9 @@ export default function Wij() {
           />
         </View>
 
-        <View style={stijl.scheiding} />
+        {gekoppeld ? <View style={stijl.scheiding} /> : null}
 
+        {gekoppeld ? (
         <View style={stijl.schakelRij}>
           <View style={{ flex: 1 }}>
             <Text style={stijl.schakelTitel}>{partner?.naam || 'Je liefje'}</Text>
@@ -215,6 +270,7 @@ export default function Wij() {
           </View>
           <Text style={{ fontSize: 22 }}>{partnerLocatie?.lat != null ? '📍' : '💤'}</Text>
         </View>
+        ) : null}
       </Kaartje>
 
       {/* --- Weetjes --- */}
@@ -489,6 +545,39 @@ const stijl = StyleSheet.create({
     borderColor: 'transparent',
   },
   kleurGekozen: { borderColor: kleuren.inkt },
+
+  cadeauIcoon: { fontSize: 32, textAlign: 'center' },
+  cadeauTitel: {
+    fontFamily: letters.vet,
+    fontSize: 17,
+    color: kleuren.inkt,
+    textAlign: 'center',
+    marginTop: 4,
+  },
+  cadeauTekst: {
+    fontFamily: letters.normaal,
+    fontSize: 13.5,
+    lineHeight: 20,
+    color: kleuren.inktZacht,
+    textAlign: 'center',
+    marginTop: 4,
+  },
+  cadeauCode: {
+    alignSelf: 'center',
+    marginTop: ruimte.l,
+    paddingHorizontal: ruimte.xl,
+    paddingVertical: ruimte.s,
+    borderRadius: rond.m,
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    borderColor: kleuren.rozeZacht,
+  },
+  cadeauCodeTekst: {
+    fontFamily: letters.vet,
+    fontSize: 28,
+    letterSpacing: 4,
+    color: kleuren.rozeDiep,
+  },
 
   codeRij: { flexDirection: 'row', alignItems: 'center', gap: ruimte.m },
   code: {

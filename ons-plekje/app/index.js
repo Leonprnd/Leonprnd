@@ -1,7 +1,8 @@
 // Het eerste wat er gebeurt als je de app opent: kijken waar je bent gebleven.
 //
-// Ben je al gekoppeld? Dan ga je meteen naar de kaart — dat is vanaf dat
-// moment je startscherm. Anders eerst je naam, en dan koppelen.
+// Heb je al een kaart? Dan ga je meteen naar de kaart — dat is vanaf dat
+// moment je startscherm. Je liefje hoeft er nog niet bij te zijn: je mag hem
+// eerst in je eentje vullen. Anders eerst je naam, en dan een kaart maken.
 
 import React, { useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
@@ -12,22 +13,22 @@ import { kleuren, letters, ruimte, rond } from '../src/theme';
 import { Titel, Lopend, Kaartje } from '../src/components/basis';
 
 export default function Start() {
-  const { klaar, kaartGeladen, profiel, gekoppeld, firebaseIsIngesteld } = useApp();
+  const { klaar, kaartGeladen, profiel, benLid, firebaseIsIngesteld } = useApp();
 
   useEffect(() => {
     if (!klaar || !firebaseIsIngesteld) return;
-    // Wachten tot we weten of je al gekoppeld bent; anders zou je bij elke
+    // Wachten tot we weten of je al een kaart hebt; anders zou je bij elke
     // start eerst even op het koppelscherm belanden.
     if (!kaartGeladen) return;
 
-    if (gekoppeld) {
+    if (benLid) {
       router.replace('/(samen)/kaart');
     } else if (profiel?.naam) {
       router.replace('/koppelen');
     } else {
       router.replace('/welkom');
     }
-  }, [klaar, kaartGeladen, profiel, gekoppeld, firebaseIsIngesteld]);
+  }, [klaar, kaartGeladen, profiel, benLid, firebaseIsIngesteld]);
 
   if (klaar && !firebaseIsIngesteld) return <NogInstellen />;
 

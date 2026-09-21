@@ -1,5 +1,5 @@
-// De drie tabbladen zodra jullie gekoppeld zijn: de kaart, de tijdlijn en
-// alles over jullie tweeën.
+// De drie tabbladen zodra je een kaart hebt: de kaart, de tijdlijn en alles
+// over jullie tweeën. Je liefje hoeft er nog niet bij te zijn.
 
 import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
@@ -15,11 +15,11 @@ const TABBLADEN = [
 ];
 
 export default function SamenSchil() {
-  const { klaar, kaartGeladen, gekoppeld } = useApp();
+  const { klaar, kaartGeladen, benLid } = useApp();
   const rand = useSafeAreaInsets();
 
-  // Niet (meer) gekoppeld? Dan hoor je hier niet te zijn.
-  if (klaar && kaartGeladen && !gekoppeld) return <Redirect href="/" />;
+  // Geen kaart (meer)? Dan hoor je hier niet te zijn.
+  if (klaar && kaartGeladen && !benLid) return <Redirect href="/" />;
 
   return (
     <Tabs

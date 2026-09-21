@@ -1,7 +1,9 @@
 // Hier maak je de kaart, of doe je mee met die van je liefje.
 //
-// Maak jij hem: je krijgt een code, die deel je. Zodra de ander meedoet,
-// springt dit scherm vanzelf door naar jullie kaart.
+// Maak jij hem: je krijgt een code, en daarna ga je meteen door naar je eigen
+// kaart. Je liefje hoeft er nog niet bij te zijn — juist niet. Je vult hem
+// eerst in je eentje met al jullie plekjes, en geeft de code pas weg als het
+// cadeau af is. De code staat altijd klaar in het Wij-scherm.
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -34,14 +36,14 @@ export default function Koppelen() {
   // Wil je zelf een code invullen, dan onthouden we dat; verder volgt het
   // scherm gewoon of er al een kaart is.
   const [wilCodeInvullen, setWilCodeInvullen] = useState(false);
-  const modus = wilCodeInvullen ? 'meedoen' : code ? 'wachten' : 'kies';
+  const modus = wilCodeInvullen ? 'meedoen' : code ? 'klaar' : 'kies';
 
   const [invoer, setInvoer] = useState('');
   const [bezig, setBezig] = useState(false);
   const [foutje, setFoutje] = useState(null);
   const [gekopieerd, setGekopieerd] = useState(false);
 
-  // Zodra je liefje meedoet, is dit vanaf nu jullie startscherm.
+  // Doe je mee met de code van je liefje, dan sta je meteen samen op de kaart.
   useEffect(() => {
     if (!gekoppeld) return undefined;
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
@@ -121,14 +123,15 @@ export default function Koppelen() {
           />
         ) : null}
 
-        {modus === 'wachten' ? (
-          <Wachten
+        {modus === 'klaar' ? (
+          <Klaar
             code={code}
             kaart={kaart}
             gekoppeld={gekoppeld}
             gekopieerd={gekopieerd}
             opKopieer={kopieer}
             opDeel={deel}
+            opVerder={() => router.replace('/(samen)/kaart')}
             opAnnuleer={async () => {
               await koppelLos();
               setWilCodeInvullen(false);
@@ -216,61 +219,23 @@ function Kiezen({ profiel, bezig, foutje, opMaken, opMeedoen }) {
   );
 }
 
-// --- Stap 2a: de code delen en wachten --------------------------------------
+// --- Stap 2a: je kaart staat klaar ------------------------------------------
+//
+// Geen wachtscherm: je gaat meteen door naar je eigen kaart. De code is een
+// cadeau dat je weggeeft wanneer jij er klaar voor bent.
 
-function Wachten({ code, kaart, gekoppeld, gekopieerd, opKopieer, opDeel, opAnnuleer }) {
-  const partnerErbij = gekoppeld;
+function Klaar({ code, kaart, gekoppeld, gekopieerd, opKopieer, opDeel, opVerder, opAnnuleer }) {
+  if (gekoppeld) {
+    return (
+      <View>
+        <View style={stijl.kop}>
+          <Text style={stijl.hartje}>💞</Text>
+          <Titel style={{ textAlign: 'center' }}>Jullie zijn gekoppeld!</Titel>
+          <Lopend zacht style={{ textAlign: 'center', marginTop: 6 }}>
+            Vanaf nu is de kaart jullie startscherm.
+          </Lopend>
+        </View>
 
-  return (
-    <View>
-      <View style={stijl.kop}>
-        <Text style={stijl.hartje}>{partnerErbij ? '💞' : '💌'}</Text>
-        <Titel style={{ textAlign: 'center' }}>
-          {partnerErbij ? 'Jullie zijn gekoppeld!' : 'Jullie code'}
-        </Titel>
-        <Lopend zacht style={{ textAlign: 'center', marginTop: 6 }}>
-          {partnerErbij
-            ? 'Vanaf nu is de kaart jullie startscherm.'
-            : 'Geef deze code aan je liefje. Zodra die hem invult, staan jullie samen op de kaart.'}
-        </Lopend>
-      </View>
-
-      <View style={[stijl.codeVak, schaduw.kaart]}>
-        <Text style={stijl.codeLabel}>onze code</Text>
-        <Text style={stijl.code}>{code ? toonCode(code) : '· · ·'}</Text>
-        <Text style={stijl.codeHint}>hoofdletters maken niet uit</Text>
-      </View>
-
-      {!partnerErbij ? (
-        <>
-          <View style={stijl.knopRij}>
-            <Knop
-              titel={gekopieerd ? 'Gekopieerd!' : 'Kopiëren'}
-              icoon={gekopieerd ? '✓' : '📋'}
-              soort="rand"
-              onPress={opKopieer}
-              style={{ flex: 1 }}
-            />
-            <Knop titel="Versturen" icoon="💌" onPress={opDeel} style={{ flex: 1 }} />
-          </View>
-
-          <View style={stijl.wachtVak}>
-            <ActivityIndicator color={kleuren.roze} />
-            <Text style={stijl.wachtTekst}>Wachten op je liefje...</Text>
-            <Text style={stijl.wachtKlein}>
-              Je kunt de app rustig dichtdoen. Zodra de ander meedoet, staat
-              jullie kaart klaar.
-            </Text>
-          </View>
-
-          <TekstKnop
-            titel="Toch een andere code"
-            onPress={opAnnuleer}
-            kleur={kleuren.inktZacht}
-            style={{ alignSelf: 'center', marginTop: ruimte.xl }}
-          />
-        </>
-      ) : (
         <View style={stijl.wachtVak}>
           <Text style={{ fontSize: 34 }}>🎉</Text>
           <Text style={stijl.wachtTekst}>
@@ -280,7 +245,60 @@ function Wachten({ code, kaart, gekoppeld, gekopieerd, opKopieer, opDeel, opAnnu
               .join(' & ')}
           </Text>
         </View>
-      )}
+      </View>
+    );
+  }
+
+  return (
+    <View>
+      <View style={stijl.kop}>
+        <Text style={stijl.hartje}>🗺️</Text>
+        <Titel style={{ textAlign: 'center' }}>Je kaart staat klaar</Titel>
+        <Lopend zacht style={{ textAlign: 'center', marginTop: 6 }}>
+          Vul hem nu rustig met al jullie plekjes. Je liefje ziet er nog niets
+          van — de code geef je pas als het cadeau af is.
+        </Lopend>
+      </View>
+
+      <View style={[stijl.codeVak, schaduw.kaart]}>
+        <Text style={stijl.codeLabel}>onze code</Text>
+        <Text style={stijl.code}>{code ? toonCode(code) : '· · ·'}</Text>
+        <Text style={stijl.codeHint}>staat altijd bij &quot;Wij&quot;</Text>
+      </View>
+
+      <Knop
+        titel="Beginnen met plekjes"
+        icoon="📍"
+        onPress={opVerder}
+        style={{ marginTop: ruimte.xl }}
+      />
+
+      <View style={stijl.geheimVak}>
+        <Text style={stijl.geheimIcoon}>🤫</Text>
+        <Text style={stijl.geheimTekst}>
+          Zolang jij de code niet deelt, is deze kaart alleen van jou.
+        </Text>
+      </View>
+
+      <Text style={stijl.alKlaar}>Of geef hem nu al weg:</Text>
+      <View style={stijl.knopRij}>
+        <Knop
+          titel={gekopieerd ? 'Gekopieerd!' : 'Kopiëren'}
+          icoon={gekopieerd ? '✓' : '📋'}
+          soort="rand"
+          klein
+          onPress={opKopieer}
+          style={{ flex: 1 }}
+        />
+        <Knop titel="Versturen" icoon="💌" soort="zacht" klein onPress={opDeel} style={{ flex: 1 }} />
+      </View>
+
+      <TekstKnop
+        titel="Toch opnieuw beginnen"
+        onPress={opAnnuleer}
+        kleur={kleuren.inktZacht}
+        style={{ alignSelf: 'center', marginTop: ruimte.xl }}
+      />
     </View>
   );
 }
@@ -411,6 +429,32 @@ const stijl = StyleSheet.create({
   codeHint: { fontFamily: letters.normaal, fontSize: 11.5, color: kleuren.inktFluister },
 
   knopRij: { flexDirection: 'row', gap: ruimte.m, marginTop: ruimte.l },
+
+  geheimVak: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: ruimte.m,
+    backgroundColor: kleuren.goudZacht,
+    borderRadius: rond.m,
+    padding: ruimte.m,
+    marginTop: ruimte.l,
+  },
+  geheimIcoon: { fontSize: 20 },
+  geheimTekst: {
+    flex: 1,
+    fontFamily: letters.normaal,
+    fontSize: 13,
+    lineHeight: 19,
+    color: kleuren.inkt,
+  },
+  alKlaar: {
+    fontFamily: letters.normaal,
+    fontSize: 12.5,
+    color: kleuren.inktFluister,
+    textAlign: 'center',
+    marginTop: ruimte.xl,
+    marginBottom: ruimte.s,
+  },
 
   wachtVak: {
     alignItems: 'center',

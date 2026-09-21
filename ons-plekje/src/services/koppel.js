@@ -119,6 +119,14 @@ export function ikVan(kaart, uid) {
   return { uid, ...kaart.leden[uid] };
 }
 
+// Sta jij op deze kaart? Dat is genoeg om hem te mogen gebruiken — ook als je
+// liefje de code nog niet heeft. Zo kun je de kaart eerst in je eentje vullen
+// en hem pas weggeven als je er klaar voor bent.
+export function benLidVan(kaart, uid) {
+  return Boolean(uid) && (kaart?.ledenIds || []).includes(uid);
+}
+
+// Staan jullie er allebei op?
 export function isGekoppeld(kaart) {
   return (kaart?.ledenIds || []).length >= 2;
 }

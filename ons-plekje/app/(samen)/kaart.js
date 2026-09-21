@@ -19,6 +19,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../../src/state/AppProvider';
+import Hartjes from '../../src/components/Hartjes';
 import { kaartHerkomst } from '../../src/kaartProvider';
 import { kleuren, letters, ruimte, rond, schaduw, verlopen } from '../../src/theme';
 import Kaartweergave from '../../src/components/kaart';
@@ -39,6 +40,7 @@ export default function Kaart() {
     partner,
     ik,
     kaart,
+    gekoppeld,
     deeltLocatie,
   } = useApp();
 
@@ -49,6 +51,15 @@ export default function Kaart() {
   const alGepastRef = useRef(false);
 
   const [gekozenId, setGekozenId] = useState(null);
+
+  // Komt je liefje er terwijl je de app open hebt? Dan mag dat gevierd worden.
+  const [vorigePartner, setVorigePartner] = useState(partner?.uid || null);
+  const [netErbij, setNetErbij] = useState(false);
+  const huidigePartner = partner?.uid || null;
+  if (vorigePartner !== huidigePartner) {
+    setVorigePartner(huidigePartner);
+    if (huidigePartner && !vorigePartner) setNetErbij(true);
+  }
 
   // --- De kaart netjes inkaderen bij het openen -----------------------------
 
@@ -161,23 +172,40 @@ export default function Kaart() {
         <View style={[stijl.kopKaartje, schaduw.kaart]}>
           <View style={stijl.stel}>
             <Bolletje emoji={ik?.emoji} kleur={ik?.kleur} maat={36} />
-            <Text style={stijl.stelHart}>💗</Text>
-            <Bolletje emoji={partner?.emoji} kleur={partner?.kleur} maat={36} />
+            <Text style={stijl.stelHart}>{gekoppeld ? '💗' : '🤍'}</Text>
+            <Bolletje
+              emoji={gekoppeld ? partner?.emoji : '🎁'}
+              kleur={gekoppeld ? partner?.kleur : kleuren.inktFluister}
+              maat={36}
+            />
           </View>
 
           <View style={stijl.kopTekst}>
             <Text style={stijl.kopNamen} numberOfLines={1}>
-              {[ik?.naam, partner?.naam].filter(Boolean).join(' & ')}
+              {gekoppeld
+                ? [ik?.naam, partner?.naam].filter(Boolean).join(' & ')
+                : 'Jullie kaart'}
             </Text>
             <Text style={stijl.kopOnder} numberOfLines={1}>
-              {dagen != null
-                ? `samen ${dagen} ${dagen === 1 ? 'dag' : 'dagen'} 💞`
-                : `${momenten.length} ${momenten.length === 1 ? 'plekje' : 'plekjes'} samen`}
+              {!gekoppeld
+                ? `${momenten.length} ${momenten.length === 1 ? 'plekje' : 'plekjes'} · alleen jij ziet dit`
+                : dagen != null
+                  ? `samen ${dagen} ${dagen === 1 ? 'dag' : 'dagen'} 💞`
+                  : `${momenten.length} ${momenten.length === 1 ? 'plekje' : 'plekjes'} samen`}
             </Text>
           </View>
         </View>
 
-        {afstand != null ? (
+        {!gekoppeld ? (
+          <Pressable
+            onPress={() => router.push('/(samen)/wij')}
+            style={({ pressed }) => [stijl.afstandChip, pressed && { opacity: 0.7 }]}
+          >
+            <Text style={stijl.afstandTekst}>
+              🤫 Nog een geheim · tik om de code te delen
+            </Text>
+          </Pressable>
+        ) : afstand != null ? (
           <View style={stijl.afstandChip}>
             <Text style={stijl.afstandTekst}>{afstandZinnetje(afstand, partner?.naam)}</Text>
             <Text style={stijl.afstandTijd}>{geledenKort(partnerLocatie?.bijgewerktOp)}</Text>
@@ -265,6 +293,20 @@ export default function Kaart() {
         />
         <Text style={stijl.plusTeken}>+</Text>
       </Pressable>
+
+      {netErbij ? (
+        <View style={stijl.welkomVlak} pointerEvents="none">
+          <View style={[stijl.welkomKaartje, schaduw.kaart]}>
+            <Text style={stijl.welkomIcoon}>{partner?.emoji || '💞'}</Text>
+            <Text style={stijl.welkomTitel}>{partner?.naam} is erbij!</Text>
+            <Text style={stijl.welkomTekst}>
+              Vanaf nu zien jullie allebei dezelfde kaart.
+            </Text>
+          </View>
+        </View>
+      ) : null}
+
+      <Hartjes aan={netErbij} aantal={18} opKlaar={() => setNetErbij(false)} />
 
       {kaartHerkomst() ? (
         <View style={[stijl.notitie, { bottom: 196 }]} pointerEvents="none">
@@ -371,6 +413,36 @@ const stijl = StyleSheet.create({
     fontSize: 34,
     lineHeight: 39,
     color: kleuren.wit,
+  },
+
+  welkomVlak: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  welkomKaartje: {
+    backgroundColor: kleuren.wit,
+    borderRadius: rond.xl,
+    paddingVertical: ruimte.xl,
+    paddingHorizontal: ruimte.xxl,
+    alignItems: 'center',
+    maxWidth: 300,
+  },
+  welkomIcoon: { fontSize: 44 },
+  welkomTitel: {
+    fontFamily: letters.vet,
+    fontSize: 20,
+    color: kleuren.inkt,
+    marginTop: ruimte.s,
+    textAlign: 'center',
+  },
+  welkomTekst: {
+    fontFamily: letters.normaal,
+    fontSize: 13.5,
+    lineHeight: 19,
+    color: kleuren.inktZacht,
+    textAlign: 'center',
+    marginTop: 4,
   },
 
   notitie: {

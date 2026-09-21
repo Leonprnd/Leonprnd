@@ -23,6 +23,7 @@ import {
   bewerkLid,
   partnerVan,
   ikVan,
+  benLidVan,
   isGekoppeld,
 } from '../services/koppel';
 import { volgMomenten } from '../services/momenten';
@@ -179,6 +180,7 @@ export function AppProvider({ children }) {
 
   const partner = useMemo(() => partnerVan(kaart, uid), [kaart, uid]);
   const ik = useMemo(() => ikVan(kaart, uid), [kaart, uid]);
+  const benLid = benLidVan(kaart, uid);
   const gekoppeld = isGekoppeld(kaart);
 
   // --- De locatie van je liefje volgen -------------------------------------
@@ -334,6 +336,7 @@ export function AppProvider({ children }) {
       kaartGeladen,
       ik,
       partner,
+      benLid,
       gekoppeld,
       momenten,
       momentenGeladen,
@@ -352,7 +355,7 @@ export function AppProvider({ children }) {
       zetSamenSinds,
     }),
     [
-      klaar, uid, profiel, code, kaart, kaartGeladen, ik, partner, gekoppeld, momenten,
+      klaar, uid, profiel, code, kaart, kaartGeladen, ik, partner, benLid, gekoppeld, momenten,
       momentenGeladen, mijnPositie, partnerLocatie, deeltLocatie, fout,
       bewaarProfiel, beginNieuweKaart, koppelMetCode, koppelLos, zetDelen,
       zetSamenSinds,

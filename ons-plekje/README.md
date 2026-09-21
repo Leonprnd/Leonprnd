@@ -295,9 +295,17 @@ npx expo run:android      # of: npx expo run:ios
 
 **De eerste keer**
 Je vult je naam in en kiest een icoontje en kleur. Dan kies je: *ik maak de
-kaart* (je krijgt een code) of *ik heb een code gekregen*. Zodra de tweede
-persoon de code invult, zijn jullie gekoppeld en is de kaart vanaf dat moment
-het startscherm.
+kaart* of *ik heb een code gekregen*.
+
+Maak jij de kaart, dan krijg je een code en ga je meteen door naar je eigen
+kaart. **Je liefje hoeft er nog niet bij te zijn — juist niet.** Je vult hem
+eerst in je eentje met al jullie plekjes, foto's en verhalen, en geeft de code
+pas weg als het cadeau af is. Zolang je dat niet doet, ziet niemand anders
+iets. De code staat altijd klaar in het Wij-scherm, onder *Het cadeau*.
+
+Vult je liefje de code in, dan verschijnt die ineens op je kaart, mét hartjes.
+Vanaf dat moment kunnen jullie er allebei plekjes bij zetten en zien jullie
+elkaars live locatie.
 
 **De kaart** — alle plekjes staan erop als pin. Houd de kaart ergens
 ingedrukt om daar een nieuw plekje te maken, of tik op de roze plus. Onderin
