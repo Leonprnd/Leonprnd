@@ -45,12 +45,16 @@ node -v
 Zie je een foutmelding of een lager nummer, haal Node op bij
 [nodejs.org](https://nodejs.org) (kies de LTS-versie).
 
-Dan, in deze map:
+Dan, in deze map — je zit nu in de repo `Leonprnd`, en de app staat in de
+submap `ourspots`:
 
 ```bash
 cd ourspots
 npm install
 ```
+
+Onthoud waar je bent: alles wat je verderop bouwt, doe je vanuit déze map.
+Typ `cd` als je het pad kwijt bent; dan laat Windows zien waar je staat.
 
 Zet ook de **Expo Go**-app op je telefoon (gratis, in de App Store of
 Play Store). Daarmee test je de app zonder dat je hem hoeft te publiceren.
@@ -324,23 +328,34 @@ omleidingsregels voor Vercel en Netlify.
 de repo, publiceren doe je in de kopie. Dat zijn twee verschillende mappen, en
 dat is precies de bedoeling.
 
+Je bouwt in de map `ourspots` **binnen de repo**. De repo heet `Leonprnd`, dus
+dat is bijvoorbeeld `C:\Users\<jij>\Leonprnd\ourspots` — niet
+`C:\Users\<jij>\ourspots`. Weet je het niet meer, zoek hem op:
+
 ```bash
-cd C:\Users\<jij>\ourspots                  # de repo: hier bouw je
+cd /d C:\Users\<jij>
+dir /s /b /ad ourspots
+```
+
+Noem het pad dat daaruit komt hieronder `<repo>\ourspots`:
+
+```bash
+cd <repo>\ourspots                     # de repo: hier bouw je
 git pull origin claude/clever-bohr-kiluu9
 npm run build:web
 
-# Volledig uitgeschreven, zodat het niet uitmaakt waar je staat:
-xcopy /E /I /Y C:\Users\<jij>\ourspots\dist C:\Users\<jij>\ourspots-web
+# Paden voluit, zodat het niet uitmaakt waar je staat:
+xcopy /E /I /Y <repo>\ourspots\dist C:\Users\<jij>\ourspots-web
 
 # Controleer dat de bundel is meegekomen — hier hoort één .js van ~3,5 MB:
 dir C:\Users\<jij>\ourspots-web\_expo\static\js\web
 
-cd C:\Users\<jij>\ourspots-web              # de kopie: hier publiceer je
+cd C:\Users\<jij>\ourspots-web        # de kopie: hier publiceer je
 vercel --prod
 ```
 
-Schrijf het pad naar `dist` voluit. Kort je het af tot `xcopy /E /I /Y dist ...`,
-dan zoekt Windows `dist` in de map waar je op dat moment staat — sta je al in
+Schrijf de paden voluit. Kort je het af tot `xcopy /E /I /Y dist ...`, dan
+zoekt Windows `dist` in de map waar je op dat moment staat — sta je al in
 `ourspots-web`, dan kopieert hij niets en publiceer je een lege map.
 
 Het adres blijft hetzelfde. Twee dingen die je beter niet doet:
