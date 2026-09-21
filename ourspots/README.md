@@ -286,19 +286,42 @@ omleidingsregels voor Vercel en Netlify.
 
 **Online zetten** — het makkelijkst met Vercel:
 
-1. Maak een gratis account op [vercel.com](https://vercel.com).
-2. Installeer de CLI en publiceer:
+1. Maak een gratis account op [vercel.com](https://vercel.com) en installeer
+   de CLI:
 
    ```bash
    npm install -g vercel
-   cd dist
+   ```
+
+2. **Kopieer `dist` naar buiten de repo.** Dat klinkt omslachtig maar is het
+   punt waar het misgaat: publiceer je vanuit een map die in een git-repo
+   ligt, dan zoekt Vercel de herkomst op en koppelt hij aan het project dat
+   al aan die repo hangt. Je overschrijft dan een andere site, en bij de
+   volgende push wordt jouw app er weer af gegooid.
+
+   ```bash
+   xcopy /E /I /Y dist C:\Users\<jij>\ourspots-web    # Windows
+   cp -r dist ~/ourspots-web                            # Mac
+   ```
+
+3. Publiceren vanuit die map:
+
+   ```bash
+   cd ~/ourspots-web
    vercel --prod
    ```
 
-3. Je krijgt een adres als `https://ourspots-xyz.vercel.app`.
+   Bij *Which project?* kies je **Create a new project** en noem je hem
+   `ourspots`. Bij *Code directory?* en *Customize settings?* gewoon Enter en
+   nee: er valt niets te bouwen, de map is al klaar.
+
+4. Je krijgt een adres als `https://ourspots.vercel.app`.
+
+**Een nieuwe versie online zetten** gaat daarna met dezelfde vier stappen;
+het adres blijft hetzelfde.
 
 [Netlify](https://app.netlify.com/drop) kan ook: sleep de map `dist` gewoon
-het venster in.
+het venster in. Daar speelt het git-probleem niet.
 
 **Op je beginscherm zetten (iPhone):**
 
