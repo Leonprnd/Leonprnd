@@ -329,11 +329,19 @@ cd C:\Users\<jij>\ourspots                  # de repo: hier bouw je
 git pull origin claude/clever-bohr-kiluu9
 npm run build:web
 
-xcopy /E /I /Y dist C:\Users\<jij>\ourspots-web
+# Volledig uitgeschreven, zodat het niet uitmaakt waar je staat:
+xcopy /E /I /Y C:\Users\<jij>\ourspots\dist C:\Users\<jij>\ourspots-web
+
+# Controleer dat de bundel is meegekomen — hier hoort één .js van ~3,5 MB:
+dir C:\Users\<jij>\ourspots-web\_expo\static\js\web
 
 cd C:\Users\<jij>\ourspots-web              # de kopie: hier publiceer je
 vercel --prod
 ```
+
+Schrijf het pad naar `dist` voluit. Kort je het af tot `xcopy /E /I /Y dist ...`,
+dan zoekt Windows `dist` in de map waar je op dat moment staat — sta je al in
+`ourspots-web`, dan kopieert hij niets en publiceer je een lege map.
 
 Het adres blijft hetzelfde. Twee dingen die je beter niet doet:
 
