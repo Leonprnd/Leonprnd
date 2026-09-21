@@ -1,61 +1,60 @@
-# Onderdelenbeheer PUUUR
+# PUUUR Parts Manager
 
-Programma voor de werkplaats: Roy zet per kast op een lijst welke onderdelen
-nodig zijn, Dean pakt die kast en geeft aan of alles compleet was. Wat mist,
-komt bij Roy op de lijst met wat er besteld moet worden.
+Programma voor de werkplaats. De website is Engelstalig; deze uitleg is voor
+jullie zelf.
 
 De website: **https://leonprnd.github.io/Leonprnd/**
 
 ## Wie ziet wat
 
-Linksboven kies je wie er achter het scherm zit. Het programma ziet er voor
-allebei anders uit.
+Linksboven kies je wie er achter het scherm zit.
 
-**Roy** heeft twee tabbladen:
+**Roy** — twee tabbladen:
 
-* **Kastlijst maken** – kastnummer en omschrijving invullen, onderdelen erbij
-  zoeken (op naam, nummer, locatie of leverancier) en het aantal instellen.
-  Onderaan staan alle eerder gemaakte kastlijsten. Hier voeg je ook nieuwe
-  onderdelen toe of pas je een bestaand onderdeel aan.
-* **Te bestellen** – alles wat Dean tekort kwam, met het aantal, de locatie,
-  de leverancier en bij welke kast het miste. Bestellen zelf gebeurt (nog)
-  buiten het programma; met *afgehandeld* haal je een regel van de lijst.
+* **Cabinet lists** — kastnummer en omschrijving invullen, onderdelen erbij
+  zoeken, aantal instellen, opslaan. Of **Import CSV**: het exportbestand uit
+  de tekensoftware inlezen. Het kastnummer en de omschrijving komen uit de
+  bestandsnaam, per regel wordt het aantal overgenomen en stelt het programma
+  voor welk onderdeel uit de catalogus bedoeld wordt; regels die het niet kent
+  worden als nieuw onderdeel aangemaakt.
+* **History** — afgeronde kasten met datum, wie het pakte en of alles klopte of
+  wat er miste.
 
-**Dean** heeft twee tabbladen:
+**Dean** — vier tabbladen:
 
-* **Kastlijsten** – de kasten die klaarstaan.
-* **Voorraad** – alle onderdelen onder elkaar op volgorde van locatie, met per
-  onderdeel een vakje voor het aantal. Aan het begin tel je in één doorloop
-  alles: typen, Tab, typen. Elk aantal wordt meteen bewaard, met de datum en
-  wie het telde. Daarna houdt het programma het zelf bij en is ditzelfde
-  tabblad het overzicht van hoeveel er van alles ligt.
+* **Cabinet lists** — kies de kast die je gaat maken, zie alle onderdelen op
+  volgorde van locatie en beantwoord onderaan één vraag: *Do you have all
+  parts?* Bij *no* vink je aan wat er mist en hoeveel.
+* **Stock** — alle onderdelen met per stuk het aantal én een minimum. Tel aan
+  het begin één keer alles; daarna houdt het programma het bij.
+* **Monthly check** — een korte lijst onderdelen die één keer per maand geteld
+  wordt. Het programma vergelijkt met wat het verwacht en laat zien hoeveel er
+  ontbreekt: groen is (bijna) niets, geel is weinig, rood is meer dan een
+  kwart. Elke check wordt bewaard onder *Previous checks*.
+* **History** — hetzelfde overzicht als bij Roy.
 
-## Hoe de aantallen meelopen
+## Hoe de aantallen lopen
 
-Tellen gebeurt één keer, aan het begin. Daarna rekent het programma mee:
-
-* Zodra Roy een kastlijst opslaat, gaan die aantallen er meteen af. Wijzigt hij
-  de lijst, dan gaat het verschil eraf of komt het terug; verwijdert hij een
-  lijst die nog niet gepakt is, dan komt alles terug.
-* Staat er meer op een kastlijst dan er ligt, dan wordt het aantal negatief.
-  Roy ziet dat tijdens het maken van de lijst (*nog 4*, of *-2 — te weinig*) en
-  bij Dean kleurt die regel in de voorraad op.
+* Zodra een kastlijst wordt opgeslagen gaan die aantallen van de voorraad af.
+  Wijzigen boekt het verschil, verwijderen (van een nog niet gepakte lijst)
+  boekt alles terug.
+* Zakt een aantal tot op of onder het minimum, dan komt het onderdeel in de
+  bestelmail naar roymantel@puuur-interiors.nl.
 * Meldt Dean een onderdeel als tekort, dan lag het er niet: dat onderdeel gaat
-  op nul. Ligt er later weer voorraad, dan telt Dean dat onderdeel opnieuw.
-* Onderdelen die nog nooit geteld zijn hebben geen aantal; daar rekent het
-  programma niets mee.
+  op nul.
 
-Het kastlijstscherm van Dean: de kasten die klaarstaan. Hij kiest de kast die hij
-gaat maken en krijgt dan de complete lijst onderdelen te zien, op volgorde van
-locatienummer. Onderaan staat één vraag: *Heb je alle onderdelen?*
+## De bestelmail aanzetten
 
-* **Ja, alles compleet** – de kast is afgerond.
-* **Nee, er mist iets** – hij vinkt aan wat er mist en hoeveel; dat gaat naar
-  de lijst van Roy.
+De mail wordt één keer per dag verstuurd, vlak na middernacht. Dat staat nog
+uit: bovenin `site/index.html` staat
 
-De onderdelenlijst zelf komt van het papieren blad: naam, artikelnummer,
-locatie, leverancier en een foto. Overal waar onderdelen in een lijst staan,
-staan ze op volgorde van locatienummer, van laag naar hoog.
+```js
+const MAIL = { serviceId: '', templateId: '', publicKey: '' };
+```
+
+Vul daar de drie gegevens van een (gratis) EmailJS-account in, bouw opnieuw en
+de site mailt de lijst zelf. Zolang het leeg is stuurt de site niets en is de
+mail te lezen en te kopiëren via *Order email* in het tabblad Stock.
 
 ## De website aanpassen
 
@@ -67,18 +66,15 @@ npm run build:site
 
 Dat zet de pagina met de tekeningen klaar in `docs/`; GitHub Pages publiceert
 die map bij elke push. `docs/gegevens.json` is de onderdelenlijst waarmee een
-apparaat begint.
-
-De website bewaart de gegevens in de browser van het apparaat waarop je hem
-opent. Met *Gegevens opslaan als bestand* en *Bestand inlezen* verhuis je ze
-naar een ander apparaat.
+apparaat begint. De website bewaart de gegevens in de browser van het apparaat
+waarop je hem opent; met *Save data to a file* en *Load data from a file* (in
+het tabblad Stock) verhuis je ze naar een ander apparaat.
 
 ## Serverversie (ouder)
 
-In `public/`, `src/` en `server.js` staat een oudere opzet met een eigen
-server: die houdt één gedeelde voorraad bij voor iedereen, inclusief
-voorraadaantallen, bestelpunten en bestellingen. Die opzet is nog niet
-meegegaan met de indeling hierboven.
+In `public/`, `src/` en `server.js` staat een oudere opzet met een eigen server
+en één gedeelde voorraad voor iedereen. Die is niet meegegaan met de indeling
+hierboven.
 
 ```bash
 npm start     # http://localhost:4000

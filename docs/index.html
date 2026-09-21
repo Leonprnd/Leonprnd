@@ -14,7 +14,7 @@
   img { max-width: 100%; }
   [hidden] { display: none !important; }
 </style>
-<title>Onderdelenbeheer Puuur</title>
+<title>PUUUR Parts Manager</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap">
 <style>
@@ -29,6 +29,12 @@
     --gold: #9a7722;
     --gold-line: #d7c289;
     --gold-wash: #f8f1dd;
+    --green: #2c7a4b;
+    --green-wash: #e8f3ec;
+    --green-line: #b6d8c3;
+    --red: #ad3125;
+    --red-wash: #fbeceb;
+    --red-line: #e9bfbb;
     --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   }
@@ -45,6 +51,12 @@
       --gold: #d9b661;
       --gold-line: #5c4d26;
       --gold-wash: #221e16;
+      --green: #74c894;
+      --green-wash: #17231b;
+      --green-line: #2f5740;
+      --red: #ef8f83;
+      --red-wash: #241716;
+      --red-line: #5e2f2a;
       color-scheme: dark;
     }
   }
@@ -59,6 +71,12 @@
     --gold: #d9b661;
     --gold-line: #5c4d26;
     --gold-wash: #221e16;
+    --green: #74c894;
+    --green-wash: #17231b;
+    --green-line: #2f5740;
+    --red: #ef8f83;
+    --red-wash: #241716;
+    --red-line: #5e2f2a;
     color-scheme: dark;
   }
 
@@ -80,7 +98,7 @@
   .muted { color: var(--ink-2); }
   .faint { color: var(--ink-3); }
 
-  /* ---------------------------------------------------------- raamwerk */
+  /* ---------------------------------------------------------- frame */
   .page { max-width: 1020px; margin: 0 auto; padding-inline: 20px; }
   header.top {
     position: sticky;
@@ -140,9 +158,10 @@
   nav.tabs button:hover { color: var(--ink); }
   nav.tabs button[aria-current="true"] { color: var(--ink); border-bottom-color: var(--gold); font-weight: 500; }
   nav.tabs .count { font-family: var(--mono); font-size: 11.5px; color: var(--gold); margin-left: 4px; }
+  nav.tabs .count.alert { color: var(--red); }
   main { padding-block: 26px 90px; }
 
-  /* ---------------------------------------------------------- bouwstenen */
+  /* ---------------------------------------------------------- blocks */
   section { margin-top: 38px; }
   section:first-child { margin-top: 0; }
   .head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -180,8 +199,10 @@
     color: var(--ink-2);
     white-space: nowrap;
   }
-  .chip.mist { border-color: var(--gold-line); background: var(--gold-wash); color: var(--gold); font-weight: 600; }
-  .chip.klaar { border-color: var(--ink); background: var(--ink); color: var(--paper); font-weight: 600; }
+  .chip.missing { border-color: var(--gold-line); background: var(--gold-wash); color: var(--gold); font-weight: 600; }
+  .chip.done { border-color: var(--ink); background: var(--ink); color: var(--paper); font-weight: 600; }
+  .chip.good { border-color: var(--green-line); background: var(--green-wash); color: var(--green); font-weight: 600; }
+  .chip.bad { border-color: var(--red-line); background: var(--red-wash); color: var(--red); font-weight: 600; }
 
   input[type="text"], input[type="search"], input[type="number"], textarea, select.f {
     font: inherit;
@@ -211,7 +232,7 @@
   .tools { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: center; margin-bottom: 18px; }
   .tools .spacer { margin-left: auto; }
 
-  /* ---------------------------------------------------------- tabellen */
+  /* ---------------------------------------------------------- tables */
   .scroll { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; }
   th {
@@ -232,13 +253,13 @@
     width: 46px; height: 34px; object-fit: cover;
     background: var(--wash); border: 1px solid var(--line); display: block;
   }
-  .thumb.groot { width: 60px; height: 46px; }
+  .thumb.big { width: 60px; height: 46px; }
   .name { font-weight: 500; }
   .code { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
   .cell { display: flex; align-items: center; gap: 11px; min-width: 210px; }
   .loc { font-family: var(--mono); font-size: 13px; }
 
-  /* ---------------------------------------------------------- rijen */
+  /* ---------------------------------------------------------- rows */
   .rows { border-top: 1px solid var(--line); }
   .row {
     display: flex; align-items: center; gap: 14px;
@@ -247,9 +268,9 @@
   .row .grow { flex: 1; min-width: 0; }
   .row.click { cursor: pointer; }
   .row.click:hover { background: var(--wash); }
-  .kast { font-family: var(--mono); font-size: 17px; font-weight: 600; letter-spacing: 0.02em; }
-  .kast small { display: block; font-size: 9.5px; letter-spacing: 0.14em; color: var(--ink-3); font-weight: 500; }
-  .kast.groot { font-size: 24px; }
+  .cab { font-family: var(--mono); font-size: 17px; font-weight: 600; letter-spacing: 0.02em; }
+  .cab small { display: block; font-size: 9.5px; letter-spacing: 0.14em; color: var(--ink-3); font-weight: 500; }
+  .cab.big { font-size: 24px; }
 
   .step { display: inline-flex; border: 1px solid var(--line-2); }
   .step button { width: 32px; height: 34px; background: none; border: 0; cursor: pointer; color: var(--ink-2); font-size: 16px; }
@@ -264,55 +285,61 @@
   .tick.on { background: var(--gold); border-color: var(--gold); color: #17160f; }
   .tick svg { width: 18px; height: 18px; }
 
-  /* ---------------------------------------------------------- pakken */
-  .pakrij { display: flex; align-items: center; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); }
-  .pakrij:first-child { border-top: 1px solid var(--line); }
-  .pakrij .grow { flex: 1; min-width: 140px; }
-  .pakrij .nm { font-size: 15.5px; font-weight: 500; }
-  .aantal { font-family: var(--mono); font-size: 20px; min-width: 46px; text-align: right; }
-  .aantal small { display: block; font-size: 9.5px; letter-spacing: 0.1em; color: var(--ink-3); text-transform: uppercase; }
-  .pakrij.mist { background: var(--gold-wash); }
+  /* ---------------------------------------------------------- picking */
+  .pick { display: flex; align-items: center; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+  .pick:first-child { border-top: 1px solid var(--line); }
+  .pick .grow { flex: 1; min-width: 140px; }
+  .pick .nm { font-size: 15.5px; font-weight: 500; }
+  .qty { font-family: var(--mono); font-size: 20px; min-width: 46px; text-align: right; }
+  .qty small { display: block; font-size: 9.5px; letter-spacing: 0.1em; color: var(--ink-3); text-transform: uppercase; }
+  .pick.missing { background: var(--gold-wash); }
 
-  .vraag {
+  .ask {
     position: sticky; bottom: 0; background: var(--paper);
     border-top: 1px solid var(--line-2);
     padding: 16px 0 calc(16px + env(safe-area-inset-bottom, 0px));
     display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
     margin-top: 10px;
   }
-  .vraag .tekst { font-size: 15.5px; font-weight: 500; }
-  .vraag .spacer { margin-left: auto; }
+  .ask .txt { font-size: 15.5px; font-weight: 500; }
+  .ask .spacer { margin-left: auto; }
 
-  /* ---------------------------------------------------------- tellen */
-  .telrij { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
-  .telrij:first-child { border-top: 1px solid var(--line); }
-  .telrij .grow { flex: 1; min-width: 150px; }
-  .telrij .nm { font-weight: 500; }
-  .telrij.geteld { background: var(--wash); }
-  .tekortkleur { color: var(--gold); font-weight: 600; }
-  .telrij.tekort { background: var(--gold-wash); box-shadow: inset 2px 0 0 var(--gold); }
-  .telstand { font-family: var(--mono); font-size: 12px; color: var(--ink-3); text-align: right; min-width: 132px; }
-  input.telveld {
-    width: 92px; text-align: right; font-family: var(--mono); font-size: 16px;
+  /* ---------------------------------------------------------- counting */
+  .countrow { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .countrow:first-child { border-top: 1px solid var(--line); }
+  .countrow .grow { flex: 1; min-width: 150px; }
+  .countrow .nm { font-weight: 500; }
+  .countrow.counted { background: var(--wash); }
+  .countrow.low { background: var(--red-wash); box-shadow: inset 2px 0 0 var(--red); }
+  .countstate { font-family: var(--mono); font-size: 12px; color: var(--ink-3); text-align: right; min-width: 128px; }
+  .countstate.lowtext { color: var(--red); font-weight: 600; }
+  input.countfield, input.minfield {
+    width: 86px; text-align: right; font-family: var(--mono); font-size: 16px;
     appearance: textfield; -moz-appearance: textfield;
   }
-  input.telveld::-webkit-outer-spin-button,
-  input.telveld::-webkit-inner-spin-button { appearance: none; margin: 0; }
-  .eenheid { font-size: 12.5px; min-width: 44px; }
+  input.minfield { font-size: 14px; width: 74px; }
+  input.countfield::-webkit-outer-spin-button, input.countfield::-webkit-inner-spin-button,
+  input.minfield::-webkit-outer-spin-button, input.minfield::-webkit-inner-spin-button { appearance: none; margin: 0; }
+  .fieldlabel { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); display: block; text-align: right; margin-bottom: 2px; }
+  .unit { font-size: 12.5px; min-width: 44px; }
 
-  /* ---------------------------------------------------------- venster */
+  /* ---------------------------------------------------------- overlay */
   .veil {
     position: fixed; inset: 0; background: rgba(10, 9, 7, 0.55);
     display: flex; align-items: flex-start; justify-content: center;
     padding: 5vh 16px; overflow-y: auto; z-index: 50;
   }
   .panel { background: var(--paper); border: 1px solid var(--line-2); width: 100%; max-width: 560px; }
-  .panel.wide { max-width: 720px; }
+  .panel.wide { max-width: 860px; }
   .panel h2 { font-size: 16px; }
   .panel .ph { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); }
   .panel .pb { padding: 18px 20px; display: grid; gap: 14px; }
   .panel .pf { display: flex; gap: 10px; justify-content: flex-end; padding: 14px 20px; border-top: 1px solid var(--line); background: var(--wash); }
   .x { margin-left: auto; background: none; border: 0; cursor: pointer; color: var(--ink-2); font-size: 18px; line-height: 1; padding: 4px; }
+  pre.mailtext {
+    font-family: var(--mono); font-size: 12.5px; white-space: pre-wrap; margin: 0;
+    background: var(--wash); border: 1px solid var(--line); padding: 12px; max-height: 40vh; overflow: auto;
+  }
 
   .toast {
     position: fixed; left: 50%; transform: translateX(-50%);
@@ -323,16 +350,17 @@
 
   .empty { padding: 30px 0; color: var(--ink-3); font-size: 14px; }
   .note { border-left: 2px solid var(--gold); padding: 8px 0 8px 14px; margin-bottom: 22px; font-size: 14px; }
+  .note.alert { border-color: var(--red); }
   .note b { font-weight: 600; }
 
-  @media (max-width: 620px) {
-    .telrij { flex-wrap: wrap; }
-    .telstand { min-width: 0; order: 3; }
-    .pakrij { flex-wrap: wrap; }
-    .pakrij .grow { flex-basis: 55%; }
-    .vraag { flex-direction: column; align-items: stretch; }
-    .vraag .spacer { display: none; }
-    .vraag .btn { width: 100%; }
+  @media (max-width: 680px) {
+    .countrow { flex-wrap: wrap; }
+    .countstate { min-width: 0; order: 3; }
+    .pick { flex-wrap: wrap; }
+    .pick .grow { flex-basis: 55%; }
+    .ask { flex-direction: column; align-items: stretch; }
+    .ask .spacer { display: none; }
+    .ask .btn { width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
@@ -340,13 +368,13 @@
 <body>
 <header class="top">
   <div class="bar">
-    <div class="mark">Onderdelenbeheer <span>PUUUR</span></div>
+    <div class="mark">Parts Manager <span>PUUUR</span></div>
     <div class="who">
-      <label class="eyebrow" for="who">Ingelogd als</label>
+      <label class="eyebrow" for="who">Logged in as</label>
       <select id="who"></select>
     </div>
   </div>
-  <nav class="tabs" id="tabs" aria-label="Schermen"></nav>
+  <nav class="tabs" id="tabs" aria-label="Screens"></nav>
 </header>
 <div class="page"><main id="view"></main></div>
 <div id="overlay"></div>
@@ -354,92 +382,105 @@
 
 <script>
 (() => {
-  const MENSEN = ['Roy', 'Dean'];
-  const TABBLADEN = {
-    Roy: [['maken', 'Kastlijst maken'], ['bestellen', 'Te bestellen']],
-    Dean: [['kastlijsten', 'Kastlijsten'], ['voorraad', 'Voorraad']],
+  const PEOPLE = ['Roy', 'Dean'];
+  const TABS = {
+    Roy: [['lists', 'Cabinet lists'], ['history', 'History']],
+    Dean: [['lists', 'Cabinet lists'], ['stock', 'Stock'], ['monthly', 'Monthly check'], ['history', 'History']],
   };
-  const LEEG = 'img/placeholder.svg';
+  const PLACEHOLDER = 'img/placeholder.svg';
+  const ORDER_EMAIL = 'roymantel@puuur-interiors.nl';
+
+  // Automatic order email. Fill in the three EmailJS ids below and the page
+  // sends the list of parts at or below their minimum to Roy once a day,
+  // just after midnight (or the first time the site is opened that day).
+  // Leave them empty and nothing is sent; the email stays readable in the app.
+  const MAIL = { serviceId: '', templateId: '', publicKey: '' };
 
   const S = {
-    db: null, assets: null, klaar: false, lokaal: false,
-    parts: [], lists: [],
-    wie: 'Roy', tab: 'maken',
-    lijstId: null,     // kastlijst die bekeken of gepakt wordt
-    telZoek: '',       // zoekterm op het voorraadscherm
-    mist: null,        // tijdens "er mist iets": { partId: aantal }
-    concept: null,     // kastlijst in de maak
+    db: null, assets: null, ready: false, local: false,
+    parts: [], lists: [], checks: [],
+    who: 'Roy', tab: 'lists',
+    listId: null,      // cabinet list being viewed or picked
+    missing: null,     // during "something is missing": { partId: qty }
+    draft: null,       // cabinet list being built
+    stockSearch: '',
+    monthlySearch: '',
+    monthlyCount: {},  // counted numbers on the monthly check screen
   };
 
-  try { S.wie = localStorage.getItem('wie') === 'Dean' ? 'Dean' : 'Roy'; } catch (e) { /* privémodus */ }
-  S.tab = TABBLADEN[S.wie][0][0];
+  try { S.who = localStorage.getItem('who') === 'Dean' ? 'Dean' : 'Roy'; } catch (e) { /* private mode */ }
+  S.tab = TABS[S.who][0][0];
 
-  /* ------------------------------------------------------------ opslag */
+  /* ------------------------------------------------------------ storage */
 
   const docs = (snap) => snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-  const nu = () => new Date().toISOString();
+  const now = () => new Date().toISOString();
 
   /**
-   * Opslag op dit apparaat. Wordt gebruikt als de site als gewone website
-   * draait; binnen Claude praat de pagina met de gedeelde opslag. Dezelfde
-   * functies, zodat de rest van het programma niets hoeft te weten.
+   * Storage on this device, used when the page runs as a plain website.
+   * Inside Claude the page talks to shared storage instead. Same functions,
+   * so the rest of the program does not need to know the difference.
    */
-  function lokaleOpslag() {
-    const SLEUTEL = 'onderdelenbeheer-puuur';
-    const leeg = () => ({ parts: {}, lists: {} });
-    let data = leeg();
-    try { data = Object.assign(leeg(), JSON.parse(localStorage.getItem(SLEUTEL) || '{}')); } catch (e) { /* privémodus */ }
-    const luisteraars = [];
+  function localStore() {
+    const KEY = 'puuur-parts';
+    const blank = () => ({ parts: {}, lists: {}, checks: {} });
+    let data = blank();
+    try {
+      // Data saved under the older Dutch key is carried over once.
+      const stored = localStorage.getItem(KEY) || localStorage.getItem('onderdelenbeheer-puuur') || '{}';
+      data = Object.assign(blank(), JSON.parse(stored));
+    } catch (e) { /* private mode */ }
+    const listeners = [];
 
-    const bewaar = () => {
-      try { localStorage.setItem(SLEUTEL, JSON.stringify(data)); } catch (e) { meld('Het geheugen van deze browser zit vol.'); }
-      luisteraars.forEach((fn) => fn());
+    const save = () => {
+      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { toast('This browser has no room left to store data.'); }
+      listeners.forEach((fn) => fn());
     };
     const snapDoc = (col, id) => ({ id, exists: Boolean((data[col] || {})[id]), data: () => (data[col] || {})[id], metadata: {} });
-    const nieuwId = () => 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    const newId = () => 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
     const docRef = (col, id) => ({
       id,
       path: col + '/' + id,
       get: async () => snapDoc(col, id),
-      set: async (d) => { data[col][id] = JSON.parse(JSON.stringify(d)); bewaar(); },
-      update: async (d) => { data[col][id] = { ...(data[col][id] || {}), ...JSON.parse(JSON.stringify(d)) }; bewaar(); },
-      delete: async () => { delete data[col][id]; bewaar(); },
+      set: async (d) => { data[col] = data[col] || {}; data[col][id] = JSON.parse(JSON.stringify(d)); save(); },
+      update: async (d) => { data[col] = data[col] || {}; data[col][id] = { ...(data[col][id] || {}), ...JSON.parse(JSON.stringify(d)) }; save(); },
+      delete: async () => { delete (data[col] || {})[id]; save(); },
       onSnapshot(next) {
         const fn = () => next(snapDoc(col, id));
-        luisteraars.push(fn);
+        listeners.push(fn);
         setTimeout(fn, 0);
         return () => {};
       },
     });
 
     return {
-      lokaal: true,
+      local: true,
       collection: (col) => ({
         onSnapshot(next) {
           const fn = () => next({ docs: Object.keys(data[col] || {}).map((id) => snapDoc(col, id)) });
-          luisteraars.push(fn);
+          listeners.push(fn);
           setTimeout(fn, 0);
           return () => {};
         },
-        doc: (id) => docRef(col, id || nieuwId()),
-        add: async (d) => { const id = nieuwId(); data[col][id] = JSON.parse(JSON.stringify(d)); bewaar(); return docRef(col, id); },
+        doc: (id) => docRef(col, id || newId()),
+        add: async (d) => { const id = newId(); data[col] = data[col] || {}; data[col][id] = JSON.parse(JSON.stringify(d)); save(); return docRef(col, id); },
       }),
-      doc: (pad) => { const [col, id] = pad.split('/'); return docRef(col, id); },
-      alles: () => data,
-      vervangAlles: (nieuw) => { data = Object.assign(leeg(), nieuw); bewaar(); },
-      isLeeg: () => !Object.keys(data.parts || {}).length,
+      doc: (path) => { const [col, id] = path.split('/'); return docRef(col, id); },
+      everything: () => data,
+      replaceAll: (fresh) => { data = Object.assign(blank(), fresh); save(); },
+      isEmpty: () => !Object.keys(data.parts || {}).length,
     };
   }
 
-  /** De eerste keer vullen met de onderdelenlijst die naast de pagina staat. */
-  async function vulEersteKeer(opslag) {
-    if (!opslag.isLeeg()) return;
+  /** First visit: load the parts list that sits next to the page. */
+  async function loadStarterData(store) {
+    if (!store.isEmpty()) return;
     try {
-      const antwoord = await fetch('gegevens.json', { cache: 'no-store' });
-      if (!antwoord.ok) return;
-      opslag.vervangAlles(await antwoord.json());
-    } catch (e) { /* zonder startlijst begint het programma leeg */ }
+      const answer = await fetch('gegevens.json', { cache: 'no-store' });
+      if (!answer.ok) return;
+      store.replaceAll(await answer.json());
+    } catch (e) { /* without a starter list the program simply starts empty */ }
   }
 
   async function start() {
@@ -447,506 +488,614 @@
     try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch (e) { db = null; }
     try { S.assets = window.claude && window.claude.use ? await window.claude.use('assets') : null; } catch (e) { S.assets = null; }
     if (!db) {
-      db = lokaleOpslag();
-      S.lokaal = true;
-      await vulEersteKeer(db);
+      db = localStore();
+      S.local = true;
+      await loadStarterData(db);
     }
     S.db = db;
-    db.collection('parts').onSnapshot((s) => { S.parts = docs(s); S.klaar = true; teken(); });
-    db.collection('lists').onSnapshot((s) => { S.lists = docs(s); teken(); });
+    db.collection('parts').onSnapshot((s) => { S.parts = docs(s); S.ready = true; draw(); });
+    db.collection('lists').onSnapshot((s) => { S.lists = docs(s); draw(); });
+    db.collection('checks').onSnapshot((s) => { S.checks = docs(s); draw(); });
+    setTimeout(sendDailyMail, 4000);
+    setInterval(sendDailyMail, 60 * 60 * 1000);
   }
 
-  async function schrijf(actie, melding) {
+  async function write(action, message) {
     try {
-      await actie();
-      if (melding) meld(melding);
+      await action();
+      if (message) toast(message);
     } catch (e) {
-      meld('Opslaan is niet gelukt. Probeer het opnieuw.');
+      toast('Could not save. Please try again.');
     }
   }
 
   const partRef = (id) => S.db.doc('parts/' + id);
   const listRef = (id) => S.db.doc('lists/' + id);
 
-  /* ------------------------------------------------------------ gegevens */
+  /* ------------------------------------------------------------ data */
 
-  /** Locatienummer als sorteersleutel: 9 komt vóór 11, 11-2 vlak na 11. */
-  function locatieSleutel(locatie) {
-    const tekst = String(locatie || '').trim();
-    const eerste = tekst.match(/^(\d+)(.*)$/);
-    return eerste ? [Number(eerste[1]), eerste[2]] : [Number.POSITIVE_INFINITY, tekst];
+  /** Location number as a sort key: 9 before 11, 11-2 right after 11. */
+  function locationKey(location) {
+    const text = String(location || '').trim();
+    const first = text.match(/^(\d+)(.*)$/);
+    return first ? [Number(first[1]), first[2]] : [Number.POSITIVE_INFINITY, text];
   }
 
-  function opLocatie(a, b) {
-    const [na, ra] = locatieSleutel(a.location);
-    const [nb, rb] = locatieSleutel(b.location);
+  function byLocation(a, b) {
+    const [na, ra] = locationKey(a.location);
+    const [nb, rb] = locationKey(b.location);
     if (na !== nb) return na - nb;
-    if (ra !== rb) return ra.localeCompare(rb, 'nl');
-    return (a.name || '').localeCompare(b.name || '', 'nl');
+    if (ra !== rb) return ra.localeCompare(rb, 'en');
+    return (a.name || '').localeCompare(b.name || '', 'en');
   }
 
-  const onderdelen = () => S.parts.slice().sort(opLocatie);
+  const allParts = () => S.parts.slice().sort(byLocation);
   const partById = (id) => S.parts.find((p) => p.id === id);
-  const lijstById = (id) => S.lists.find((l) => l.id === id);
-  const openLijsten = () => S.lists.filter((l) => l.status === 'open')
-    .sort((a, b) => (a.cabinetNumber || '').localeCompare(b.cabinetNumber || '', 'nl', { numeric: true }));
-  const afgerondeLijsten = () => S.lists.filter((l) => l.status !== 'open')
+  const listById = (id) => S.lists.find((l) => l.id === id);
+  const openLists = () => S.lists.filter((l) => l.status === 'open')
+    .sort((a, b) => (a.cabinetNumber || '').localeCompare(b.cabinetNumber || '', 'en', { numeric: true }));
+  const finishedLists = () => S.lists.filter((l) => l.status !== 'open')
     .sort((a, b) => (b.completedAt || '').localeCompare(a.completedAt || ''));
 
-  /** Wat Dean gemeld heeft en Roy nog moet bestellen, per onderdeel. */
-  function teBestellen() {
-    const perOnderdeel = new Map();
-    for (const lijst of S.lists) {
-      for (const regel of lijst.lines || []) {
-        if (!(regel.missingQty > 0) || regel.missingHandled) continue;
-        const bestaand = perOnderdeel.get(regel.partId) || { aantal: 0, kasten: [] };
-        bestaand.aantal += regel.missingQty;
-        bestaand.kasten.push({ nummer: lijst.cabinetNumber, aantal: regel.missingQty, at: lijst.completedAt, door: lijst.completedBy });
-        perOnderdeel.set(regel.partId, bestaand);
-      }
-    }
-    return [...perOnderdeel.entries()]
-      .map(([partId, gegevens]) => ({ part: partById(partId), ...gegevens }))
-      .filter((r) => r.part)
-      .sort((a, b) => opLocatie(a.part, b.part));
-  }
+  const isCounted = (p) => Boolean(p.countedAt) && typeof p.stock === 'number';
+  const hasMinimum = (p) => typeof p.minStock === 'number';
+  const isLow = (p) => isCounted(p) && hasMinimum(p) && p.stock <= p.minStock;
+  const toOrder = () => allParts().filter(isLow);
+  const monthlyParts = () => allParts().filter((p) => p.monthly);
 
-  function zoeken(term, lijst) {
-    const vraag = (term || '').trim().toLowerCase();
-    if (!vraag) return lijst;
-    const woorden = vraag.split(/\s+/);
-    return lijst.filter((p) => {
-      const hooi = `${p.number} ${p.name} ${p.category} ${p.supplier} ${p.location}`.toLowerCase();
-      return woorden.every((w) => hooi.includes(w));
+  function search(term, list) {
+    const q = (term || '').trim().toLowerCase();
+    if (!q) return list;
+    const words = q.split(/\s+/);
+    return list.filter((p) => {
+      const hay = `${p.number} ${p.name} ${p.category} ${p.supplier} ${p.location}`.toLowerCase();
+      return words.every((w) => hay.includes(w));
     });
   }
 
-  /* ------------------------------------------------------------ opmaak */
+  /* ------------------------------------------------------------ format */
 
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const datum = (iso) => {
+  const when = (iso) => {
     if (!iso) return '';
     const d = new Date(iso);
     const n = new Date();
-    if (d.toDateString() === n.toDateString()) return 'vandaag ' + d.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
-    if (new Date(n.getTime() - 864e5).toDateString() === d.toDateString()) return 'gisteren';
-    return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+    const time = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    if (d.toDateString() === n.toDateString()) return 'today ' + time;
+    if (new Date(n.getTime() - 864e5).toDateString() === d.toDateString()) return 'yesterday';
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   };
+  const fullDate = (iso) => (iso ? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
 
-  const foto = (p, klas) => `<img class="thumb ${klas || ''}" src="${esc((p && p.photo) || LEEG)}" alt="" loading="lazy">`;
-  const kort = (p) => p.number || '';
-  const plek = (p) => (p.location ? 'locatie ' + p.location : 'geen locatie');
-  const rest = (p) => (isGeteld(p)
-    ? (p.stock < 0 ? `${p.stock} — te weinig` : `nog ${p.stock}`)
-    : 'nog niet geteld');
+  const UNITS = { stuks: 'pcs', stuk: 'pcs', doos: 'box', dozen: 'boxes', set: 'set', meter: 'm', m1: 'm' };
+  const unit = (p) => UNITS[String((p && p.unit) || '').toLowerCase()] || (p && p.unit) || 'pcs';
 
-  const cel = (p) => `<div class="cell">${foto(p)}<div><div class="name">${esc(p.name)}</div>
-    <div class="code">${esc([kort(p), p.location ? 'loc. ' + p.location : ''].filter(Boolean).join(' · '))}</div></div></div>`;
+  const photo = (p, cls) => `<img class="thumb ${cls || ''}" src="${esc((p && p.photo) || PLACEHOLDER)}" alt="" loading="lazy">`;
+  const article = (p) => p.number || '';
+  const place = (p) => (p.location ? 'location ' + p.location : 'no location');
+  const left = (p) => (isCounted(p)
+    ? (p.stock < 0 ? `${p.stock} — short` : `${p.stock} left`)
+    : 'not counted yet');
+  const cell = (p) => `<div class="cell">${photo(p)}<div><div class="name">${esc(p.name)}</div>
+    <div class="code">${esc([article(p), p.location ? 'loc. ' + p.location : ''].filter(Boolean).join(' · '))}</div></div></div>`;
 
-  const staatChip = (l) => l.status === 'open' ? '<span class="chip">Klaar om te pakken</span>'
-    : l.status === 'tekort' ? '<span class="chip mist">Tekort gemeld</span>'
-    : '<span class="chip klaar">Compleet</span>';
+  const statusChip = (l) => l.status === 'open' ? '<span class="chip">Ready to pick</span>'
+    : l.status === 'short' ? '<span class="chip missing">Parts missing</span>'
+    : '<span class="chip done">Complete</span>';
 
-  /* ------------------------------------------------------------ Roy: kastlijst maken */
+  /* ------------------------------------------------------------ Roy: cabinet lists */
 
-  function schermMaken() {
-    if (S.lijstId) return schermLijstBekijken();
-    if (!S.concept) S.concept = { cabinetNumber: '', title: '', lines: [], zoek: '', id: null };
-    const c = S.concept;
-    const gevonden = zoeken(c.zoek, onderdelen()).slice(0, 30);
-    const totaal = c.lines.reduce((s, r) => s + r.qty, 0);
-    const eerder = S.lists.slice().sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+  function screenLists() {
+    if (S.listId) return screenListDetail();
+    if (!S.draft) S.draft = { cabinetNumber: '', title: '', lines: [], search: '', id: null };
+    const d = S.draft;
+    const found = search(d.search, allParts()).slice(0, 30);
+    const total = d.lines.reduce((s, r) => s + r.qty, 0);
+    const earlier = S.lists.slice().sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 
     return `
       <section>
-        <div class="head"><h2>${c.id ? 'Kastlijst wijzigen' : 'Nieuwe kastlijst'}</h2>
-          ${c.id ? '<div class="right"><button class="link" data-act="conceptweg">Wijzigen stoppen</button></div>' : ''}</div>
+        <div class="head"><h2>${d.id ? 'Edit cabinet list' : 'New cabinet list'}</h2>
+          <div class="right">
+            ${d.id ? '<button class="link" data-act="dropdraft">Stop editing</button>' : ''}
+            <button class="btn" data-act="import">Import CSV</button>
+          </div></div>
         <div class="grid2" style="max-width:620px">
-          <label class="f"><span class="eyebrow">Kastnummer</span>
-            <input id="kastnr" type="text" inputmode="numeric" value="${esc(c.cabinetNumber)}" placeholder="14925"></label>
-          <label class="f"><span class="eyebrow">Omschrijving</span>
-            <input id="kasttitel" type="text" value="${esc(c.title)}" placeholder="Mitchell"></label>
+          <label class="f"><span class="eyebrow">Cabinet number</span>
+            <input id="cabnr" type="text" inputmode="numeric" value="${esc(d.cabinetNumber)}" placeholder="15662"></label>
+          <label class="f"><span class="eyebrow">Description</span>
+            <input id="cabtitle" type="text" value="${esc(d.title)}" placeholder="TV-KASTEN - Tv-Meubel ZYAN 3K"></label>
         </div>
       </section>
 
       <section>
-        <div class="head"><h2>Onderdelen zoeken</h2>
-          <div class="right"><button class="link" data-act="nieuwonderdeel">Onderdeel toevoegen</button></div></div>
-        <div class="search" style="max-width:420px"><span class="ico">zoek</span>
-          <input id="zoek" type="search" value="${esc(c.zoek)}" placeholder="naam, nummer, locatie of leverancier"></div>
-        <div class="rows" style="margin-top:14px" id="zoekresultaat">${zoekRijen(gevonden)}</div>
+        <div class="head"><h2>Find parts</h2>
+          <div class="right"><button class="link" data-act="newpart">Add a part</button></div></div>
+        <div class="search" style="max-width:420px"><span class="ico">search</span>
+          <input id="findpart" type="search" value="${esc(d.search)}" placeholder="name, article number, location or supplier"></div>
+        <div class="rows" style="margin-top:14px" id="findresult">${findRows(found)}</div>
       </section>
 
       <section>
-        <div class="head"><h2>Op de lijst</h2>
-          <div class="right faint">${c.lines.length} regels · ${totaal} stuks</div></div>
-        ${c.lines.length ? `<div class="rows">${c.lines.map((r) => {
-          const p = partById(r.partId) || { name: 'Onbekend onderdeel' };
-          const teweinig = isGeteld(p) && p.stock < 0;
-          return `<div class="row">${foto(p)}
+        <div class="head"><h2>On the list</h2>
+          <div class="right faint">${d.lines.length} lines · ${total} pieces</div></div>
+        ${d.lines.length ? `<div class="rows">${d.lines.map((r) => {
+          const p = partById(r.partId) || { name: 'Unknown part' };
+          const short = isCounted(p) && p.stock < 0;
+          return `<div class="row">${photo(p)}
             <div class="grow"><div class="name">${esc(p.name)}</div>
-              <div class="code ${teweinig ? 'tekortkleur' : ''}">${esc([kort(p), plek(p), rest(p)].filter(Boolean).join(' · '))}</div></div>
-            <div class="step"><button data-act="min:${r.partId}">−</button><span>${r.qty}</span>
+              <div class="code" ${short ? 'style="color:var(--red);font-weight:600"' : ''}>${
+                esc([article(p), place(p), left(p)].filter(Boolean).join(' · '))}</div></div>
+            <div class="step"><button data-act="minus:${r.partId}">−</button><span>${r.qty}</span>
               <button data-act="plus:${r.partId}">+</button></div>
-            <button class="link" data-act="weg:${r.partId}">weg</button></div>`;
+            <button class="link" data-act="remove:${r.partId}">remove</button></div>`;
         }).join('')}</div>
-        <div class="vraag">
-          <span class="faint">Dean ziet deze lijst zodra je hem opslaat.</span>
+        <div class="ask">
+          <span class="faint">Saving takes these parts off the stock straight away.</span>
           <div class="spacer"></div>
-          <button class="btn solid lg" data-act="bewaar">${c.id ? 'Wijzigingen opslaan' : 'Kastlijst opslaan'}</button>
-        </div>` : '<p class="empty">Zoek hierboven een onderdeel en klik op toevoegen.</p>'}
+          <button class="btn solid lg" data-act="savelist">${d.id ? 'Save changes' : 'Save cabinet list'}</button>
+        </div>` : '<p class="empty">Search for a part above, or import a CSV from the planning software.</p>'}
       </section>
 
       <section>
-        <div class="head"><h2>Gemaakte kastlijsten</h2></div>
-        ${eerder.length ? `<div class="rows">${eerder.map((l) => `<div class="row click" data-act="open:${l.id}">
-          <div class="kast"><small>KAST</small>${esc(l.cabinetNumber)}</div>
-          <div class="grow"><div class="name">${esc(l.title || 'Kastlijst')}</div>
-            <div class="code">${(l.lines || []).length} onderdelen${l.completedAt ? ' · gepakt door ' + esc(l.completedBy || '') + ' ' + datum(l.completedAt) : ' · gemaakt ' + datum(l.createdAt)}</div></div>
-          ${staatChip(l)}</div>`).join('')}</div>`
-        : '<p class="empty">Nog geen kastlijsten gemaakt.</p>'}
+        <div class="head"><h2>Cabinet lists</h2></div>
+        ${earlier.length ? `<div class="rows">${earlier.map((l) => `<div class="row click" data-act="openlist:${l.id}">
+          <div class="cab"><small>CABINET</small>${esc(l.cabinetNumber)}</div>
+          <div class="grow"><div class="name">${esc(l.title || 'Cabinet list')}</div>
+            <div class="code">${(l.lines || []).length} parts${l.completedAt ? ' · picked by ' + esc(l.completedBy || '') + ' ' + when(l.completedAt) : ' · created ' + when(l.createdAt)}</div></div>
+          ${statusChip(l)}</div>`).join('')}</div>`
+        : '<p class="empty">No cabinet lists yet.</p>'}
       </section>`;
   }
 
-  function zoekRijen(lijst) {
-    if (!lijst.length) return '<p class="empty">Niets gevonden.</p>';
-    return lijst.map((p) => {
-      const opLijst = S.concept.lines.find((r) => r.partId === p.id);
-      return `<div class="row">${foto(p)}
+  function findRows(list) {
+    if (!list.length) return '<p class="empty">Nothing found.</p>';
+    return list.map((p) => {
+      const onList = S.draft.lines.find((r) => r.partId === p.id);
+      return `<div class="row">${photo(p)}
         <div class="grow"><div class="name">${esc(p.name)}</div>
-          <div class="code">${esc([kort(p), plek(p)].filter(Boolean).join(' · '))}</div></div>
-        <span class="code ${isGeteld(p) && p.stock < 0 ? 'tekortkleur' : ''}">${esc(rest(p))}</span>
-        ${opLijst ? `<span class="chip">${opLijst.qty} op lijst</span>` : ''}
-        <button class="btn" data-act="voeg:${p.id}">Toevoegen</button>
-        <button class="link" data-act="wijzigonderdeel:${p.id}">wijzig</button></div>`;
+          <div class="code">${esc([article(p), place(p)].filter(Boolean).join(' · '))}</div></div>
+        <span class="code ${isCounted(p) && p.stock < 0 ? 'lowtext' : ''}">${esc(left(p))}</span>
+        ${onList ? `<span class="chip">${onList.qty} on list</span>` : ''}
+        <button class="btn" data-act="add:${p.id}">Add</button>
+        <button class="link" data-act="editpart:${p.id}">edit</button></div>`;
     }).join('');
   }
 
-  function schermLijstBekijken() {
-    const l = lijstById(S.lijstId);
-    if (!l) return '<p class="empty">Kastlijst niet gevonden.</p>';
-    const regels = (l.lines || []).map((r) => ({ regel: r, part: partById(r.partId) }))
+  function screenListDetail() {
+    const l = listById(S.listId);
+    if (!l) return '<p class="empty">Cabinet list not found.</p>';
+    const rows = (l.lines || []).map((r) => ({ line: r, part: partById(r.partId) }))
       .filter((x) => x.part)
-      .sort((a, b) => opLocatie(a.part, b.part));
-    const mist = regels.filter((x) => x.regel.missingQty > 0);
+      .sort((a, b) => byLocation(a.part, b.part));
+    const missing = rows.filter((x) => x.line.missingQty > 0);
 
     return `
-      <button class="link" data-act="terug" style="margin-bottom:18px">← Terug</button>
-      ${mist.length ? `<div class="note"><b>Dean kwam tekort:</b> ${mist
-        .map((x) => `${x.regel.missingQty} × ${esc(x.part.name)}`).join(', ')}</div>` : ''}
+      <button class="link" data-act="back" style="margin-bottom:18px">← Back</button>
+      ${missing.length ? `<div class="note alert"><b>Missing when picked:</b> ${missing
+        .map((x) => `${x.line.missingQty} × ${esc(x.part.name)}`).join(', ')}</div>` : ''}
       <div class="row" style="border-top:1px solid var(--line)">
-        <div class="kast groot"><small>KAST</small>${esc(l.cabinetNumber)}</div>
-        <div class="grow"><div class="name" style="font-size:16px">${esc(l.title || 'Kastlijst')}</div>
-          <div class="code">Gemaakt door ${esc(l.createdBy || '')} ${datum(l.createdAt)}${
-            l.completedAt ? ` · gepakt door ${esc(l.completedBy || '')} ${datum(l.completedAt)}` : ''}</div></div>
-        ${staatChip(l)}
+        <div class="cab big"><small>CABINET</small>${esc(l.cabinetNumber)}</div>
+        <div class="grow"><div class="name" style="font-size:16px">${esc(l.title || 'Cabinet list')}</div>
+          <div class="code">Created by ${esc(l.createdBy || '')} ${when(l.createdAt)}${
+            l.completedAt ? ` · picked by ${esc(l.completedBy || '')} ${when(l.completedAt)}` : ''}</div></div>
+        ${statusChip(l)}
       </div>
       <div class="scroll" style="margin-top:18px"><table><thead><tr>
-        <th>Onderdeel</th><th>Locatie</th><th class="num">Aantal</th><th class="num">Mist</th>
-      </tr></thead><tbody>${regels.map((x) => `<tr>
-        <td>${cel(x.part)}</td>
+        <th>Part</th><th>Location</th><th class="num">Needed</th><th class="num">Missing</th>
+      </tr></thead><tbody>${rows.map((x) => `<tr>
+        <td>${cell(x.part)}</td>
         <td class="loc">${esc(x.part.location || '–')}</td>
-        <td class="num">${x.regel.qty}</td>
-        <td class="num">${x.regel.missingQty ? `<span class="chip mist">${x.regel.missingQty}</span>` : '<span class="faint">–</span>'}</td>
+        <td class="num">${x.line.qty}</td>
+        <td class="num">${x.line.missingQty ? `<span class="chip missing">${x.line.missingQty}</span>` : '<span class="faint">–</span>'}</td>
       </tr>`).join('')}</tbody></table></div>
       ${l.status === 'open' ? `<div class="tools" style="margin-top:20px">
-        <button class="btn" data-act="wijziglijst:${l.id}">Kastlijst wijzigen</button>
-        <button class="link" data-act="verwijderlijst:${l.id}">Verwijderen</button></div>` : ''}`;
+        <button class="btn" data-act="editlist:${l.id}">Edit cabinet list</button>
+        <button class="link" data-act="deletelist:${l.id}">Delete</button></div>` : ''}`;
   }
 
-  /* ------------------------------------------------------------ Roy: te bestellen */
+  /* ------------------------------------------------------------ Dean: picking */
 
-  function schermBestellen() {
-    const rijen = teBestellen();
-    if (!rijen.length) {
-      return `<section><div class="head"><h2>Te bestellen</h2></div>
-        <p class="empty">Er staat niets open. Zodra Dean bij een kast onderdelen tekort komt, verschijnt het hier.</p></section>`;
-    }
+  function pickRows(l) {
+    return (l.lines || []).map((r) => ({ line: r, part: partById(r.partId) }))
+      .filter((x) => x.part)
+      .sort((a, b) => byLocation(a.part, b.part));
+  }
+
+  function screenPickChoose() {
+    if (S.listId && S.missing) return screenMissing();
+    if (S.listId) return screenPick();
+    const open = openLists();
     return `
       <section>
-        <div class="head"><h2>Te bestellen</h2>
-          <div class="right faint">${rijen.length} onderdelen · gemeld uit de werkplaats</div></div>
-        <div class="scroll"><table><thead><tr>
-          <th>Onderdeel</th><th>Locatie</th><th>Leverancier</th><th>Gemeld bij</th><th class="num">Aantal</th><th></th>
-        </tr></thead><tbody>${rijen.map((r) => `<tr>
-          <td>${cel(r.part)}</td>
-          <td class="loc">${esc(r.part.location || '–')}</td>
-          <td style="font-size:13.5px">${esc(r.part.supplier || '–')}</td>
-          <td class="faint" style="font-size:13px">${r.kasten.map((k) => `kast ${esc(k.nummer)} (${k.aantal})`).join(', ')}</td>
-          <td class="num" style="font-weight:600">${r.aantal}</td>
-          <td style="text-align:right"><button class="link" data-act="afgehandeld:${r.part.id}">afgehandeld</button></td>
-        </tr>`).join('')}</tbody></table></div>
+        <div class="head"><h2>Which cabinet are you building?</h2></div>
+        ${open.length ? `<div class="rows">${open.map((l) => `<div class="row click" data-act="pick:${l.id}">
+          <div class="cab big"><small>CABINET</small>${esc(l.cabinetNumber)}</div>
+          <div class="grow"><div class="name" style="font-size:16px">${esc(l.title || 'Cabinet list')}</div>
+            <div class="code">${(l.lines || []).length} parts · ${(l.lines || []).reduce((s, r) => s + r.qty, 0)} pieces</div></div>
+          <span class="chip">Ready to pick</span></div>`).join('')}</div>`
+        : '<p class="empty">No cabinet list is waiting. Roy creates them.</p>'}
       </section>`;
   }
 
-  /* ------------------------------------------------------------ Dean */
-
-  function schermKastlijsten() {
-    if (S.lijstId && S.mist) return schermMist();
-    if (S.lijstId) return schermPakken();
-    const open = openLijsten();
-    const klaar = afgerondeLijsten().slice(0, 5);
-    return `
-      <section>
-        <div class="head"><h2>Welke kast ga je maken?</h2></div>
-        ${open.length ? `<div class="rows">${open.map((l) => `<div class="row click" data-act="pak:${l.id}">
-          <div class="kast groot"><small>KAST</small>${esc(l.cabinetNumber)}</div>
-          <div class="grow"><div class="name" style="font-size:16px">${esc(l.title || 'Kastlijst')}</div>
-            <div class="code">${(l.lines || []).length} onderdelen · ${(l.lines || []).reduce((s, r) => s + r.qty, 0)} stuks</div></div>
-          <span class="chip">Klaar om te pakken</span></div>`).join('')}</div>`
-        : '<p class="empty">Er staat geen kastlijst klaar. Roy maakt ze aan.</p>'}
-      </section>
-      ${klaar.length ? `<section><div class="head"><h2>Laatst afgerond</h2></div>
-        <div class="rows">${klaar.map((l) => `<div class="row click" data-act="bekijk:${l.id}">
-          <div class="kast"><small>KAST</small>${esc(l.cabinetNumber)}</div>
-          <div class="grow"><div class="name">${esc(l.title || 'Kastlijst')}</div>
-            <div class="code">${esc(l.completedBy || '')} · ${datum(l.completedAt)}</div></div>
-          ${staatChip(l)}</div>`).join('')}</div></section>` : ''}`;
-  }
-
-  /** Alles wat er voor deze kast nodig is, op volgorde van locatie. */
-  function pakRegels(l) {
-    return (l.lines || []).map((r) => ({ regel: r, part: partById(r.partId) }))
-      .filter((x) => x.part)
-      .sort((a, b) => opLocatie(a.part, b.part));
-  }
-
-  function schermPakken() {
-    const l = lijstById(S.lijstId);
-    if (!l) return '<p class="empty">Kastlijst niet gevonden.</p>';
-    if (l.status !== 'open') return schermLijstBekijken();
-    const regels = pakRegels(l);
+  function screenPick() {
+    const l = listById(S.listId);
+    if (!l) return '<p class="empty">Cabinet list not found.</p>';
+    if (l.status !== 'open') return screenListDetail();
+    const rows = pickRows(l);
 
     return `
-      <button class="link" data-act="terug" style="margin-bottom:18px">← Andere kast</button>
+      <button class="link" data-act="back" style="margin-bottom:18px">← Another cabinet</button>
       <div class="row" style="border-top:1px solid var(--line)">
-        <div class="kast groot"><small>KAST</small>${esc(l.cabinetNumber)}</div>
-        <div class="grow"><div class="name" style="font-size:16px">${esc(l.title || 'Kastlijst')}</div>
+        <div class="cab big"><small>CABINET</small>${esc(l.cabinetNumber)}</div>
+        <div class="grow"><div class="name" style="font-size:16px">${esc(l.title || 'Cabinet list')}</div>
           ${l.note ? `<div class="code">${esc(l.note)}</div>` : ''}</div>
-        <div class="mono faint">${regels.reduce((s, x) => s + x.regel.qty, 0)} stuks</div>
+        <div class="mono faint">${rows.reduce((s, x) => s + x.line.qty, 0)} pieces</div>
       </div>
-      ${regels.map((x) => `<div class="pakrij">
-        ${foto(x.part, 'groot')}
+      ${rows.map((x) => `<div class="pick">
+        ${photo(x.part, 'big')}
         <div class="grow"><div class="nm">${esc(x.part.name)}</div>
-          <div class="code">${esc([kort(x.part), plek(x.part)].filter(Boolean).join(' · '))}</div></div>
-        <div class="aantal">${x.regel.qty}<small>${esc(x.part.unit || 'stuks')}</small></div>
+          <div class="code">${esc([article(x.part), place(x.part)].filter(Boolean).join(' · '))}</div></div>
+        <div class="qty">${x.line.qty}<small>${esc(unit(x.part))}</small></div>
       </div>`).join('')}
-      <div class="vraag">
-        <span class="tekst">Heb je alle onderdelen?</span>
+      <div class="ask">
+        <span class="txt">Do you have all parts?</span>
         <div class="spacer"></div>
-        <button class="btn lg" data-act="nee">Nee, er mist iets</button>
-        <button class="btn gold lg" data-act="ja">Ja, alles compleet</button>
+        <button class="btn lg" data-act="no">No, something is missing</button>
+        <button class="btn gold lg" data-act="yes">Yes, all complete</button>
       </div>`;
   }
 
-  function schermMist() {
-    const l = lijstById(S.lijstId);
-    if (!l) return '<p class="empty">Kastlijst niet gevonden.</p>';
-    const regels = pakRegels(l);
-    const gekozen = Object.keys(S.mist).length;
+  function screenMissing() {
+    const l = listById(S.listId);
+    if (!l) return '<p class="empty">Cabinet list not found.</p>';
+    const rows = pickRows(l);
+    const chosen = Object.keys(S.missing).length;
 
     return `
-      <button class="link" data-act="terugpakken" style="margin-bottom:18px">← Terug naar de lijst</button>
+      <button class="link" data-act="backtopick" style="margin-bottom:18px">← Back to the list</button>
       <div class="row" style="border-top:1px solid var(--line)">
-        <div class="kast groot"><small>KAST</small>${esc(l.cabinetNumber)}</div>
-        <div class="grow"><div class="name" style="font-size:16px">Wat mist er?</div>
-          <div class="code">Vink aan wat je niet kon pakken en hoeveel.</div></div>
+        <div class="cab big"><small>CABINET</small>${esc(l.cabinetNumber)}</div>
+        <div class="grow"><div class="name" style="font-size:16px">What is missing?</div>
+          <div class="code">Tick what you could not pick, and how many.</div></div>
       </div>
-      ${regels.map((x) => {
-        const aan = S.mist[x.part.id] !== undefined;
-        return `<div class="pakrij ${aan ? 'mist' : ''}">
-          <button class="tick ${aan ? 'on' : ''}" data-act="vink:${x.part.id}" aria-label="${esc(x.part.name)} mist">
+      ${rows.map((x) => {
+        const on = S.missing[x.part.id] !== undefined;
+        return `<div class="pick ${on ? 'missing' : ''}">
+          <button class="tick ${on ? 'on' : ''}" data-act="ticka:${x.part.id}" aria-label="${esc(x.part.name)} missing">
             <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9.5 17 4 11.5" stroke="currentColor" stroke-width="2.4"
               stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          ${foto(x.part)}
+          ${photo(x.part)}
           <div class="grow"><div class="nm">${esc(x.part.name)}</div>
-            <div class="code">${esc([kort(x.part), plek(x.part)].filter(Boolean).join(' · '))}</div></div>
-          <div class="aantal">${x.regel.qty}<small>nodig</small></div>
-          ${aan ? `<div class="step"><button data-act="mistmin:${x.part.id}">−</button>
-            <span>${S.mist[x.part.id]}</span><button data-act="mistplus:${x.part.id}">+</button></div>`
+            <div class="code">${esc([article(x.part), place(x.part)].filter(Boolean).join(' · '))}</div></div>
+          <div class="qty">${x.line.qty}<small>needed</small></div>
+          ${on ? `<div class="step"><button data-act="missminus:${x.part.id}">−</button>
+            <span>${S.missing[x.part.id]}</span><button data-act="missplus:${x.part.id}">+</button></div>`
             : '<div style="width:108px"></div>'}
         </div>`;
       }).join('')}
-      <div class="vraag">
-        <span class="tekst">${gekozen ? `${gekozen} ${gekozen === 1 ? 'onderdeel' : 'onderdelen'} aangevinkt` : 'Vink aan wat er mist'}</span>
+      <div class="ask">
+        <span class="txt">${chosen ? `${chosen} part${chosen === 1 ? '' : 's'} ticked` : 'Tick what is missing'}</span>
         <div class="spacer"></div>
-        <button class="btn solid lg" data-act="doorgeven" ${gekozen ? '' : 'disabled'}>Doorgeven aan Roy</button>
+        <button class="btn solid lg" data-act="report" ${chosen ? '' : 'disabled'}>Report and finish</button>
       </div>`;
   }
 
-  /* ------------------------------------------------------------ Dean: voorraad */
+  /* ------------------------------------------------------------ Dean: stock */
 
-  // Geteld is het pas als iemand het echt geteld heeft: oude gegevens waarin
-  // een aantal op nul stond tellen niet mee.
-  const isGeteld = (p) => Boolean(p.countedAt) && typeof p.stock === 'number';
-
-  function schermVoorraad() {
-    const alles = onderdelen();
-    const lijst = zoeken(S.telZoek, alles);
-    const geteld = alles.filter(isGeteld).length;
-    const laatste = alles.map((p) => p.countedAt).filter(Boolean).sort().pop();
+  function screenStock() {
+    const all = allParts();
+    const list = search(S.stockSearch, all);
+    const counted = all.filter(isCounted).length;
+    const low = toOrder();
+    const last = all.map((p) => p.countedAt).filter(Boolean).sort().pop();
 
     return `
       <section>
-        <div class="head"><h2>Voorraad</h2>
-          <div class="right faint">${geteld} van ${alles.length} geteld${laatste ? ' · laatst bijgewerkt ' + datum(laatste) : ''}</div></div>
-        <p class="faint" style="margin-bottom:16px">Tel aan het begin één keer alles: loop de stellingen langs op volgorde van
-          locatie en vul in hoeveel er ligt. Elk aantal wordt meteen bewaard. Daarna houdt het programma het zelf bij —
-          wat Roy op een kastlijst zet, gaat er meteen af.</p>
-        <div class="search" style="max-width:420px"><span class="ico">zoek</span>
-          <input id="zoekvoorraad" type="search" value="${esc(S.telZoek)}" placeholder="naam, nummer of locatie"></div>
-        <div style="margin-top:14px" id="telrijen">${telRijen(lijst)}</div>
+        <div class="head"><h2>Stock</h2>
+          <div class="right"><span class="faint">${counted} of ${all.length} counted${last ? ' · last update ' + when(last) : ''}</span>
+            <button class="link" data-act="mailroy">Order email</button></div></div>
+        ${low.length ? `<div class="note alert"><b>${low.length} part${low.length === 1 ? '' : 's'} at or below the minimum.</b>
+          Roy gets an email about this; you can also send it right away.
+          <button class="link" data-act="mailroy" style="margin-left:8px">See the email</button></div>` : ''}
+        <p class="faint" style="margin-bottom:16px">Count everything once at the start: walk the racks in location order and fill in
+          how many are there. Set a minimum per part as well — as soon as the stock drops to that number, it goes into the order email
+          to Roy. Every number is saved straight away.</p>
+        <div class="tools">
+          <div class="search" style="flex:1 1 320px;max-width:420px"><span class="ico">search</span>
+            <input id="stocksearch" type="search" value="${esc(S.stockSearch)}" placeholder="name, article number or location"></div>
+          ${S.local ? `<div class="spacer"></div>
+            <button class="link" data-act="export">Save data to a file</button>
+            <button class="link" data-act="importdata">Load data from a file</button>` : ''}
+        </div>
+        <div id="countrows">${countRows(list)}</div>
       </section>`;
   }
 
-  function telRijen(lijst) {
-    if (!lijst.length) return '<p class="empty">Niets gevonden.</p>';
-    return lijst.map((p) => `<div class="telrij ${isGeteld(p) ? 'geteld' : ''}${isGeteld(p) && p.stock < 0 ? ' tekort' : ''}" id="tel_${esc(p.id)}">
-      ${foto(p)}
+  function countRows(list) {
+    if (!list.length) return '<p class="empty">Nothing found.</p>';
+    return list.map((p) => `<div class="countrow ${isCounted(p) ? 'counted' : ''}${isLow(p) ? ' low' : ''}" id="count_${esc(p.id)}">
+      ${photo(p)}
       <div class="grow"><div class="nm">${esc(p.name)}</div>
-        <div class="code">${esc([kort(p), plek(p)].filter(Boolean).join(' · '))}</div></div>
-      <div class="telstand ${isGeteld(p) && p.stock < 0 ? 'tekortkleur' : ''}">${telStand(p)}</div>
-      <input class="telveld" type="number" min="0" inputmode="numeric" data-tel="${esc(p.id)}"
-        value="${isGeteld(p) ? p.stock : ''}" aria-label="Aantal ${esc(p.name)}">
-      <span class="eenheid faint">${esc(p.unit || 'stuks')}</span>
+        <div class="code">${esc([article(p), place(p)].filter(Boolean).join(' · '))}</div></div>
+      <div class="countstate ${isLow(p) ? 'lowtext' : ''}">${countState(p)}</div>
+      <div><span class="fieldlabel">In stock</span>
+        <input class="countfield" type="number" min="0" inputmode="numeric" data-count="${esc(p.id)}"
+          value="${isCounted(p) ? p.stock : ''}" aria-label="Quantity of ${esc(p.name)}"></div>
+      <div><span class="fieldlabel">Minimum</span>
+        <input class="minfield" type="number" min="0" inputmode="numeric" data-min="${esc(p.id)}"
+          value="${hasMinimum(p) ? p.minStock : ''}" aria-label="Minimum for ${esc(p.name)}"></div>
+      <span class="unit faint">${esc(unit(p))}</span>
     </div>`).join('');
   }
 
-  const telStand = (p) => {
-    if (!p.countedAt) return 'nog niet geteld';
-    const geteld = `geteld ${datum(p.countedAt)}${p.countedBy ? ' · ' + esc(p.countedBy) : ''}`;
-    return p.stock < 0 ? `te weinig · ${geteld}` : geteld;
+  const countState = (p) => {
+    if (!p.countedAt) return 'not counted yet';
+    const counted = `counted ${when(p.countedAt)}${p.countedBy ? ' · ' + esc(p.countedBy) : ''}`;
+    if (p.stock < 0) return `short · ${counted}`;
+    if (isLow(p)) return `order · ${counted}`;
+    return counted;
   };
 
-  /** Eén aantal bewaren; het scherm blijft staan waar Dean gebleven was. */
-  async function bewaarAantal(partId, tekst) {
+  /** Saves one number; the screen stays where the person is typing. */
+  async function saveNumber(partId, text, field) {
     const p = partById(partId);
     if (!p) return;
-    const leeg = String(tekst).trim() === '';
-    const aantal = leeg ? null : Math.max(0, Math.round(Number(tekst) || 0));
-    await schrijf(async () => {
-      await partRef(partId).update(leeg
+    const empty = String(text).trim() === '';
+    const value = empty ? null : Math.max(0, Math.round(Number(text) || 0));
+    await write(async () => {
+      if (field === 'min') await partRef(partId).update({ minStock: value });
+      else await partRef(partId).update(empty
         ? { stock: null, countedAt: null, countedBy: null }
-        : { stock: aantal, countedAt: nu(), countedBy: S.wie });
+        : { stock: value, countedAt: now(), countedBy: S.who });
     });
-    const rij = document.getElementById('tel_' + partId);
-    if (rij) {
-      rij.classList.toggle('geteld', !leeg);
-      rij.classList.toggle('tekort', !leeg && aantal < 0);
-      const stand = rij.querySelector('.telstand');
-      if (stand) stand.textContent = leeg ? 'nog niet geteld' : `geteld ${datum(nu())} · ${S.wie}`;
+    const row = document.getElementById('count_' + partId);
+    if (!row) return;
+    const fresh = { ...p, ...(field === 'min' ? { minStock: value } : { stock: value, countedAt: empty ? null : now(), countedBy: S.who }) };
+    row.classList.toggle('counted', isCounted(fresh));
+    row.classList.toggle('low', isLow(fresh));
+    const state = row.querySelector('.countstate');
+    if (state) {
+      state.textContent = countState(fresh);
+      state.classList.toggle('lowtext', isLow(fresh));
     }
-    const teller = document.querySelector('#view .head .right');
-    if (teller) {
-      const alles = onderdelen();
-      teller.textContent = `${alles.filter(isGeteld).length} van ${alles.length} geteld · laatst bijgewerkt ${datum(nu())}`;
-    }
+    drawTabs();
   }
 
-  /* ------------------------------------------------------------ tekenen */
+  /* ------------------------------------------------------------ Dean: monthly check */
 
-  function teken(force) {
-    // Tijdens het tellen houdt het voorraadscherm zichzelf bij: opnieuw
-    // tekenen zou de cursor uit het vakje halen waar Dean net in typt.
-    if (!force && S.wie === 'Dean' && S.tab === 'voorraad' && document.getElementById('telrijen')) return;
+  /** Red when a lot is missing, green when almost nothing is. */
+  function missingLevel(expected, missing) {
+    if (missing <= 0) return 'good';
+    if (!expected || missing / expected > 0.25) return 'bad';
+    return 'warn';
+  }
+
+  function screenMonthly() {
+    const parts = monthlyParts();
+    const found = search(S.monthlySearch, allParts().filter((p) => !p.monthly)).slice(0, 12);
+    const lastCheck = S.checks.slice().sort((a, b) => (b.at || '').localeCompare(a.at || ''))[0];
+    const anyCounted = Object.keys(S.monthlyCount).length;
+
+    return `
+      <section>
+        <div class="head"><h2>Monthly check</h2>
+          <div class="right faint">${parts.length} parts${lastCheck ? ' · last check ' + fullDate(lastCheck.at) : ' · no check yet'}</div></div>
+        <p class="faint" style="margin-bottom:16px">Count these parts once a month. The program compares your count with the stock it
+          expects and records the difference, so you can see how much goes missing over time.
+          Green means (almost) nothing missing, red means more than a quarter is gone.</p>
+        ${parts.length ? `<div class="scroll"><table><thead><tr>
+          <th>Part</th><th>Location</th><th class="num">Expected</th><th class="num">Counted</th>
+          <th class="num">Missing</th><th>Last counted</th><th></th>
+        </tr></thead><tbody>${parts.map((p) => monthlyRow(p)).join('')}</tbody></table></div>
+        <div class="ask">
+          <span class="txt">${anyCounted ? `${anyCounted} part${anyCounted === 1 ? '' : 's'} counted` : 'Fill in what you counted'}</span>
+          <div class="spacer"></div>
+          <button class="btn solid lg" data-act="savecheck" ${anyCounted ? '' : 'disabled'}>Save this check</button>
+        </div>` : '<p class="empty">No parts in the monthly check yet. Add them below.</p>'}
+      </section>
+
+      <section>
+        <div class="head"><h2>Add parts to this check</h2></div>
+        <div class="search" style="max-width:420px"><span class="ico">search</span>
+          <input id="monthlysearch" type="search" value="${esc(S.monthlySearch)}" placeholder="name, article number or location"></div>
+        <div class="rows" style="margin-top:14px" id="monthlyfind">${monthlyFindRows(found)}</div>
+      </section>
+
+      ${S.checks.length ? `<section>
+        <div class="head"><h2>Previous checks</h2></div>
+        <div class="scroll"><table><thead><tr>
+          <th>Date</th><th>By</th><th class="num">Parts</th><th class="num">Total missing</th><th>Per part</th>
+        </tr></thead><tbody>${S.checks.slice().sort((a, b) => (b.at || '').localeCompare(a.at || '')).slice(0, 12)
+          .map((c) => {
+            const missing = (c.lines || []).filter((r) => r.missing > 0);
+            const totalMissing = missing.reduce((s, r) => s + r.missing, 0);
+            const totalExpected = (c.lines || []).reduce((s, r) => s + (r.expected || 0), 0);
+            return `<tr>
+              <td class="mono">${fullDate(c.at)}</td>
+              <td>${esc(c.by || '')}</td>
+              <td class="num">${(c.lines || []).length}</td>
+              <td class="num"><span class="chip ${missingLevel(totalExpected, totalMissing) === 'good' ? 'good'
+                : missingLevel(totalExpected, totalMissing) === 'bad' ? 'bad' : 'missing'}">${totalMissing}</span></td>
+              <td class="faint" style="font-size:13px">${missing.length
+                ? missing.map((r) => `${esc((partById(r.partId) || {}).name || 'part')}: ${r.missing}`).join(', ')
+                : 'everything matched'}</td>
+            </tr>`;
+          }).join('')}</tbody></table></div>
+      </section>` : ''}`;
+  }
+
+  function monthlyRow(p) {
+    const expected = isCounted(p) ? p.stock : null;
+    const counted = S.monthlyCount[p.id];
+    const missing = expected !== null && counted !== undefined ? Math.max(0, expected - counted) : null;
+    const level = missing === null ? '' : missingLevel(expected, missing);
+    return `<tr id="m_${esc(p.id)}">
+      <td>${cell(p)}</td>
+      <td class="loc">${esc(p.location || '–')}</td>
+      <td class="num">${expected === null ? '<span class="faint">–</span>' : expected}</td>
+      <td class="num"><input class="countfield" type="number" min="0" inputmode="numeric" data-monthly="${esc(p.id)}"
+        value="${counted === undefined ? '' : counted}" aria-label="Counted ${esc(p.name)}"></td>
+      <td class="num" data-missing="${esc(p.id)}">${missing === null ? '<span class="faint">–</span>'
+        : `<span class="chip ${level === 'good' ? 'good' : level === 'bad' ? 'bad' : 'missing'}">${missing}</span>`}</td>
+      <td class="faint" style="font-size:13px">${p.countedAt ? when(p.countedAt) : 'never'}</td>
+      <td style="text-align:right"><button class="link" data-act="unmonthly:${p.id}">remove</button></td>
+    </tr>`;
+  }
+
+  function monthlyFindRows(list) {
+    if (!list.length) return '<p class="empty">Nothing found.</p>';
+    return list.map((p) => `<div class="row">${photo(p)}
+      <div class="grow"><div class="name">${esc(p.name)}</div>
+        <div class="code">${esc([article(p), place(p)].filter(Boolean).join(' · '))}</div></div>
+      <button class="btn" data-act="addmonthly:${p.id}">Add to check</button></div>`).join('');
+  }
+
+  /* ------------------------------------------------------------ history */
+
+  function screenHistory() {
+    const done = finishedLists();
+    if (!done.length) {
+      return `<section><div class="head"><h2>History</h2></div>
+        <p class="empty">Finished cabinets show up here, with the date and what was missing.</p></section>`;
+    }
+    return `
+      <section>
+        <div class="head"><h2>History</h2>
+          <div class="right faint">${done.length} finished cabinet${done.length === 1 ? '' : 's'}</div></div>
+        <div class="scroll"><table><thead><tr>
+          <th>Date</th><th>Cabinet</th><th>Description</th><th>Picked by</th><th>Result</th>
+        </tr></thead><tbody>${done.map((l) => {
+          const missing = (l.lines || []).filter((r) => r.missingQty > 0);
+          return `<tr class="click" data-act="openlist:${l.id}" style="cursor:pointer">
+            <td class="mono">${fullDate(l.completedAt)}</td>
+            <td class="mono" style="font-weight:600">${esc(l.cabinetNumber)}</td>
+            <td>${esc(l.title || '')}</td>
+            <td>${esc(l.completedBy || '')}</td>
+            <td>${missing.length
+              ? `<span class="chip bad">Missing</span> <span class="faint" style="font-size:13px">${missing
+                  .map((r) => `${r.missingQty} × ${esc((partById(r.partId) || {}).name || 'part')}`).join(', ')}</span>`
+              : '<span class="chip good">All correct</span>'}</td>
+          </tr>`;
+        }).join('')}</tbody></table></div>
+      </section>`;
+  }
+
+  /* ------------------------------------------------------------ drawing */
+
+  function draw(force) {
+    // While counting, the stock and monthly screens keep themselves up to
+    // date: redrawing would pull the cursor out of the field being typed in.
+    if (!force && S.who === 'Dean' && (S.tab === 'stock' || S.tab === 'monthly')
+      && (document.getElementById('countrows') || document.getElementById('monthlyfind'))) return;
     if (!force && document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) {
-      S.hertekenen = true;
+      S.redrawLater = true;
       return;
     }
-    S.hertekenen = false;
+    S.redrawLater = false;
     const view = document.getElementById('view');
-    if (!S.klaar) { view.innerHTML = '<p class="empty">Gegevens laden…</p>'; tekenTabs(); return; }
+    if (!S.ready) { view.innerHTML = '<p class="empty">Loading…</p>'; drawTabs(); return; }
 
-    const scherm = S.wie === 'Dean'
-      ? (S.tab === 'voorraad' ? schermVoorraad() : schermKastlijsten())
-      : S.tab === 'bestellen' ? schermBestellen()
-      : schermMaken();
-    view.innerHTML = scherm;
-    tekenTabs();
+    const screen = S.tab === 'history' ? screenHistory()
+      : S.who === 'Dean'
+        ? (S.tab === 'stock' ? screenStock() : S.tab === 'monthly' ? screenMonthly() : screenPickChoose())
+        : screenLists();
+    view.innerHTML = screen;
+    drawTabs();
   }
 
-  function tekenTabs() {
-    const tabs = TABBLADEN[S.wie] || [];
-    const tellers = { bestellen: S.klaar ? teBestellen().length : 0, kastlijsten: S.klaar ? openLijsten().length : 0 };
+  function drawTabs() {
+    const tabs = TABS[S.who] || [];
+    const counts = {
+      lists: S.ready && S.who === 'Dean' ? openLists().length : 0,
+      stock: S.ready ? toOrder().length : 0,
+    };
     const nav = document.getElementById('tabs');
     nav.hidden = tabs.length < 2;
-    nav.innerHTML = tabs.map(([sleutel, naam]) =>
-      `<button data-act="tab:${sleutel}" aria-current="${S.tab === sleutel}">${naam}${
-        tellers[sleutel] ? `<span class="count">${tellers[sleutel]}</span>` : ''}</button>`).join('');
+    nav.innerHTML = tabs.map(([key, label]) =>
+      `<button data-act="tab:${key}" aria-current="${S.tab === key}">${label}${
+        counts[key] ? `<span class="count${key === 'stock' ? ' alert' : ''}">${counts[key]}</span>` : ''}</button>`).join('');
   }
 
   let toastTimer;
-  function meld(tekst) {
+  function toast(text) {
     const t = document.getElementById('toast');
-    t.textContent = tekst;
+    t.textContent = text;
     t.hidden = false;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { t.hidden = true; }, 2800);
   }
 
-  /* ------------------------------------------------------------ venster */
+  /* ------------------------------------------------------------ dialogs */
 
-  let venster = null;
+  let dialog = null;
 
-  function toonVenster(titel, inhoud, knoppen, breed) {
-    venster = { knoppen };
-    document.getElementById('overlay').innerHTML = `<div class="veil" data-act="sluitveil">
-      <div class="panel ${breed ? 'wide' : ''}" role="dialog" aria-modal="true" aria-label="${esc(titel)}">
-        <div class="ph"><h2>${esc(titel)}</h2><button class="x" data-act="sluit" aria-label="Sluiten">×</button></div>
-        <div class="pb">${inhoud}</div>
-        <div class="pf">${knoppen.map((k, i) =>
-          `<button class="btn ${k.stijl || ''}" data-act="venster:${i}">${esc(k.tekst)}</button>`).join('')}</div>
+  function showDialog(title, body, buttons, wide) {
+    dialog = { buttons };
+    document.getElementById('overlay').innerHTML = `<div class="veil" data-act="closeveil">
+      <div class="panel ${wide ? 'wide' : ''}" role="dialog" aria-modal="true" aria-label="${esc(title)}">
+        <div class="ph"><h2>${esc(title)}</h2><button class="x" data-act="close" aria-label="Close">×</button></div>
+        <div class="pb">${body}</div>
+        <div class="pf">${buttons.map((b, i) =>
+          `<button class="btn ${b.style || ''}" data-act="dialog:${i}">${esc(b.text)}</button>`).join('')}</div>
       </div></div>`;
-    const eerste = document.querySelector('#overlay input, #overlay textarea, #overlay .btn');
-    if (eerste) eerste.focus();
+    const first = document.querySelector('#overlay input, #overlay textarea, #overlay .btn');
+    if (first) first.focus();
   }
 
-  function sluit() {
-    venster = null;
+  function closeDialog() {
+    dialog = null;
     document.getElementById('overlay').innerHTML = '';
   }
 
-  const veld = (id, label, waarde, plaats) =>
+  const field = (id, label, value, placeholder) =>
     `<label class="f"><span class="eyebrow">${label}</span>
-      <input id="${id}" type="text" value="${esc(waarde == null ? '' : waarde)}"
-        ${plaats ? `placeholder="${esc(plaats)}"` : ''}></label>`;
-  const waarde = (id) => (document.getElementById(id) || {}).value || '';
+      <input id="${id}" type="text" value="${esc(value == null ? '' : value)}"
+        ${placeholder ? `placeholder="${esc(placeholder)}"` : ''}></label>`;
+  const val = (id) => (document.getElementById(id) || {}).value || '';
 
-  function vensterOnderdeel(p) {
-    const gekozenFoto = { url: p ? p.photo || '' : '' };
-    toonVenster(p ? 'Onderdeel wijzigen' : 'Nieuw onderdeel', `
+  function partDialog(p) {
+    const chosenPhoto = { url: p ? p.photo || '' : '' };
+    showDialog(p ? 'Edit part' : 'New part', `
       <div class="grid2">
-        ${veld('f_name', 'Naam', p && p.name, 'Potscharnier 110° opdek')}
-        ${veld('f_number', 'Artikelnummer', p && p.number, '71B3590 MB')}
-        ${veld('f_location', 'Locatie', p && p.location, '3')}
-        ${veld('f_supplier', 'Leverancier', p && p.supplier, 'Ostermann')}
-        ${veld('f_category', 'Categorie', p && p.category, 'Scharnieren')}
-        ${veld('f_unit', 'Eenheid', (p && p.unit) || 'stuks')}
-        <label class="f wide"><span class="eyebrow">Opmerking</span>
+        ${field('f_name', 'Name', p && p.name, 'Clip-top BLUMOTION')}
+        ${field('f_number', 'Article number', p && p.number, '71B3590 MB')}
+        ${field('f_location', 'Location', p && p.location, '3')}
+        ${field('f_supplier', 'Supplier', p && p.supplier, 'Ostermann')}
+        ${field('f_category', 'Category', p && p.category, 'Hinges')}
+        ${field('f_unit', 'Unit', (p && p.unit) || 'pcs')}
+        ${field('f_min', 'Minimum stock', p && typeof p.minStock === 'number' ? p.minStock : '', 'e.g. 20')}
+        <label class="f" style="align-self:end"><span class="eyebrow">Monthly check</span>
+          <label style="display:flex;gap:8px;align-items:center;font-size:14px">
+            <input id="f_monthly" type="checkbox" ${p && p.monthly ? 'checked' : ''} style="width:auto"> in the monthly check</label></label>
+        <label class="f wide"><span class="eyebrow">Note</span>
           <textarea id="f_notes">${esc((p && p.notes) || '')}</textarea></label>
         <div class="wide">
-          <span class="eyebrow">Foto</span>
+          <span class="eyebrow">Photo</span>
           <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
-            <img id="f_preview" class="thumb" style="width:70px;height:54px" src="${esc(gekozenFoto.url || LEEG)}" alt="">
+            <img id="f_preview" class="thumb" style="width:70px;height:54px" src="${esc(chosenPhoto.url || PLACEHOLDER)}" alt="">
             <input id="f_file" type="file" accept="image/*" style="font-size:12.5px">
           </div>
         </div>
       </div>`, [
-      { tekst: 'Annuleren' },
-      { tekst: p ? 'Opslaan' : 'Toevoegen', stijl: 'solid', doe: async () => {
+      { text: 'Cancel' },
+      { text: p ? 'Save' : 'Add', style: 'solid', run: async () => {
+        const minText = val('f_min').trim();
         const body = {
-          name: waarde('f_name').trim(), number: waarde('f_number').trim(),
-          location: waarde('f_location').trim(), supplier: waarde('f_supplier').trim(),
-          category: waarde('f_category').trim(), unit: waarde('f_unit').trim() || 'stuks',
-          notes: waarde('f_notes').trim(), photo: gekozenFoto.url,
+          name: val('f_name').trim(), number: val('f_number').trim(),
+          location: val('f_location').trim(), supplier: val('f_supplier').trim(),
+          category: val('f_category').trim(), unit: val('f_unit').trim() || 'pcs',
+          notes: val('f_notes').trim(), photo: chosenPhoto.url,
+          minStock: minText === '' ? null : Math.max(0, Math.round(Number(minText) || 0)),
+          monthly: document.getElementById('f_monthly').checked,
         };
-        if (!body.name) { meld('Vul een naam in.'); return false; }
-        await schrijf(async () => {
+        if (!body.name) { toast('Please enter a name.'); return false; }
+        await write(async () => {
           if (p) await partRef(p.id).set({ ...p, ...body });
           else await S.db.collection('parts').add(body);
-        }, p ? 'Onderdeel bijgewerkt' : 'Onderdeel toegevoegd');
+        }, p ? 'Part updated' : 'Part added');
         return true;
       } },
     ], true);
@@ -956,287 +1105,569 @@
       const b = file.files && file.files[0];
       if (!b) return;
       try {
-        const url = S.assets ? (await S.assets.upload(b)).url : await verkleindeFoto(b);
-        gekozenFoto.url = url;
+        const url = S.assets ? (await S.assets.upload(b)).url : await smallerPhoto(b);
+        chosenPhoto.url = url;
         document.getElementById('f_preview').src = url;
-        meld('Foto toegevoegd');
-      } catch (e) { meld('De foto kon niet opgeslagen worden.'); }
+        toast('Photo added');
+      } catch (e) { toast('That photo could not be saved.'); }
     });
   }
 
-  /** Maakt een gekozen foto klein genoeg om op dit apparaat te bewaren. */
-  function verkleindeFoto(bestand) {
-    return new Promise((klaar, fout) => {
-      const lezer = new FileReader();
-      lezer.onerror = () => fout(new Error('lezen mislukt'));
-      lezer.onload = () => {
-        const beeld = new Image();
-        beeld.onerror = () => fout(new Error('geen afbeelding'));
-        beeld.onload = () => {
-          const schaal = Math.min(1, 800 / (beeld.width || 800));
-          const doek = document.createElement('canvas');
-          doek.width = Math.round(beeld.width * schaal);
-          doek.height = Math.round(beeld.height * schaal);
-          doek.getContext('2d').drawImage(beeld, 0, 0, doek.width, doek.height);
-          klaar(doek.toDataURL('image/jpeg', 0.72));
+  /** Shrinks a chosen photo so it fits in the storage of this device. */
+  function smallerPhoto(file) {
+    return new Promise((done, fail) => {
+      const reader = new FileReader();
+      reader.onerror = () => fail(new Error('could not read'));
+      reader.onload = () => {
+        const image = new Image();
+        image.onerror = () => fail(new Error('not an image'));
+        image.onload = () => {
+          const scale = Math.min(1, 800 / (image.width || 800));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(image.width * scale);
+          canvas.height = Math.round(image.height * scale);
+          canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+          done(canvas.toDataURL('image/jpeg', 0.72));
         };
-        beeld.src = lezer.result;
+        image.src = reader.result;
       };
-      lezer.readAsDataURL(bestand);
+      reader.readAsDataURL(file);
     });
   }
 
-  /* ------------------------------------------------------------ voorraad bijwerken */
+  /* ------------------------------------------------------------ order email */
 
-  const regelsPerOnderdeel = (lines) => {
+  function orderEmail() {
+    const low = toOrder();
+    const subject = `PUUUR parts to order – ${fullDate(now())}`;
+    const lines = low.map((p) => {
+      const bits = [`${p.stock} left, minimum ${p.minStock}`];
+      if (p.location) bits.push(`location ${p.location}`);
+      if (p.supplier) bits.push(p.supplier);
+      return `- ${p.name}${p.number ? ` [${p.number}]` : ''} — ${bits.join(' · ')}`;
+    });
+    const body = low.length
+      ? `These parts are at or below their minimum:\n\n${lines.join('\n')}\n\nSent from the PUUUR parts manager.`
+      : 'Nothing is below its minimum right now.';
+    return { subject, body };
+  }
+
+  function mailDialog() {
+    const { subject, body } = orderEmail();
+    const href = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    showDialog('Order email to Roy', `
+      <p class="faint" style="font-size:13px">To: ${ORDER_EMAIL}<br>Subject: ${esc(subject)}</p>
+      <pre class="mailtext" id="mailbody">${esc(body)}</pre>
+      <p class="faint" style="font-size:13px">${mailConfigured()
+        ? 'This email is sent to Roy automatically once a day, just after midnight.'
+        : 'Automatic sending is not switched on yet: fill in the mail account in the page and Roy gets this once a day just after midnight. Until then you can open it in your mail app or copy the text.'}</p>
+      <p><a class="btn" href="${esc(href)}">Open in mail app</a></p>`, [
+      { text: 'Copy text', run: async () => {
+        try { await navigator.clipboard.writeText(`${subject}\n\n${body}`); toast('Copied'); } catch (e) { toast('Could not copy.'); }
+        return false;
+      } },
+      { text: 'Close', style: 'solid' },
+    ], true);
+  }
+
+  /* ------------------------------------------------------------ daily email */
+
+  function loadScript(src) {
+    return new Promise((done, fail) => {
+      const tag = document.createElement('script');
+      tag.src = src;
+      tag.onload = done;
+      tag.onerror = () => fail(new Error('could not load ' + src));
+      document.head.append(tag);
+    });
+  }
+
+  const mailConfigured = () => Boolean(MAIL.serviceId && MAIL.templateId && MAIL.publicKey);
+
+  /** Sends the order email at most once per calendar day. */
+  async function sendDailyMail() {
+    if (!mailConfigured() || !S.ready) return;
+    const today = new Date().toISOString().slice(0, 10);
+    let sentOn = null;
+    try { sentOn = localStorage.getItem('puuur-mail-sent'); } catch (e) { /* private mode */ }
+    if (sentOn === today) return;
+    const low = toOrder();
+    if (!low.length) {
+      try { localStorage.setItem('puuur-mail-sent', today); } catch (e) { /* private mode */ }
+      return;
+    }
+    const { subject, body } = orderEmail();
+    try {
+      if (!window.emailjs) await loadScript('https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js');
+      window.emailjs.init({ publicKey: MAIL.publicKey });
+      await window.emailjs.send(MAIL.serviceId, MAIL.templateId, { to_email: ORDER_EMAIL, subject, message: body });
+      try { localStorage.setItem('puuur-mail-sent', today); } catch (e) { /* private mode */ }
+    } catch (e) {
+      // Sending failed; the list stays visible under Stock so nothing is lost.
+    }
+  }
+
+  /* ------------------------------------------------------------ CSV import */
+
+  function parseCsv(text) {
+    const clean = String(text).replace(/^﻿/, '');
+    const firstLine = clean.split(/\r?\n/)[0] || '';
+    const delim = (firstLine.match(/;/g) || []).length >= (firstLine.match(/,/g) || []).length ? ';' : ',';
+    const rows = [];
+    let row = [], cellText = '', quoted = false;
+    for (let i = 0; i < clean.length; i += 1) {
+      const c = clean[i];
+      if (quoted) {
+        if (c === '"') { if (clean[i + 1] === '"') { cellText += '"'; i += 1; } else quoted = false; }
+        else cellText += c;
+      } else if (c === '"') quoted = true;
+      else if (c === delim) { row.push(cellText); cellText = ''; }
+      else if (c === '\n') { row.push(cellText); rows.push(row); row = []; cellText = ''; }
+      else if (c !== '\r') cellText += c;
+    }
+    if (cellText !== '' || row.length) { row.push(cellText); rows.push(row); }
+    return rows.filter((r) => r.some((v) => String(v).trim() !== ''));
+  }
+
+  const plain = (t) => String(t || '').toLowerCase().normalize('NFD')
+    .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+
+  /** Best guess for which part in the catalogue a CSV line means. */
+  function guessPart(row) {
+    if (row.number) {
+      const hit = S.parts.find((p) => p.number && plain(p.number) === plain(row.number));
+      if (hit) return hit.id;
+    }
+    const name = plain(row.name);
+    if (!name) return '';
+    let hit = S.parts.find((p) => plain(p.name) === name);
+    if (hit) return hit.id;
+    hit = S.parts.find((p) => plain(p.name).includes(name) || name.includes(plain(p.name)));
+    if (hit) return hit.id;
+    const words = name.split(' ').filter((w) => w.length > 4);
+    hit = S.parts.find((p) => words.some((w) => plain(p.name).includes(w)));
+    return hit ? hit.id : '';
+  }
+
+  function readCsvFile() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv,text/csv,text/plain';
+    input.addEventListener('change', async () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      try {
+        const rows = parseCsv(await file.text());
+        if (rows.length < 2) { toast('This file has no rows.'); return; }
+        importDialog(rows, file.name);
+      } catch (e) { toast('This file could not be read.'); }
+    });
+    input.click();
+  }
+
+  function importDialog(rows, filename) {
+    const header = rows[0].map((h) => plain(h));
+    const find = (...names) => header.findIndex((h) => names.some((n) => h === n || h.includes(n)));
+    const iQty = find('aantal', 'quantity', 'qty', 'amount');
+    const iNumber = find('artikelnummer', 'article number', 'article', 'item number');
+    const iName = find('objectnaam', 'object name', 'name', 'part');
+    const iDesc = find('beschrijving', 'description');
+    const iMaker = find('fabrikant', 'manufacturer', 'supplier');
+
+    if (iQty < 0) { toast('No quantity column found in this file.'); return; }
+
+    const lines = [];
+    for (const r of rows.slice(1)) {
+      const qty = Math.round(Number(String(r[iQty] || '').replace(',', '.')) || 0);
+      if (qty <= 0) continue;
+      lines.push({
+        qty,
+        number: (iNumber >= 0 ? r[iNumber] : '').trim(),
+        name: (iName >= 0 ? r[iName] : '').trim(),
+        description: (iDesc >= 0 ? r[iDesc] : '').trim(),
+        supplier: (iMaker >= 0 ? r[iMaker] : '').trim(),
+        match: '',
+      });
+    }
+    if (!lines.length) { toast('No usable rows in this file.'); return; }
+    for (const line of lines) line.match = guessPart(line);
+
+    const base = String(filename || '').replace(/\.csv$/i, '');
+    const numberFromName = (base.match(/^(\d{3,})/) || [])[1] || '';
+    const titleFromName = base.replace(/^\d+[_\s-]*/, '').replace(/[_]+/g, ' ').trim();
+
+    const options = allParts();
+    const rowsHtml = lines.map((line, i) => `<tr>
+      <td><div class="name">${esc(line.name || line.description || 'unnamed')}</div>
+        <div class="code">${esc([line.number, line.supplier].filter(Boolean).join(' · '))}</div></td>
+      <td class="num mono">${line.qty}</td>
+      <td><select class="f" data-map="${i}">
+        <option value="">— create as a new part —</option>
+        ${options.map((p) => `<option value="${esc(p.id)}" ${p.id === line.match ? 'selected' : ''}>${
+          esc(p.name)}${p.location ? ' (loc. ' + esc(p.location) + ')' : ''}</option>`).join('')}
+      </select></td>
+    </tr>`).join('');
+
+    showDialog('Import from CSV', `
+      <div class="grid2">
+        ${field('i_cab', 'Cabinet number', numberFromName, '15662')}
+        ${field('i_title', 'Description', titleFromName)}
+      </div>
+      <p class="faint" style="font-size:13px">${lines.length} rows with a quantity. Check which part in the catalogue each row means;
+        rows left on <em>create as a new part</em> are added to the catalogue with the name and article number from the file.</p>
+      <div class="scroll" style="max-height:44vh;overflow-y:auto"><table><thead><tr>
+        <th>From the file</th><th class="num">Qty</th><th>Part in the catalogue</th>
+      </tr></thead><tbody>${rowsHtml}</tbody></table></div>`, [
+      { text: 'Cancel' },
+      { text: 'Import', style: 'solid', run: async () => {
+        const cabinet = val('i_cab').trim();
+        if (!cabinet) { toast('Please enter a cabinet number.'); return false; }
+        document.querySelectorAll('[data-map]').forEach((sel) => {
+          lines[Number(sel.dataset.map)].match = sel.value;
+        });
+        await write(async () => {
+          for (const line of lines) {
+            if (line.match) continue;
+            const ref = await S.db.collection('parts').add({
+              name: line.name || line.description || 'Unnamed part',
+              number: line.number,
+              supplier: line.supplier,
+              location: '',
+              category: '',
+              unit: 'pcs',
+              notes: line.description && line.description !== line.name ? line.description : '',
+              photo: '',
+              minStock: null,
+              monthly: false,
+            });
+            line.match = ref.id;
+          }
+          const merged = new Map();
+          for (const line of lines) merged.set(line.match, (merged.get(line.match) || 0) + line.qty);
+          S.draft = {
+            id: null,
+            cabinetNumber: cabinet,
+            title: val('i_title').trim(),
+            lines: [...merged.entries()].map(([partId, qty]) => ({ partId, qty })),
+            search: '',
+          };
+        }, `${lines.length} rows imported`);
+        draw(true);
+        return true;
+      } },
+    ], true);
+  }
+
+  /* ------------------------------------------------------------ stock bookkeeping */
+
+  const linesPerPart = (lines) => {
     const map = new Map();
     for (const r of lines || []) map.set(r.partId, (map.get(r.partId) || 0) + r.qty);
     return map;
   };
 
   /**
-   * Boekt het verschil tussen twee versies van een kastlijst af of terug.
-   * Een nieuwe kastlijst gaat er meteen van de voorraad af; wordt een lijst
-   * kleiner of verwijderd, dan komt het weer terug. Onderdelen die nog niet
-   * geteld zijn hebben geen aantal, daar valt niets aan bij te werken.
+   * Books the difference between two versions of a cabinet list. A new list
+   * comes off the stock straight away; if a list shrinks or is deleted the
+   * pieces come back. Parts that were never counted have no number, so
+   * there is nothing to adjust.
    */
-  async function boekVoorraad(oudeLines, nieuweLines) {
-    const oud = regelsPerOnderdeel(oudeLines);
-    const nieuw = regelsPerOnderdeel(nieuweLines);
-    for (const partId of new Set([...oud.keys(), ...nieuw.keys()])) {
-      const verschil = (oud.get(partId) || 0) - (nieuw.get(partId) || 0);
-      if (!verschil) continue;
+  async function bookStock(oldLines, newLines) {
+    const before = linesPerPart(oldLines);
+    const after = linesPerPart(newLines);
+    for (const partId of new Set([...before.keys(), ...after.keys()])) {
+      const change = (before.get(partId) || 0) - (after.get(partId) || 0);
+      if (!change) continue;
       const p = partById(partId);
-      if (!p || !isGeteld(p)) continue;
-      await partRef(partId).update({ stock: p.stock + verschil });
+      if (!p || !isCounted(p)) continue;
+      await partRef(partId).update({ stock: p.stock + change });
     }
   }
 
-  /* ------------------------------------------------------------ afronden */
+  /* ------------------------------------------------------------ finishing */
 
-  async function rondAf(l, mist) {
+  async function finish(l, missing) {
     const lines = (l.lines || []).map((r) => {
-      const aantal = mist[r.partId] || 0;
-      return { ...r, missingQty: Math.min(aantal, r.qty), missingHandled: false };
+      const qty = missing[r.partId] || 0;
+      return { ...r, missingQty: Math.min(qty, r.qty), missingHandled: false };
     });
-    const tekort = lines.filter((r) => r.missingQty > 0);
-    await schrijf(async () => {
-      // Wat Dean niet kon pakken lag er niet: dat onderdeel staat op nul.
-      for (const r of tekort) {
+    const short = lines.filter((r) => r.missingQty > 0);
+    await write(async () => {
+      // What Dean could not pick was not there: that part is down to zero.
+      for (const r of short) {
         const p = partById(r.partId);
-        if (p && isGeteld(p) && p.stock !== 0) await partRef(r.partId).update({ stock: 0 });
+        if (p && isCounted(p) && p.stock !== 0) await partRef(r.partId).update({ stock: 0 });
       }
       await listRef(l.id).update({
         lines,
-        status: tekort.length ? 'tekort' : 'gepakt',
-        completedBy: S.wie,
-        completedAt: nu(),
+        status: short.length ? 'short' : 'done',
+        completedBy: S.who,
+        completedAt: now(),
       });
     });
-    S.lijstId = null;
-    S.mist = null;
-    teken(true);
-    if (tekort.length) {
-      const tekst = tekort.map((r) => `${r.missingQty} × ${(partById(r.partId) || {}).name}`).join(', ');
-      toonVenster('Doorgegeven aan Roy', `
-        <p><b>Dit staat nu op de lijst van Roy:</b></p>
-        <p>${esc(tekst)}</p>
-        <p class="faint" style="font-size:13px">Kast ${esc(l.cabinetNumber)} is afgerond.</p>`,
-        [{ tekst: 'Klaar', stijl: 'solid' }]);
+    S.listId = null;
+    S.missing = null;
+    draw(true);
+    if (short.length) {
+      const text = short.map((r) => `${r.missingQty} × ${(partById(r.partId) || {}).name}`).join(', ');
+      showDialog('Reported', `
+        <p><b>This is now on the order list for Roy:</b></p>
+        <p>${esc(text)}</p>
+        <p class="faint" style="font-size:13px">Cabinet ${esc(l.cabinetNumber)} is finished and moved to History.</p>`,
+        [{ text: 'Done', style: 'solid' }]);
     } else {
-      meld(`Kast ${l.cabinetNumber} compleet`);
+      toast(`Cabinet ${l.cabinetNumber} complete`);
     }
   }
 
-  /* ------------------------------------------------------------ acties */
+  /* ------------------------------------------------------------ actions */
 
-  async function doeActie(act) {
-    const [naam, a] = act.split(':');
+  async function run(act) {
+    const [name, a] = act.split(':');
 
-    if (naam === 'tab') { S.tab = a; S.lijstId = null; return teken(true); }
-    if (naam === 'terug') { S.lijstId = null; S.mist = null; return teken(true); }
-    if (naam === 'sluit' || naam === 'sluitveil') return sluit();
-    if (naam === 'venster') {
-      const knop = venster.knoppen[Number(a)];
-      if (!knop.doe) return sluit();
-      const klaar = await knop.doe();
-      if (klaar !== false) sluit();
+    if (name === 'tab') { S.tab = a; S.listId = null; S.missing = null; return draw(true); }
+    if (name === 'back') { S.listId = null; S.missing = null; return draw(true); }
+    if (name === 'close' || name === 'closeveil') return closeDialog();
+    if (name === 'dialog') {
+      const button = dialog.buttons[Number(a)];
+      if (!button.run) return closeDialog();
+      const done = await button.run();
+      if (done !== false) closeDialog();
       return;
     }
 
-    /* --- Roy: kastlijst maken --- */
-    if (naam === 'voeg') {
-      const regel = S.concept.lines.find((r) => r.partId === a);
-      if (regel) regel.qty += 1; else S.concept.lines.push({ partId: a, qty: 1 });
-      return teken(true);
+    /* --- Roy: building a list --- */
+    if (name === 'add') {
+      const line = S.draft.lines.find((r) => r.partId === a);
+      if (line) line.qty += 1; else S.draft.lines.push({ partId: a, qty: 1 });
+      return draw(true);
     }
-    if (naam === 'plus') { S.concept.lines.find((r) => r.partId === a).qty += 1; return teken(true); }
-    if (naam === 'min') {
-      const regel = S.concept.lines.find((r) => r.partId === a);
-      regel.qty -= 1;
-      if (regel.qty <= 0) S.concept.lines = S.concept.lines.filter((r) => r.partId !== a);
-      return teken(true);
+    if (name === 'plus') { S.draft.lines.find((r) => r.partId === a).qty += 1; return draw(true); }
+    if (name === 'minus') {
+      const line = S.draft.lines.find((r) => r.partId === a);
+      line.qty -= 1;
+      if (line.qty <= 0) S.draft.lines = S.draft.lines.filter((r) => r.partId !== a);
+      return draw(true);
     }
-    if (naam === 'weg') { S.concept.lines = S.concept.lines.filter((r) => r.partId !== a); return teken(true); }
-    if (naam === 'conceptweg') { S.concept = null; return teken(true); }
-    if (naam === 'bewaar') {
-      const c = S.concept;
-      c.cabinetNumber = waarde('kastnr').trim() || c.cabinetNumber;
-      c.title = waarde('kasttitel').trim() || c.title;
-      if (!c.cabinetNumber) { meld('Vul het kastnummer in.'); return; }
-      if (!c.lines.length) { meld('Zet minimaal één onderdeel op de lijst.'); return; }
-      return schrijf(async () => {
-        if (c.id) {
-          const oud = lijstById(c.id);
-          const nieuweRegels = c.lines.map((r) => {
-            const bestaand = ((oud && oud.lines) || []).find((x) => x.partId === r.partId) || {};
-            return { partId: r.partId, qty: r.qty, missingQty: bestaand.missingQty || 0, missingHandled: Boolean(bestaand.missingHandled) };
+    if (name === 'remove') { S.draft.lines = S.draft.lines.filter((r) => r.partId !== a); return draw(true); }
+    if (name === 'dropdraft') { S.draft = null; return draw(true); }
+    if (name === 'import') return readCsvFile();
+    if (name === 'savelist') {
+      const d = S.draft;
+      d.cabinetNumber = val('cabnr').trim() || d.cabinetNumber;
+      d.title = val('cabtitle').trim() || d.title;
+      if (!d.cabinetNumber) { toast('Please enter a cabinet number.'); return; }
+      if (!d.lines.length) { toast('Put at least one part on the list.'); return; }
+      return write(async () => {
+        if (d.id) {
+          const before = listById(d.id);
+          const newLines = d.lines.map((r) => {
+            const existing = ((before && before.lines) || []).find((x) => x.partId === r.partId) || {};
+            return { partId: r.partId, qty: r.qty, missingQty: existing.missingQty || 0, missingHandled: Boolean(existing.missingHandled) };
           });
-          await boekVoorraad((oud && oud.lines) || [], nieuweRegels);
-          await listRef(c.id).update({
-            cabinetNumber: c.cabinetNumber,
-            title: c.title,
-            lines: nieuweRegels,
-          });
+          await bookStock((before && before.lines) || [], newLines);
+          await listRef(d.id).update({ cabinetNumber: d.cabinetNumber, title: d.title, lines: newLines });
         } else {
-          await boekVoorraad([], c.lines);
+          await bookStock([], d.lines);
           await S.db.collection('lists').add({
-            cabinetNumber: c.cabinetNumber,
-            title: c.title,
+            cabinetNumber: d.cabinetNumber,
+            title: d.title,
             note: '',
             status: 'open',
-            createdBy: S.wie,
-            createdAt: nu(),
+            createdBy: S.who,
+            createdAt: now(),
             completedBy: null,
             completedAt: null,
-            lines: c.lines.map((r) => ({ partId: r.partId, qty: r.qty, missingQty: 0, missingHandled: false })),
+            lines: d.lines.map((r) => ({ partId: r.partId, qty: r.qty, missingQty: 0, missingHandled: false })),
           });
         }
-        S.concept = null;
-        teken(true);
-      }, 'Kastlijst opgeslagen');
+        S.draft = null;
+        draw(true);
+      }, 'Cabinet list saved');
     }
-    if (naam === 'nieuwonderdeel') return vensterOnderdeel(null);
-    if (naam === 'wijzigonderdeel') return vensterOnderdeel(partById(a));
+    if (name === 'newpart') return partDialog(null);
+    if (name === 'editpart') return partDialog(partById(a));
 
-    if (naam === 'open' || naam === 'bekijk') { S.lijstId = a; return teken(true); }
-    if (naam === 'wijziglijst') {
-      const l = lijstById(a);
-      S.concept = {
+    if (name === 'openlist') { S.tab = S.tab === 'history' ? 'history' : S.tab; S.listId = a; return draw(true); }
+    if (name === 'editlist') {
+      const l = listById(a);
+      S.draft = {
         id: l.id, cabinetNumber: l.cabinetNumber, title: l.title || '',
-        lines: (l.lines || []).map((r) => ({ partId: r.partId, qty: r.qty })), zoek: '',
+        lines: (l.lines || []).map((r) => ({ partId: r.partId, qty: r.qty })), search: '',
       };
-      S.lijstId = null;
-      return teken(true);
+      S.listId = null;
+      return draw(true);
     }
-    if (naam === 'verwijderlijst') {
-      return schrijf(async () => {
-        const l = lijstById(a);
-        if (l && l.status === 'open') await boekVoorraad(l.lines || [], []);
+    if (name === 'deletelist') {
+      return write(async () => {
+        const l = listById(a);
+        if (l && l.status === 'open') await bookStock(l.lines || [], []);
         await listRef(a).delete();
-        S.lijstId = null;
-        teken(true);
-      }, 'Kastlijst verwijderd');
+        S.listId = null;
+        draw(true);
+      }, 'Cabinet list deleted');
     }
 
-    /* --- Roy: te bestellen --- */
-    if (naam === 'afgehandeld') {
-      return schrijf(async () => {
-        for (const l of S.lists) {
-          let raak = false;
-          const lines = (l.lines || []).map((r) => {
-            if (r.partId === a && r.missingQty > 0 && !r.missingHandled) { raak = true; return { ...r, missingHandled: true }; }
-            return r;
-          });
-          if (raak) await listRef(l.id).update({ lines });
+    /* --- Dean: picking --- */
+    if (name === 'pick') { S.listId = a; S.missing = null; return draw(true); }
+    if (name === 'yes') return finish(listById(S.listId), {});
+    if (name === 'no') { S.missing = {}; return draw(true); }
+    if (name === 'backtopick') { S.missing = null; return draw(true); }
+    if (name === 'ticka') {
+      const l = listById(S.listId);
+      const line = (l.lines || []).find((r) => r.partId === a);
+      if (S.missing[a] === undefined) S.missing[a] = line ? line.qty : 1;
+      else delete S.missing[a];
+      return draw(true);
+    }
+    if (name === 'missplus' || name === 'missminus') {
+      const l = listById(S.listId);
+      const line = (l.lines || []).find((r) => r.partId === a);
+      const max = line ? line.qty : 1;
+      const current = S.missing[a] || 0;
+      S.missing[a] = name === 'missplus' ? Math.min(max, current + 1) : Math.max(1, current - 1);
+      return draw(true);
+    }
+    if (name === 'report') return finish(listById(S.listId), S.missing);
+
+    /* --- Dean: stock and monthly check --- */
+    if (name === 'mailroy') return mailDialog();
+    if (name === 'addmonthly') {
+      return write(async () => { await partRef(a).update({ monthly: true }); draw(true); }, 'Added to the monthly check');
+    }
+    if (name === 'unmonthly') {
+      return write(async () => { await partRef(a).update({ monthly: false }); draw(true); }, 'Removed from the monthly check');
+    }
+    if (name === 'savecheck') {
+      const parts = monthlyParts().filter((p) => S.monthlyCount[p.id] !== undefined);
+      if (!parts.length) return;
+      const lines = parts.map((p) => {
+        const counted = S.monthlyCount[p.id];
+        const expected = isCounted(p) ? p.stock : null;
+        return { partId: p.id, expected: expected === null ? counted : expected, counted, missing: expected === null ? 0 : Math.max(0, expected - counted) };
+      });
+      return write(async () => {
+        await S.db.collection('checks').add({ at: now(), by: S.who, lines });
+        for (const line of lines) {
+          await partRef(line.partId).update({ stock: line.counted, countedAt: now(), countedBy: S.who });
         }
-      }, 'Van de lijst gehaald');
+        S.monthlyCount = {};
+        draw(true);
+      }, 'Check saved');
     }
 
-    /* --- Dean: pakken --- */
-    if (naam === 'pak') { S.lijstId = a; S.mist = null; return teken(true); }
-    if (naam === 'ja') {
-      const l = lijstById(S.lijstId);
-      return rondAf(l, {});
+    /* --- data on this device --- */
+    if (name === 'export') {
+      const blob = new Blob([JSON.stringify(S.db.everything(), null, 1)], { type: 'application/json' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'puuur-parts-' + new Date().toISOString().slice(0, 10) + '.json';
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(link.href), 4000);
+      return toast('File saved');
     }
-    if (naam === 'nee') { S.mist = {}; return teken(true); }
-    if (naam === 'terugpakken') { S.mist = null; return teken(true); }
-    if (naam === 'vink') {
-      const l = lijstById(S.lijstId);
-      const regel = (l.lines || []).find((r) => r.partId === a);
-      if (S.mist[a] === undefined) S.mist[a] = regel ? regel.qty : 1;
-      else delete S.mist[a];
-      return teken(true);
-    }
-    if (naam === 'mistplus' || naam === 'mistmin') {
-      const l = lijstById(S.lijstId);
-      const regel = (l.lines || []).find((r) => r.partId === a);
-      const max = regel ? regel.qty : 1;
-      const huidig = S.mist[a] || 0;
-      S.mist[a] = naam === 'mistplus' ? Math.min(max, huidig + 1) : Math.max(1, huidig - 1);
-      return teken(true);
-    }
-    if (naam === 'doorgeven') {
-      const l = lijstById(S.lijstId);
-      return rondAf(l, S.mist);
+    if (name === 'importdata') {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json,.json';
+      input.addEventListener('change', async () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        try { S.db.replaceAll(JSON.parse(await file.text())); toast('Data loaded'); }
+        catch (e) { toast('That file could not be read.'); }
+      });
+      input.click();
+      return;
     }
   }
 
-  /* ------------------------------------------------------------ luisteren */
+  /* ------------------------------------------------------------ listeners */
 
   document.addEventListener('click', (e) => {
-    const knop = e.target.closest('[data-act]');
-    if (!knop) return;
-    if (knop.classList.contains('veil') && e.target !== knop) return;
+    const button = e.target.closest('[data-act]');
+    if (!button) return;
+    if (button.classList.contains('veil') && e.target !== button) return;
+    if (e.target.tagName === 'A') return;
     e.preventDefault();
-    doeActie(knop.dataset.act);
+    run(button.dataset.act);
   });
 
   document.addEventListener('change', (e) => {
-    const veld = e.target.closest('[data-tel]');
-    if (veld) bewaarAantal(veld.dataset.tel, veld.value);
+    const countField = e.target.closest('[data-count]');
+    if (countField) return saveNumber(countField.dataset.count, countField.value, 'stock');
+    const minField = e.target.closest('[data-min]');
+    if (minField) return saveNumber(minField.dataset.min, minField.value, 'min');
   });
 
   document.addEventListener('focusin', (e) => {
-    if (e.target.classList && e.target.classList.contains('telveld')) e.target.select();
+    if (e.target.classList && (e.target.classList.contains('countfield') || e.target.classList.contains('minfield'))) e.target.select();
   });
 
   document.addEventListener('input', (e) => {
-    if (e.target.id === 'zoekvoorraad') {
-      S.telZoek = e.target.value;
-      const doel = document.getElementById('telrijen');
-      if (doel) doel.innerHTML = telRijen(zoeken(S.telZoek, onderdelen()));
-    } else if (e.target.id === 'zoek' && S.concept) {
-      S.concept.zoek = e.target.value;
-      const doel = document.getElementById('zoekresultaat');
-      if (doel) doel.innerHTML = zoekRijen(zoeken(S.concept.zoek, onderdelen()).slice(0, 30));
-    } else if (e.target.id === 'kastnr' && S.concept) {
-      S.concept.cabinetNumber = e.target.value;
-    } else if (e.target.id === 'kasttitel' && S.concept) {
-      S.concept.title = e.target.value;
+    if (e.target.id === 'stocksearch') {
+      S.stockSearch = e.target.value;
+      const target = document.getElementById('countrows');
+      if (target) target.innerHTML = countRows(search(S.stockSearch, allParts()));
+    } else if (e.target.id === 'monthlysearch') {
+      S.monthlySearch = e.target.value;
+      const target = document.getElementById('monthlyfind');
+      if (target) target.innerHTML = monthlyFindRows(search(S.monthlySearch, allParts().filter((p) => !p.monthly)).slice(0, 12));
+    } else if (e.target.dataset && e.target.dataset.monthly) {
+      const id = e.target.dataset.monthly;
+      const text = e.target.value.trim();
+      if (text === '') delete S.monthlyCount[id];
+      else S.monthlyCount[id] = Math.max(0, Math.round(Number(text) || 0));
+      const ask = document.querySelector('#view .ask');
+      if (ask) {
+        const n = Object.keys(S.monthlyCount).length;
+        const saveButton = ask.querySelector('[data-act="savecheck"]');
+        if (saveButton) saveButton.disabled = !n;
+        const label = ask.querySelector('.txt');
+        if (label) label.textContent = n ? `${n} part${n === 1 ? '' : 's'} counted` : 'Fill in what you counted';
+      }
+      const p = partById(id);
+      const cellNode = document.querySelector(`[data-missing="${id}"]`);
+      if (p && cellNode) {
+        const expected = isCounted(p) ? p.stock : null;
+        const counted = S.monthlyCount[id];
+        if (expected === null || counted === undefined) cellNode.innerHTML = '<span class="faint">–</span>';
+        else {
+          const missing = Math.max(0, expected - counted);
+          const level = missingLevel(expected, missing);
+          cellNode.innerHTML = `<span class="chip ${level === 'good' ? 'good' : level === 'bad' ? 'bad' : 'missing'}">${missing}</span>`;
+        }
+      }
+    } else if (e.target.id === 'findpart' && S.draft) {
+      S.draft.search = e.target.value;
+      const target = document.getElementById('findresult');
+      if (target) target.innerHTML = findRows(search(S.draft.search, allParts()).slice(0, 30));
+    } else if (e.target.id === 'cabnr' && S.draft) {
+      S.draft.cabinetNumber = e.target.value;
+    } else if (e.target.id === 'cabtitle' && S.draft) {
+      S.draft.title = e.target.value;
     }
   });
 
   document.addEventListener('focusout', () => {
     setTimeout(() => {
-      if (S.hertekenen && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) teken(true);
+      if (S.redrawLater && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) draw(true);
     }, 60);
   });
 
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && venster) sluit(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && dialog) closeDialog(); });
 
-  const kies = document.getElementById('who');
-  kies.innerHTML = MENSEN.map((m) => `<option ${m === S.wie ? 'selected' : ''}>${m}</option>`).join('');
-  kies.addEventListener('change', () => {
-    S.wie = kies.value;
-    try { localStorage.setItem('wie', S.wie); } catch (err) { /* privémodus */ }
-    S.tab = TABBLADEN[S.wie][0][0];
-    S.lijstId = null;
-    S.mist = null;
-    teken(true);
+  const picker = document.getElementById('who');
+  picker.innerHTML = PEOPLE.map((m) => `<option ${m === S.who ? 'selected' : ''}>${m}</option>`).join('');
+  picker.addEventListener('change', () => {
+    S.who = picker.value;
+    try { localStorage.setItem('who', S.who); } catch (err) { /* private mode */ }
+    S.tab = TABS[S.who][0][0];
+    S.listId = null;
+    S.missing = null;
+    draw(true);
   });
 
-  teken(true);
+  draw(true);
   start();
 })();
 </script>
