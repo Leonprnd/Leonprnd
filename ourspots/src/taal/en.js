@@ -95,6 +95,10 @@ export default {
   },
 
   kaart: {
+    zoekPlaceholder: 'Search for a place',
+    zoekBezig: 'Searching…',
+    zoekNiets: 'Nothing found. Try spelling it differently.',
+    zoekFout: 'Search isn’t working right now. Check your connection.',
     tabblad: 'Map',
     leegTitel: 'No spots yet',
     leegTekst: 'Press and hold the map somewhere you were together, or tap here.',

@@ -475,6 +475,22 @@ locatie.
 taal van je telefoon; daarna stel je hem in bij *Wij*. Alles gaat mee: de
 schermen, de namen van de momenten, de datums en de foutmeldingen.
 
+**Zoeken** — boven aan de kaart staat een zoekbalkje. Typ "Efteling" of
+"Grote Markt Haarlem", wacht heel even, en tik het juiste resultaat aan: de
+kaart springt erheen en het scherm voor een nieuwe plek gaat open met de naam
+er al in. Dat scheelt zoeken én typen.
+
+Het zoeken loopt via twee zoekers van OpenStreetMap, allebei zonder sleutel of
+account: [Photon](https://photon.komoot.io) is gemaakt voor zoeken terwijl je
+typt en is de eerste keuze; ligt die eruit, dan neemt de officiële zoeker van
+OpenStreetMap het over. Die laatste wil geen zoekopdracht per toetsaanslag, dus
+spreken we hem hoogstens één keer per seconde aan. Waar je op de kaart kijkt
+gaat mee als hint, zodat "station" jouw station bovenaan zet.
+
+Dezelfde zoekers vullen ook de naam in als je gewoon lang op de kaart drukt.
+Op een telefoon deed `expo-location` dat al; op het web kan die dat helemaal
+niet, dus daar bleef de titel altijd leeg. Nu niet meer.
+
 **Geen geluid** — de app maakt bewust geen enkel geluidje. Dat klinkt streng,
 maar op een telefoon onderbreekt elk app-geluid de muziek die je aan het
 luisteren bent, en daar is een kaart vol herinneringen het niet waard. Wat er

@@ -96,6 +96,10 @@ export default {
   },
 
   kaart: {
+    zoekPlaceholder: 'Zoek een plek',
+    zoekBezig: 'Zoeken…',
+    zoekNiets: 'Niets gevonden. Probeer het anders te schrijven.',
+    zoekFout: 'Zoeken lukt even niet. Check je internet.',
     tabblad: 'Kaart',
     leegTitel: 'Nog geen plekken',
     leegTekst: 'Houd de kaart ingedrukt op een plek waar jullie samen waren, of tik hier.',

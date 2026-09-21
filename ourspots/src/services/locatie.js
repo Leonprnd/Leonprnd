@@ -4,6 +4,7 @@ import * as Location from 'expo-location';
 import { doc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { geefDb } from '../firebase';
 import { normaliseerCode } from '../utils/code';
+import { plekOpPunt } from './zoeken';
 
 const MINSTENS_ELKE_MS = 20000; // niet vaker dan elke 20 seconden schrijven
 const MINSTENS_ELKE_M = 40; // of als je meer dan 40 meter bent verplaatst
@@ -126,8 +127,13 @@ export async function zoekAdres(lat, lng) {
     const titel = plek.name && plek.name !== straat ? plek.name : straat || plaats;
     const adres = [straat, plaats].filter(Boolean).join(', ');
 
-    return { titel: titel || plaats, adres };
+    if (titel || plaats) return { titel: titel || plaats, adres };
   } catch {
-    return { titel: '', adres: '' };
+    // expo-location kan dit op het web helemaal niet, en op een telefoon lukt
+    // het ook niet altijd. Dan vragen we het aan OpenStreetMap.
   }
+
+  const plek = await plekOpPunt(lat, lng);
+  if (!plek) return { titel: '', adres: '' };
+  return { titel: plek.titel, adres: plek.ondertitel || '' };
 }

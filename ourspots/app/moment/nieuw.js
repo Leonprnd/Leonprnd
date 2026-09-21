@@ -40,7 +40,8 @@ import { vandaagSleutel } from '../../src/utils/datum';
 import { useMelding } from '../../src/components/Melding';
 
 export default function NieuwMoment() {
-  const { lat, lng, bewerk } = useLocalSearchParams();
+  const { lat, lng, bewerk, titel: gevondenTitel, adres: gevondenAdres } =
+    useLocalSearchParams();
   const { code, uid, profiel, momenten, t } = useApp();
   const { meld, vraag } = useMelding();
   const rand = useSafeAreaInsets();
@@ -53,16 +54,22 @@ export default function NieuwMoment() {
   const breedte = Number(bestaand?.lat ?? lat);
   const lengte = Number(bestaand?.lng ?? lng);
 
-  const [titel, setTitel] = useState(bestaand?.titel || '');
-  const [adres, setAdres] = useState(bestaand?.adres || '');
+  const [titel, setTitel] = useState(bestaand?.titel || gevondenTitel || '');
+  const [adres, setAdres] = useState(bestaand?.adres || gevondenAdres || '');
   const [beschrijving, setBeschrijving] = useState(bestaand?.beschrijving || '');
   const [type, setType] = useState(bestaand?.type || 'date');
   const [datum, setDatum] = useState(bestaand?.datum || vandaagSleutel());
   const [nieuweFotos, setNieuweFotos] = useState([]); // nog te uploaden
   const [oudeFotos, setOudeFotos] = useState(bestaand?.fotos || []);
 
+  // Kwam je via de zoekbalk, dan weten we de naam al en hoeven we niets op te
+  // zoeken.
   const [zoekt, setZoekt] = useState(
-    () => !bestaand && Number.isFinite(breedte) && Number.isFinite(lengte),
+    () =>
+      !bestaand &&
+      !gevondenTitel &&
+      Number.isFinite(breedte) &&
+      Number.isFinite(lengte),
   );
   const [bezig, setBezig] = useState(false);
   const [voortgang, setVoortgang] = useState(null);
@@ -71,7 +78,7 @@ export default function NieuwMoment() {
   // --- Naam van de plek opzoeken -------------------------------------------
 
   useEffect(() => {
-    if (bestaand) return undefined;
+    if (bestaand || gevondenTitel) return undefined;
     if (!Number.isFinite(breedte) || !Number.isFinite(lengte)) return undefined;
 
     let levend = true;
@@ -79,14 +86,14 @@ export default function NieuwMoment() {
       const gevonden = await zoekAdres(breedte, lengte);
       if (!levend) return;
       if (gevonden.titel) setTitel((oud) => oud || gevonden.titel);
-      if (gevonden.adres) setAdres(gevonden.adres);
+      if (gevonden.adres) setAdres((oud) => oud || gevonden.adres);
       setZoekt(false);
     })();
 
     return () => {
       levend = false;
     };
-  }, [breedte, lengte, bestaand]);
+  }, [breedte, lengte, bestaand, gevondenTitel]);
 
   // --- Foto's ---------------------------------------------------------------
 

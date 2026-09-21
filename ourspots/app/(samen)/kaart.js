@@ -23,6 +23,7 @@ import Hartjes from '../../src/components/Hartjes';
 import { kleuren, letters, ruimte, rond, schaduw, verlopen } from '../../src/theme';
 import Kaartweergave from '../../src/components/kaart';
 import MomentKaartje from '../../src/components/MomentKaartje';
+import Zoekbalk from '../../src/components/Zoekbalk';
 
 const KAART_BREEDTE = 300;
 const PIN_ZOOM = 16; // hoe dicht de kaart op een pin gaat staan
@@ -120,6 +121,20 @@ export default function Kaart() {
     });
   }
 
+  function nieuwOpGevonden(plek) {
+    kaartRef.current?.gaNaar(plek.lat, plek.lng, PIN_ZOOM);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+    router.push({
+      pathname: '/moment/nieuw',
+      params: {
+        lat: String(plek.lat),
+        lng: String(plek.lng),
+        titel: plek.titel || '',
+        adres: plek.ondertitel || '',
+      },
+    });
+  }
+
   function nieuwOpMidden() {
     const midden = middenRef.current;
     nieuwOpPlek(midden.lat, midden.lng);
@@ -147,6 +162,12 @@ export default function Kaart() {
         opMidden={(midden) => {
           middenRef.current = midden;
         }}
+      />
+
+      <Zoekbalk
+        bijRef={middenRef}
+        opKiezen={nieuwOpGevonden}
+        style={{ top: rand.top + ruimte.s }}
       />
 
       {/* --- Onderin: de herinneringen --- */}
