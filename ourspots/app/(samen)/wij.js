@@ -47,6 +47,7 @@ export default function Wij() {
     zetDelen,
     zetSamenSinds,
     koppelLos,
+    verwijderPartner,
     taal,
     kiesTaal,
     geluidAan,
@@ -105,6 +106,17 @@ export default function Wij() {
     await bewaarProfiel({ naam: naam.trim() || t.wij.jij, emoji, kleur });
     setBewerkt(false);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+  }
+
+  function vraagPartnerVerwijderen() {
+    Alert.alert(t.wij.herstelTitel, t.wij.herstelBevestig, [
+      { text: t.algemeen.laten, style: 'cancel' },
+      {
+        text: t.algemeen.weggooien,
+        style: 'destructive',
+        onPress: () => verwijderPartner(),
+      },
+    ]);
   }
 
   function vraagLoskoppelen() {
@@ -438,6 +450,21 @@ export default function Wij() {
           />
         </View>
       </Kaartje>
+
+      {gekoppeld ? (
+        <>
+          <Kopje>{t.wij.herstelKop}</Kopje>
+          <Kaartje>
+            <Text style={stijl.schakelTekst}>{t.wij.herstelTekst}</Text>
+            <TekstKnop
+              titel={t.wij.herstelKnop}
+              onPress={vraagPartnerVerwijderen}
+              kleur={kleuren.rood}
+              style={{ alignSelf: 'flex-start', marginTop: ruimte.m }}
+            />
+          </Kaartje>
+        </>
+      ) : null}
 
       <Kopje>{t.wij.codeKop}</Kopje>
       <Kaartje>

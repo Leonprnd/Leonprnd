@@ -49,8 +49,18 @@ export default {
     },
     web: {
       bundler: 'metro',
-      output: 'static',
+      output: 'single',
       favicon: './assets/favicon.png',
+      // Zodat "Zet op beginscherm" een echt app-icoon en een schermvullend
+      // venster geeft in plaats van een browsertab.
+      name: 'OurSpots',
+      shortName: 'OurSpots',
+      display: 'standalone',
+      orientation: 'portrait',
+      themeColor: '#FF6F91',
+      backgroundColor: '#FFF1F5',
+      startUrl: '/',
+      scope: '/',
     },
     plugins: [
       'expo-router',

@@ -21,6 +21,7 @@ import {
   doeMee,
   volgKaart,
   verlaatKaart,
+  verwijderLid,
   bewaarSamenSinds,
   bewerkLid,
   partnerVan,
@@ -355,6 +356,14 @@ export function AppProvider({ children }) {
     setTaal(nieuw);
   }, []);
 
+  // Je partner van de kaart halen, zodat de plek weer vrijkomt. De uid apart
+  // eruit halen omdat een afhankelijkheid met ?. niet na te rekenen is.
+  const partnerUid = partner?.uid || null;
+  const verwijderPartner = useCallback(async () => {
+    if (!code || !partnerUid) return;
+    await verwijderLid(code, partnerUid);
+  }, [code, partnerUid]);
+
   const zetSamenSinds = useCallback(
     async (datumSleutel) => {
       if (!code) return;
@@ -396,6 +405,7 @@ export function AppProvider({ children }) {
       beginNieuweKaart,
       koppelMetCode,
       koppelLos,
+      verwijderPartner,
       zetDelen,
       zetSamenSinds,
     }),
@@ -403,7 +413,8 @@ export function AppProvider({ children }) {
       klaar, uid, profiel, code, kaart, kaartGeladen, ik, partner, benLid, gekoppeld, momenten,
       momentenGeladen, mijnPositie, partnerLocatie, deeltLocatie, taal,
       geluidAan, vogelsAan, fout, bewaarProfiel, beginNieuweKaart,
-      koppelMetCode, koppelLos, zetDelen, zetSamenSinds, kiesTaal,
+      koppelMetCode, koppelLos, verwijderPartner, zetDelen, zetSamenSinds,
+      kiesTaal,
     ],
   );
 

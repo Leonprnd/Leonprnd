@@ -168,6 +168,11 @@ export default {
     geluidVogels: 'Birds on the map',
     geluidVogelsTekst: 'A quiet background while you look at the map.',
 
+    herstelKop: 'If someone gets locked out',
+    herstelTekst: 'If one of you loses access — new phone, app reinstalled, browser data cleared — the app sees that person as someone new, and the map is full. Remove them here and let them enter the code again; every spot stays.',
+    herstelKnop: 'Remove partner from the map',
+    herstelTitel: 'Remove partner from the map?',
+    herstelBevestig: 'That frees a slot so your partner can join again with the same code. All spots and photos stay.',
     codeKop: 'Your code',
     codeTekst: 'This map belongs to the two of you. Nobody else can get in.',
     loskoppelen: 'Leave this map',

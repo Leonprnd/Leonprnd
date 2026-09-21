@@ -97,6 +97,21 @@ export async function bewerkLid(code, uid, velden) {
   await updateDoc(kaartRef(code), update);
 }
 
+// Iemand anders van de kaart halen. Dat klinkt hard, maar het is de enige
+// manier om er weer bij te komen als je je account kwijtraakt: wis je je
+// gegevens, dan ben je voor Firebase iemand nieuw, en een volle kaart laat
+// niemand meer toe. Je partner maakt dan een plek vrij en je vult de code
+// opnieuw in. De regels staan dit toe omdat alleen leden mogen schrijven.
+export async function verwijderLid(code, uid) {
+  const snap = await getDoc(kaartRef(code));
+  if (!snap.exists()) return;
+  const ids = (snap.data().ledenIds || []).filter((id) => id !== uid);
+  await updateDoc(kaartRef(code), {
+    ledenIds: ids,
+    [`leden.${uid}`]: deleteField(),
+  });
+}
+
 export async function verlaatKaart(code, uid) {
   const snap = await getDoc(kaartRef(code));
   if (!snap.exists()) return;

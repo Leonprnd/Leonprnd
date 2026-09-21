@@ -15,18 +15,20 @@ import Constants, { ExecutionEnvironment } from 'expo-constants';
 const androidSleutel = process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_KEY;
 const iosSleutel = process.env.EXPO_PUBLIC_GOOGLE_MAPS_IOS_KEY;
 
+export const opWeb = Platform.OS === 'web';
+
 export const inExpoGo =
   Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
 
-// Heb je voor dít toestel een sleutel ingevuld?
-export const heeftGoogleSleutel = Boolean(
-  Platform.OS === 'android' ? androidSleutel : iosSleutel,
-);
+// Heb je voor dít toestel een sleutel ingevuld? Op het web gebruiken we
+// react-native-maps sowieso niet, dus daar telt de sleutel niet mee.
+export const heeftGoogleSleutel =
+  !opWeb && Boolean(Platform.OS === 'android' ? androidSleutel : iosSleutel);
 
 // Op een iPhone in Expo Go bestaat Google Maps sowieso niet; daar is Apple
 // Maps aan boord. Die is gratis en heeft geen sleutel nodig, dus dat is daar
 // prima — alleen zonder ons roze kleurthema.
-export const appleMapsInExpoGo = Platform.OS === 'ios' && inExpoGo;
+export const appleMapsInExpoGo = !opWeb && Platform.OS === 'ios' && inExpoGo;
 
 // react-native-maps gebruiken we alleen als dat ook echt iets oplevert.
 export const gebruiktNativeKaart = heeftGoogleSleutel || appleMapsInExpoGo;
@@ -40,6 +42,7 @@ export const kleurthemaWerkt = heeftGoogleSleutel;
 // Kort zinnetje voor onder in beeld, zodat je weet waar je naar kijkt.
 export function kaartHerkomst() {
   if (heeftGoogleSleutel) return null;
+  if (opWeb) return '© OpenStreetMap · CARTO';
   if (appleMapsInExpoGo) return 'Apple Maps · vul een Google-sleutel in voor het roze thema';
   return '© OpenStreetMap · CARTO';
 }

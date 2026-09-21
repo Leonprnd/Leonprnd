@@ -1,14 +1,14 @@
-// Het stilstaande kaartje bovenaan het scherm waar je een plekje maakt: even
-// laten zien waar je pin komt te staan. Werkt met allebei de kaartsoorten.
+// Het stilstaande kaartje bovenaan het scherm waar je een plek maakt: even
+// laten zien waar je pin komt te staan. Werkt met allebei de kaartsoorten, en
+// ook op het web.
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
-import MapView, { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
-import { gebruiktOpenStreetMap, heeftGoogleSleutel, kleurthemaWerkt } from '../../kaartProvider';
-import { kaartStijl } from '../../mapStyle';
+import { gebruiktOpenStreetMap } from '../../kaartProvider';
 import { kleuren } from '../../theme';
 import MomentPin from '../MomentPin';
+import NativeVoorbeeld from './NativeVoorbeeld';
 
 const TEGEL = 256;
 const ZOOM = 15;
@@ -29,26 +29,7 @@ export default function Voorbeeld({ lat, lng, type, style }) {
           </View>
         </>
       ) : (
-        <MapView
-          style={StyleSheet.absoluteFill}
-          provider={heeftGoogleSleutel ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
-          customMapStyle={kleurthemaWerkt ? kaartStijl : undefined}
-          initialRegion={{
-            latitude: lat,
-            longitude: lng,
-            latitudeDelta: 0.006,
-            longitudeDelta: 0.006,
-          }}
-          scrollEnabled={false}
-          zoomEnabled={false}
-          pitchEnabled={false}
-          rotateEnabled={false}
-          pointerEvents="none"
-        >
-          <Marker coordinate={{ latitude: lat, longitude: lng }} anchor={{ x: 0.5, y: 1 }}>
-            <MomentPin moment={{ type }} gekozen />
-          </Marker>
-        </MapView>
+        <NativeVoorbeeld lat={lat} lng={lng} type={type} />
       )}
     </View>
   );
@@ -65,7 +46,7 @@ function tegelVan(lat, lng, zoom) {
 }
 
 // Een plat plaatje van de omgeving: negen tegels rond je plek. Voor een
-// stilstaand voorbeeldje is een hele Leaflet-kaart in een WebView zonde.
+// stilstaand voorbeeldje is een hele Leaflet-kaart zonde.
 function Tegels({ lat, lng }) {
   const { x, y } = tegelVan(lat, lng, ZOOM);
   const middenX = Math.floor(x);
@@ -85,8 +66,6 @@ function Tegels({ lat, lng }) {
     }
   }
 
-  // Waar ligt je plek binnen dat blok van 768 px? Die plek schuiven we naar
-  // het midden van het vakje.
   const plekInBlokX = (x - middenX + 1) * TEGEL;
   const plekInBlokY = (y - middenY + 1) * TEGEL;
 

@@ -7,9 +7,10 @@
 // CSS-filter een egaal roze waas overheen leggen zonder dat het water groen
 // wordt.
 //
-// Praten met de app gaat twee kanten op:
-//   app  -> kaart : window.onsPlekje.<functie>(...) via injectJavaScript
-//   kaart -> app  : window.ReactNativeWebView.postMessage(JSON.stringify(...))
+// Praten met de app gaat twee kanten op, en op twee manieren, want dezelfde
+// pagina draait in een WebView (telefoon) én in een iframe (web):
+//   app  -> kaart : injectJavaScript, of een postMessage met {soort:'opdracht'}
+//   kaart -> app  : window.ReactNativeWebView.postMessage, of window.parent
 
 export const leafletHtml = `<!DOCTYPE html>
 <html lang="nl">
@@ -21,11 +22,14 @@ export const leafletHtml = `<!DOCTYPE html>
   html, body, #kaart { margin: 0; padding: 0; height: 100%; width: 100%; }
   body { background: #FFF7F2; overflow: hidden; -webkit-tap-highlight-color: transparent; }
 
-  /* Positron is bijna kleurloos; sepia maakt het warm en hue-rotate schuift
-     alles in één keer naar roze. */
-  .leaflet-tile-pane {
-    filter: sepia(0.38) saturate(1.55) hue-rotate(308deg) brightness(1.04);
-  }
+  /* Het roze jasje over de kaart.
+     Dit gaat met een SVG-kleurmatrix en niet met sepia/hue-rotate, en dat is
+     geen omweg maar noodzaak: die twee hebben verzadiging nodig om aan te
+     draaien, en een lichte kaart heeft die nauwelijks. Het resultaat was
+     flets geel in plaats van roze. Een kleurmatrix rekent per kanaal, en kan
+     bijna-wit dus wél opschuiven: groen en blauw iets omlaag, rood iets
+     omhoog. Wegen blijven licht en water blijft herkenbaar. */
+  .leaflet-tile-pane { filter: url(#rozeWaas); }
 
   .leaflet-control-attribution {
     font-size: 9px;
@@ -113,6 +117,19 @@ export const leafletHtml = `<!DOCTYPE html>
 </style>
 </head>
 <body>
+<!-- De kleurmatrix voor het roze jasje; zie de opmerking bij .leaflet-tile-pane. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="rozeWaas" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="
+        1.02 0    0    0 0.01
+        0    0.90 0    0 0
+        0    0    0.93 0 0
+        0    0    0    1 0" />
+    </filter>
+  </defs>
+</svg>
+
 <div id="kaart"></div>
 <div id="stuk">De kaart kon niet laden.<br />Check je internetverbinding.</div>
 
@@ -120,8 +137,11 @@ export const leafletHtml = `<!DOCTYPE html>
 <script>
 (function () {
   function naarApp(bericht) {
+    var tekst = JSON.stringify(bericht);
     if (window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage(JSON.stringify(bericht));
+      window.ReactNativeWebView.postMessage(tekst);
+    } else if (window.parent && window.parent !== window) {
+      window.parent.postMessage(tekst, '*');
     }
   }
 
@@ -278,6 +298,23 @@ export const leafletHtml = `<!DOCTYPE html>
 
   kaart.on('click', function () {
     naarApp({ soort: 'achtergrond' });
+  });
+
+  // In een iframe kunnen we geen JavaScript injecteren, dus komen opdrachten
+  // daar als bericht binnen. Geen eval: we zoeken de functie op bij naam.
+  window.addEventListener('message', function (gebeurtenis) {
+    var bericht;
+    try {
+      bericht = typeof gebeurtenis.data === 'string'
+        ? JSON.parse(gebeurtenis.data)
+        : gebeurtenis.data;
+    } catch (fout) {
+      return;
+    }
+    if (!bericht || bericht.soort !== 'opdracht') return;
+
+    var functie = window.onsPlekje[bericht.functie];
+    if (typeof functie === 'function') functie.apply(null, bericht.args || []);
   });
 
   naarApp({ soort: 'klaar' });

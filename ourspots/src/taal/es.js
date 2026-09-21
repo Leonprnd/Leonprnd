@@ -168,6 +168,11 @@ export default {
     geluidVogels: 'Pájaros en el mapa',
     geluidVogelsTekst: 'Un fondo tranquilo mientras miras el mapa.',
 
+    herstelKop: 'Si alguien pierde el acceso',
+    herstelTekst: 'Si uno de vosotros pierde el acceso — móvil nuevo, app reinstalada, datos del navegador borrados — la app ve a esa persona como alguien nuevo, y el mapa está lleno. Quítala aquí y deja que introduzca el código otra vez; todos los lugares se quedan.',
+    herstelKnop: 'Quitar a tu pareja del mapa',
+    herstelTitel: '¿Quitar a tu pareja del mapa?',
+    herstelBevestig: 'Eso libera un sitio para que tu pareja pueda unirse de nuevo con el mismo código. Todos los lugares y fotos se quedan.',
     codeKop: 'Vuestro código',
     codeTekst: 'Este mapa es de vosotros dos. Nadie más puede entrar.',
     loskoppelen: 'Salir de este mapa',

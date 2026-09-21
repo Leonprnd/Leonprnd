@@ -266,70 +266,84 @@ nodig — zie hieronder.
 
 ## De app echt op jullie telefoons zetten
 
-Expo Go is om te testen: jij scant een QR-code, en de app draait binnen Expo
-Go. Je partner kan daar niets mee — die heeft een echte app nodig met een
-eigen icoon, die gewoon op het beginscherm staat.
+Expo Go is om te testen: jij scant een QR-code en de app draait bínnen Expo Go,
+alleen zolang je computer aanstaat. Voor een echte app zijn er twee routes.
 
-Dat regel je met **EAS Build**: Expo bouwt de app in de cloud, zodat je zelf
-geen Android Studio of Xcode nodig hebt. Gratis voor een paar builds per
-maand.
+### Route 1 — de webversie op je beginscherm (gratis)
 
-### Eenmalig klaarzetten
+Dit is de route voor iPhones zonder Apple Developer-account. Je zet de app
+online, je opent hem één keer in Safari, en daarna staat er een icoon op je
+beginscherm dat schermvullend opent. Niet van een echte app te onderscheiden.
+
+**Bouwen:**
+
+```bash
+npm run build:web
+```
+
+Dat zet alles klaar in `dist/`: de app, een manifest, een icoon, en de
+omleidingsregels voor Vercel en Netlify.
+
+**Online zetten** — het makkelijkst met Vercel:
+
+1. Maak een gratis account op [vercel.com](https://vercel.com).
+2. Installeer de CLI en publiceer:
+
+   ```bash
+   npm install -g vercel
+   cd dist
+   vercel --prod
+   ```
+
+3. Je krijgt een adres als `https://ourspots-xyz.vercel.app`.
+
+[Netlify](https://app.netlify.com/drop) kan ook: sleep de map `dist` gewoon
+het venster in.
+
+**Op je beginscherm zetten (iPhone):**
+
+1. Open het adres in **Safari** — niet in Chrome, want alleen Safari kan dit.
+2. Tik op het deel-icoon onderin (het vierkantje met de pijl).
+3. Kies **Zet op beginscherm**.
+4. Er staat nu een OurSpots-icoon tussen je apps.
+
+Op Android gaat het net zo, via *Toevoegen aan startscherm* in Chrome.
+
+**Wat je partner doet:** stuur het adres. Zij of hij doet hetzelfde en vult
+daarna jullie code in. Verder niets.
+
+**Waar je op moet rekenen:**
+
+* Het geluid begint pas na je eerste tik op het scherm. Safari staat geen
+  geluid toe voordat je iets hebt aangeraakt; daar is niets aan te doen.
+* Je locatie delen werkt, maar alleen zolang de app open is — net als in de
+  telefoonversie.
+* **Wis de websitegegevens van dit adres niet.** Je inlog zit daarin, en je
+  bent dan voor de app iemand nieuw. Gebeurt het toch: je partner haalt je in
+  het Wij-scherm van de kaart, en je vult de code opnieuw in.
+* Bij elke wijziging draai je `npm run build:web` en `vercel --prod` opnieuw;
+  het adres blijft hetzelfde.
+
+### Route 2 — een echte app via EAS Build
+
+Voor Android krijg je zo een `.apk` die je gewoon doorstuurt:
 
 ```bash
 npm install -g eas-cli
-eas login            # gratis account op expo.dev
-eas init             # koppelt deze map aan een project bij Expo
-```
-
-`eas.json` staat al in het project, dus `eas build:configure` hoef je niet.
-
-> **Belangrijk:** de bouwserver krijgt jouw `.env` alleen mee dankzij het
-> bestand `.easignore` dat hier staat. Zodra dat bestand bestaat, gebruikt EAS
-> dat in plaats van `.gitignore`, en daar staat `.env` expres niet in. Gooi
-> `.easignore` dus niet weg — dan start de gebouwde app met een leeg
-> instelscherm.
-
-### Android: een bestand dat je kunt doorsturen
-
-```bash
+eas login
 eas build --platform android --profile preview
 ```
 
-Na een minuut of tien krijg je een link naar een `.apk`. Die stuur je naar je
-partner. Op Android open je hem gewoon; de telefoon vraagt één keer om
-installeren uit onbekende bron toe te staan.
-
-Dit is verreweg de makkelijkste route, en genoeg om de app met z'n tweeën te
-gebruiken.
-
-### iPhone: lastiger
-
-Apple laat niet zomaar apps van buiten de App Store toe. Je hebt een
-**Apple Developer-account** nodig (€99 per jaar) om een app aan iemand anders
-te geven:
+Voor iPhone heb je een **Apple Developer-account** nodig (€99 per jaar):
 
 ```bash
 eas build --platform ios --profile preview
 ```
 
-Zonder dat account kun je alleen op je eigen iPhone testen met een build die
-na zeven dagen verloopt:
-
-```bash
-eas build --platform ios --profile development
-```
-
-Heeft je partner een iPhone en wil je die €99 niet uitgeven, dan blijft Expo
-Go de enige optie: jullie scannen dan allebei de QR-code als jij `npm start`
-draait. Dat werkt, maar alleen zolang jouw computer aanstaat.
-
-### Later een nieuwe versie
-
-Pas je iets aan, dan bouw je opnieuw met hetzelfde commando en stuur je de
-nieuwe `.apk` door. Voor kleine wijzigingen kun je ook
-[EAS Update](https://docs.expo.dev/eas-update/introduction/) gebruiken; dan
-haalt de app zelf de nieuwe versie op zonder opnieuw te installeren.
+> De bouwserver krijgt je `.env` alleen mee dankzij het bestand `.easignore`.
+> Zodra dat bestaat gebruikt EAS dat in plaats van `.gitignore`, en daar staat
+> `.env` expres niet in. Gooi het niet weg, anders start de gebouwde app met
+> een leeg instelscherm.
 
 ---
 
@@ -383,6 +397,12 @@ schermen, de namen van de momenten, de datums en de foutmeldingen.
 vogelachtergrond zolang je de kaart bekijkt. Allebei apart uit te zetten bij
 *Wij*. De geluiden worden gemaakt door `scripts/maak-geluiden.mjs`; wil je
 echte opnames, vervang dan de bestanden in `assets/geluid/`.
+
+**Als iemand er niet meer in komt** — raakt een van jullie de toegang kwijt
+(nieuwe telefoon, app opnieuw geïnstalleerd, websitegegevens gewist), dan ziet
+de app die persoon als iemand nieuw en zit de kaart vol. In het Wij-scherm
+haalt de ander hem of haar van de kaart; daarna kun je opnieuw koppelen met
+dezelfde code. Alle plekken en foto's blijven staan.
 
 **Live locatie** — staat standaard aan, zoals afgesproken. Je positie wordt
 hooguit elke twintig seconden bijgewerkt, en alleen als je meer dan veertig

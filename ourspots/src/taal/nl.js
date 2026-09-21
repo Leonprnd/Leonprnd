@@ -169,6 +169,11 @@ export default {
     geluidVogels: 'Vogels op de kaart',
     geluidVogelsTekst: 'Rustige achtergrond terwijl je de kaart bekijkt.',
 
+    herstelKop: 'Als iemand er niet meer in komt',
+    herstelTekst: 'Raakt een van jullie toegang kwijt — nieuwe telefoon, app opnieuw geïnstalleerd, browsergegevens gewist — dan ziet de app die persoon als iemand nieuw. De kaart zit dan vol. Haal hem of haar hier van de kaart en laat de code opnieuw invullen; alle plekken blijven staan.',
+    herstelKnop: 'Partner van de kaart halen',
+    herstelTitel: 'Partner van de kaart halen?',
+    herstelBevestig: 'Er komt dan een plek vrij, zodat je partner opnieuw kan koppelen met dezelfde code. De plekken en foto’s blijven allemaal staan.',
     codeKop: 'Jullie code',
     codeTekst: 'Deze kaart hoort bij jullie twee. Er kan niemand anders bij.',
     loskoppelen: 'Loskoppelen van deze kaart',
