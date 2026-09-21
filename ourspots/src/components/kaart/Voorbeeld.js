@@ -23,9 +23,10 @@ export default function Voorbeeld({ lat, lng, type, style }) {
       {gebruiktOpenStreetMap ? (
         <>
           <Tegels lat={lat} lng={lng} />
-          {/* Twee laagjes: eerst wit om de kleuren van OpenStreetMap te
-              temperen, dan roze. Een echt filter kan hier niet, want dit is
-              geen webpagina maar een gewone afbeelding. */}
+          {/* Twee laagjes: eerst flink wit om de drukte van de
+              OpenStreetMap-plaatjes te temperen, dan een vleugje roze. Een
+              echt filter kan hier niet, want dit is geen webpagina maar een
+              gewone afbeelding. */}
           <View style={stijl.verbleek} pointerEvents="none" />
           <View style={stijl.waas} pointerEvents="none" />
           <View style={stijl.pinVlak} pointerEvents="none">
@@ -50,7 +51,7 @@ function tegelVan(lat, lng, zoom) {
 }
 
 // Een plat plaatje van de omgeving: negen tegels rond je plek. Voor een
-// stilstaand voorbeeldje is een hele Leaflet-kaart zonde.
+// stilstaand voorbeeldje is een hele MapLibre-kaart zonde.
 function Tegels({ lat, lng }) {
   const { x, y } = tegelVan(lat, lng, ZOOM);
   const middenX = Math.floor(x);
@@ -117,13 +118,13 @@ const stijl = StyleSheet.create({
   verbleek: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: kleuren.wit,
-    opacity: 0.45,
+    opacity: 0.58,
   },
-  // Hetzelfde roze waasje als op de grote kaart.
+  // Hetzelfde warme waasje als op de grote kaart.
   waas: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: kleuren.roze,
-    opacity: 0.16,
+    opacity: 0.1,
   },
 
   // De punt van de pin moet op het midden staan, niet het midden van de pin

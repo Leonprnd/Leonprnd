@@ -1,4 +1,4 @@
-// De kaart via OpenStreetMap, getekend door Leaflet in een WebView.
+// De kaart via OpenFreeMap, getekend door MapLibre in een WebView.
 //
 // Geen sleutel, geen account, geen betaalgegevens. Naar buiten toe gedraagt
 // hij zich precies als NativeKaart, zodat het kaartscherm niet hoeft te weten
@@ -14,7 +14,7 @@ import React, {
 } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { leafletHtml } from './leafletHtml';
+import { kaartHtml } from './kaartHtml';
 import { kleuren } from '../../theme';
 import { typeVan } from '../../momentTypes';
 import { fotoUrl, MINI } from '../../cloudinary';
@@ -150,7 +150,7 @@ const OpenKaart = forwardRef(function OpenKaart(
     <View style={StyleSheet.absoluteFill}>
       <WebView
         ref={webRef}
-        source={{ html: leafletHtml, baseUrl: 'https://localhost' }}
+        source={{ html: kaartHtml, baseUrl: 'https://localhost' }}
         originWhitelist={['*']}
         onMessage={opBericht}
         style={stijl.web}

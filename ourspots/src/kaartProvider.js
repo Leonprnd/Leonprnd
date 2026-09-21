@@ -1,12 +1,12 @@
 // Welke kaart gebruiken we?
 //
-// Google Maps is de mooiste, maar Google geeft alleen een werkende sleutel als
-// er een betaalrekening aan je project hangt — en daar moet je 18 voor zijn.
-// Daarom kan de app het ook zonder: dan pakt hij OpenStreetMap, dat geen
-// sleutel en geen account nodig heeft.
+// Google Maps geeft alleen een werkende sleutel als er een betaalrekening aan
+// je project hangt — en daar moet je 18 voor zijn. Daarom kan de app het ook
+// zonder: dan tekent MapLibre de kaart uit de vectorgegevens van OpenFreeMap,
+// dat geen sleutel en geen account nodig heeft. Zie kaartHtml.js.
 //
 // De keuze gaat vanzelf: staat er een Google-sleutel in je .env, dan Google
-// Maps. Staat die er niet, dan OpenStreetMap. Je hoeft dus nooit code aan te
+// Maps. Staat die er niet, dan de eigen kaart. Je hoeft dus nooit code aan te
 // passen — alleen .env invullen en de app opnieuw starten.
 
 import { Platform } from 'react-native';
@@ -27,22 +27,18 @@ export const heeftGoogleSleutel =
 
 // Op een iPhone in Expo Go bestaat Google Maps sowieso niet; daar is Apple
 // Maps aan boord. Die is gratis en heeft geen sleutel nodig, dus dat is daar
-// prima — alleen zonder ons roze kleurthema.
+// prima — alleen zonder ons eigen kleurthema.
 export const appleMapsInExpoGo = !opWeb && Platform.OS === 'ios' && inExpoGo;
 
 // react-native-maps gebruiken we alleen als dat ook echt iets oplevert.
 export const gebruiktNativeKaart = heeftGoogleSleutel || appleMapsInExpoGo;
 
-// Anders: OpenStreetMap in een WebView.
+// Anders: onze eigen kaart in een WebView.
 export const gebruiktOpenStreetMap = !gebruiktNativeKaart;
 
 // Het kleurthema is een Google-Maps-ding; Apple Maps doet er niets mee.
 export const kleurthemaWerkt = heeftGoogleSleutel;
 
-// Kort zinnetje voor onder in beeld, zodat je weet waar je naar kijkt.
-export function kaartHerkomst() {
-  if (heeftGoogleSleutel) return null;
-  if (opWeb) return '© OpenStreetMap';
-  if (appleMapsInExpoGo) return 'Apple Maps · vul een Google-sleutel in voor het roze thema';
-  return '© OpenStreetMap';
-}
+// De herkomstvermelding staat niet meer apart in beeld: elke kaart draagt hem
+// zelf. Google en Apple tekenen hun eigen logo, en onze eigen kaart klapt de
+// vermelding van OpenStreetMap op in het rondje rechtsonder.

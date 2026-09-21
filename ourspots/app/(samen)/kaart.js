@@ -21,7 +21,6 @@ import * as Haptics from 'expo-haptics';
 import { useApp } from '../../src/state/AppProvider';
 import Hartjes from '../../src/components/Hartjes';
 import { speel } from '../../src/services/geluid';
-import { kaartHerkomst } from '../../src/kaartProvider';
 import { kleuren, letters, ruimte, rond, schaduw, verlopen } from '../../src/theme';
 import Kaartweergave from '../../src/components/kaart';
 import MomentKaartje from '../../src/components/MomentKaartje';
@@ -238,12 +237,6 @@ export default function Kaart() {
       ) : null}
 
       <Hartjes aan={netErbij} aantal={18} opKlaar={() => setNetErbij(false)} />
-
-      {kaartHerkomst() ? (
-        <View style={[stijl.notitie, { bottom: 196 }]} pointerEvents="none">
-          <Text style={stijl.notitieTekst}>{kaartHerkomst()}</Text>
-        </View>
-      ) : null}
     </View>
   );
 }
@@ -328,14 +321,4 @@ const stijl = StyleSheet.create({
     textAlign: 'center',
     marginTop: 4,
   },
-
-  notitie: {
-    position: 'absolute',
-    left: ruimte.l,
-    backgroundColor: 'rgba(255,255,255,0.82)',
-    borderRadius: rond.vol,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  notitieTekst: { fontFamily: letters.normaal, fontSize: 10, color: kleuren.inktZacht },
 });

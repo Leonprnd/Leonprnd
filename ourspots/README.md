@@ -189,18 +189,20 @@ Dat kiest de app zelf, aan de hand van je `.env`:
 
 | Situatie | Kaart |
 |---|---|
-| Geen sleutel ingevuld | **OpenStreetMap** — geen account, geen sleutel |
+| Geen sleutel ingevuld | **OpenFreeMap** — geen account, geen sleutel |
 | Sleutel ingevuld | **Google Maps** met het roze kleurthema |
 | iPhone in Expo Go, geen sleutel | Apple Maps (die zit al in Expo Go) |
 
 Je hoeft dus nooit code aan te passen. Vul je later een sleutel in en start je
 opnieuw op met `npx expo start -c`, dan staat Google Maps er.
 
-De OpenStreetMap-kaart wordt getekend met Leaflet, met tegels rechtstreeks van
-OpenStreetMap. Die worden eerst ontkleurd en dan roze gemaakt met een
-SVG-kleurmatrix; dat laatste omdat `sepia` en `hue-rotate` verzadiging nodig
-hebben die een lichte kaart niet heeft. Je pins, de fotostapel en de live
-locatie werken precies hetzelfde.
+De kaart zonder sleutel wordt getekend door MapLibre, uit de vectorgegevens
+van [OpenFreeMap](https://openfreemap.org) in de stijl *positron*: rustig,
+bijna wit en zonder de drukte van de gewone OpenStreetMap-plaatjes. Er gaat een
+heel dun warm waasje overheen zodat hij bij de rest van de app past. Ligt
+OpenFreeMap er een keer uit, dan valt de kaart vanzelf terug op de gewone
+OpenStreetMap-plaatjes, flink ontkleurd. Je pins, de fotostapel en de live
+locatie werken in alle gevallen hetzelfde.
 
 ---
 

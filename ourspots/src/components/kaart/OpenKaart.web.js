@@ -2,7 +2,7 @@
 // WebView. react-native-webview bestaat niet op het web, dus deze versie komt
 // ervoor in de plaats — Metro pakt vanzelf het .web.js-bestand.
 //
-// De kaartpagina zelf (leafletHtml) is precies dezelfde. Het enige verschil is
+// De kaartpagina zelf (kaartHtml) is precies dezelfde. Het enige verschil is
 // hoe we ermee praten: geen injectJavaScript maar postMessage.
 
 import React, {
@@ -14,7 +14,7 @@ import React, {
   useState,
 } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { leafletHtml } from './leafletHtml';
+import { kaartHtml } from './kaartHtml';
 import { kleuren } from '../../theme';
 import { typeVan } from '../../momentTypes';
 import { fotoUrl, MINI } from '../../cloudinary';
@@ -154,7 +154,7 @@ const OpenKaart = forwardRef(function OpenKaart(
       <iframe
         ref={iframeRef}
         title="kaart"
-        srcDoc={leafletHtml}
+        srcDoc={kaartHtml}
         style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
       />
 
