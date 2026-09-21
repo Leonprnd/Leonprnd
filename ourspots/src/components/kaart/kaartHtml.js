@@ -8,8 +8,15 @@
 // OpenStreetMap-plaatjes, en die staan bomvol: elk gebouw, elke straatnaam,
 // elke winkel. Dat maakte de kaart druk en rommelig. MapLibre tekent de kaart
 // zelf uit vectorgegevens, en met de stijl "positron" van OpenFreeMap levert
-// dat een rustige, bijna witte kaart op — de kalme look die je op een iPhone
-// van Apple Maps kent. OpenFreeMap vraagt geen sleutel en geen registratie.
+// dat een rustige, lege kaart op. OpenFreeMap vraagt geen sleutel en geen
+// registratie.
+//
+// Positron is alleen grijs — het is letterlijk een grijstintenkaart. Rustig
+// maar kil, en daar is niets romantisch aan. Daarom kleuren we hem na het
+// laden om: grijs wordt warme grond, water wordt zacht blauw, parken krijgen
+// net genoeg groen terug, en de letters krijgen de inktkleur van de app. Wit
+// blijft wit, want het verschil tussen witte wegen en warme grond is precies
+// wat de kaart leesbaar houdt. Zie verwarmKleur().
 //
 // Gaat OpenFreeMap onverhoopt plat, dan valt de kaart terug op de gewone
 // OpenStreetMap-plaatjes, flink ontkleurd zodat het nog steeds rustig oogt. Je
@@ -37,25 +44,16 @@ export const kaartHtml = `<!DOCTYPE html>
 <style>
   html, body, #kaart { margin: 0; padding: 0; height: 100%; width: 100%; }
   body {
-    background: #FBF7F6; overflow: hidden;
+    background: #FFF8F3; overflow: hidden;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none; user-select: none;
   }
 
-  /* Alles wat op de kaart ligt — het waasje en de pinnen — houden we in één
-     laag bij elkaar. Zo kan een pin nooit over de herkomstvermelding heen
-     gaan staan, hoe hoog we hem hieronder ook zetten. */
+  /* Alles wat op de kaart ligt houden we in één laag bij elkaar. Zo kan een
+     pin nooit over de herkomstvermelding heen gaan staan, hoe hoog we hem
+     hieronder ook zetten. */
   .maplibregl-canvas-container { isolation: isolate; }
-
-  /* Een heel dun warm waasje over de kaart. Niet roze — positron is al mooi
-     rustig en dat willen we niet dichtsmeren — maar net genoeg om de kaart bij
-     de rest van de app te laten horen. Ligt boven de kaart en onder de pinnen,
-     en vangt geen tikken. */
-  #waas {
-    position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: rgba(255, 214, 226, 0.11);
-  }
 
   /* De herkomstvermelding blijft staan — dat hoort bij OpenStreetMap-gegevens
      — maar ingeklapt tot één klein rondje in de hoek, in plaats van een regel
@@ -177,8 +175,8 @@ export const kaartHtml = `<!DOCTYPE html>
     return;
   }
 
-  // De reservekaart: de gewone OpenStreetMap-plaatjes, maar bijna helemaal
-  // ontkleurd en iets lichter, zodat ze niet vloeken met de rest van de app.
+  // De reservekaart: de gewone OpenStreetMap-plaatjes, flink getemperd en met
+  // de warme ondergrond er doorheen, zodat ook dit geen grijze bak wordt.
   var RESERVE = {
     version: 8,
     sources: {
@@ -191,12 +189,12 @@ export const kaartHtml = `<!DOCTYPE html>
       },
     },
     layers: [
-      { id: 'papier', type: 'background', paint: { 'background-color': '#FBF7F6' } },
+      { id: 'papier', type: 'background', paint: { 'background-color': '#FBF1E8' } },
       {
         id: 'osm',
         type: 'raster',
         source: 'osm',
-        paint: { 'raster-saturation': -0.92, 'raster-contrast': -0.12, 'raster-opacity': 0.88 },
+        paint: { 'raster-saturation': -0.55, 'raster-contrast': -0.1, 'raster-opacity': 0.82 },
       },
     ],
   };
@@ -231,11 +229,6 @@ export const kaartHtml = `<!DOCTYPE html>
   kaart.touchZoomRotate.disableRotation();
 
   var kaartVak = kaart.getContainer();
-  var tekenVak = kaart.getCanvasContainer();
-
-  var waas = document.createElement('div');
-  waas.id = 'waas';
-  tekenVak.appendChild(waas);
 
   // MapLibre klapt de herkomstvermelding pas in zodra je de kaart aanraakt; tot
   // dan staat de hele regel tekst open in beeld. Wij willen meteen alleen het
@@ -247,6 +240,156 @@ export const kaartHtml = `<!DOCTYPE html>
   }
   kaart.on('styledata', klapHerkomstIn);
 
+  // --- Positron warm maken -------------------------------------------------
+
+  // Kleuren lezen laten we de browser doen: die kent elke schrijfwijze die in
+  // een stijl kan staan, en wij hoeven er geen te missen.
+  var meetvlak = document.createElement('canvas').getContext('2d');
+
+  function leesKleur(kleur) {
+    meetvlak.fillStyle = '#000000';
+    meetvlak.fillStyle = kleur;
+    var zwart = meetvlak.fillStyle;
+    meetvlak.fillStyle = '#ffffff';
+    meetvlak.fillStyle = kleur;
+    // Een waarde die de browser niet snapt laat de vorige staan; dan verschilt
+    // de uitkomst en weten we dat het geen kleur was.
+    if (meetvlak.fillStyle !== zwart) return null;
+
+    var uit = meetvlak.fillStyle;
+    if (uit.charAt(0) === '#') {
+      return [
+        parseInt(uit.substr(1, 2), 16),
+        parseInt(uit.substr(3, 2), 16),
+        parseInt(uit.substr(5, 2), 16),
+        1,
+      ];
+    }
+    var delen = uit.replace(/[^0-9.,-]/g, '').split(',');
+    return [+delen[0], +delen[1], +delen[2], delen.length > 3 ? +delen[3] : 1];
+  }
+
+  function naarHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var hoog = Math.max(r, g, b);
+    var laag = Math.min(r, g, b);
+    var licht = (hoog + laag) / 2;
+    if (hoog === laag) return [0, 0, licht];
+    var verschil = hoog - laag;
+    var kleurkracht = licht > 0.5
+      ? verschil / (2 - hoog - laag)
+      : verschil / (hoog + laag);
+    var tint;
+    if (hoog === r) tint = (g - b) / verschil + (g < b ? 6 : 0);
+    else if (hoog === g) tint = (b - r) / verschil + 2;
+    else tint = (r - g) / verschil + 4;
+    return [tint * 60, kleurkracht, licht];
+  }
+
+  function uitHsl(tint, kleurkracht, licht, doorzicht) {
+    tint = ((tint % 360) + 360) % 360 / 360;
+    var a = kleurkracht * Math.min(licht, 1 - licht);
+    function kanaal(n) {
+      var k = (n + tint * 12) % 12;
+      return Math.round(255 * (licht - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))));
+    }
+    var r = kanaal(0), g = kanaal(8), b = kanaal(4);
+    if (doorzicht < 1) return 'rgba(' + r + ',' + g + ',' + b + ',' + doorzicht + ')';
+    return '#' + [r, g, b].map(function (v) {
+      return ('0' + v.toString(16)).slice(-2);
+    }).join('');
+  }
+
+  function verwarmKleur(kleur) {
+    // Alleen echte kleurwaarden; namen als 'linear' of 'case' uit een
+    // expressie laten we met rust.
+    if (!/^(#|rgba?\\(|hsla?\\()/i.test(kleur)) return null;
+    var rgb = leesKleur(kleur);
+    if (!rgb) return null;
+
+    var hsl = naarHsl(rgb[0], rgb[1], rgb[2]);
+    var tint = hsl[0], kracht = hsl[1], licht = hsl[2];
+    var doorzicht = rgb[3];
+
+    // Zuiver wit blijft wit: het verschil tussen witte wegen en warme grond is
+    // precies wat de kaart leesbaar houdt.
+    if (licht >= 0.99) return null;
+
+    // Water houdt zijn blauw, maar vriendelijker.
+    if (kracht > 0.03 && tint >= 170 && tint < 265) {
+      return uitHsl(198, Math.max(kracht, 0.34), Math.min(0.92, licht + 0.04), doorzicht);
+    }
+    // Parken en bos zijn in positron vrijwel grijs; net genoeg groen terug.
+    if (kracht > 0.03 && tint >= 80 && tint < 170) {
+      return uitHsl(96, Math.min(0.3, Math.max(kracht, 0.24)), Math.min(0.95, licht + 0.02), doorzicht);
+    }
+    // Al duidelijk gekleurd: afblijven.
+    if (kracht >= 0.18) return null;
+
+    // En de rest is grijs. Licht grijs wordt warme grond, donker grijs wordt
+    // de inktkleur van de app.
+    if (licht > 0.9) return uitHsl(26, 0.4, Math.min(0.98, licht + 0.005), doorzicht);
+    if (licht > 0.6) return uitHsl(26, 0.26, licht, doorzicht);
+    if (licht > 0.32) return uitHsl(345, 0.16, licht, doorzicht);
+    return uitHsl(340, 0.2, licht, doorzicht);
+  }
+
+  // Een verfwaarde kan een kleur zijn, maar ook een expressie of een oude
+  // stops-functie met kleuren erin. We lopen er dus doorheen. Niets veranderd
+  // geeft null terug, zodat we die eigenschap gewoon laten staan.
+  function verwarmWaarde(waarde) {
+    if (typeof waarde === 'string') return verwarmKleur(waarde);
+
+    if (Array.isArray(waarde)) {
+      var anders = false;
+      var lijst = waarde.map(function (deel) {
+        var nieuw = verwarmWaarde(deel);
+        if (nieuw === null) return deel;
+        anders = true;
+        return nieuw;
+      });
+      return anders ? lijst : null;
+    }
+
+    if (waarde && typeof waarde === 'object') {
+      var gewijzigd = false;
+      var uit = {};
+      Object.keys(waarde).forEach(function (sleutel) {
+        var nieuw = verwarmWaarde(waarde[sleutel]);
+        if (nieuw === null) { uit[sleutel] = waarde[sleutel]; return; }
+        gewijzigd = true;
+        uit[sleutel] = nieuw;
+      });
+      return gewijzigd ? uit : null;
+    }
+
+    return null;
+  }
+
+  function verwarmKaart() {
+    var stijl;
+    try {
+      stijl = kaart.getStyle();
+    } catch (fout) {
+      return;
+    }
+    if (!stijl || !stijl.layers) return;
+
+    stijl.layers.forEach(function (laag) {
+      if (!laag.paint) return;
+      Object.keys(laag.paint).forEach(function (naam) {
+        if (!/color$/i.test(naam)) return;
+        var nieuw = verwarmWaarde(laag.paint[naam]);
+        if (nieuw === null) return;
+        try {
+          kaart.setPaintProperty(laag.id, naam, nieuw);
+        } catch (fout) {
+          // Eén laag die niet wil is geen reden om de rest te laten staan.
+        }
+      });
+    });
+  }
+
   // --- Terugvallen als de mooie kaart niet komt ----------------------------
 
   var geladen = false;
@@ -257,6 +400,9 @@ export const kaartHtml = `<!DOCTYPE html>
     teruggevallen = true;
     try {
       kaart.setStyle(RESERVE);
+      // Eén keer, niet bij elke stijlgebeurtenis: anders warmt hij zichzelf
+      // eindeloos verder op.
+      kaart.once('styledata', verwarmKaart);
     } catch (fout) {
       kapot();
     }
@@ -268,12 +414,18 @@ export const kaartHtml = `<!DOCTYPE html>
     geladen = true;
     clearTimeout(wachtTimer);
     klapHerkomstIn();
+    verwarmKaart();
   });
 
-  // Een losse tegel die niet komt is geen ramp; een stijl die niet komt wel.
-  // Vandaar dat we alleen terugvallen zolang de kaart nog nooit geladen was.
-  kaart.on('error', function () {
-    if (!geladen) valTerug();
+  // Een losse tegel die niet komt is geen ramp — dan mist er even een stukje
+  // kaart, en op een telefoon met wisselend bereik gebeurt dat zo. Alleen een
+  // stijl die niet komt is een reden om terug te vallen. Die twee zijn uit
+  // elkaar te houden: een tegelfout draagt de bron en de tegel bij zich, een
+  // stijlfout niet.
+  kaart.on('error', function (gebeurtenis) {
+    if (geladen) return;
+    if (gebeurtenis && (gebeurtenis.sourceId || gebeurtenis.tile)) return;
+    valTerug();
   });
 
   // --- Tekenen -------------------------------------------------------------

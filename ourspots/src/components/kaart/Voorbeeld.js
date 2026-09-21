@@ -120,11 +120,13 @@ const stijl = StyleSheet.create({
     backgroundColor: kleuren.wit,
     opacity: 0.58,
   },
-  // Hetzelfde warme waasje als op de grote kaart.
+  // Dezelfde warme grond als op de grote kaart. Die krijgt zijn kleur van een
+  // omkleuring die hier niet kan — dit is geen webpagina maar een plaatje —
+  // dus benaderen we hem met een laagje perzik.
   waas: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: kleuren.roze,
-    opacity: 0.1,
+    backgroundColor: kleuren.perzik,
+    opacity: 0.13,
   },
 
   // De punt van de pin moet op het midden staan, niet het midden van de pin

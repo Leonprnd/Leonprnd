@@ -201,12 +201,22 @@ Je hoeft dus nooit code aan te passen. Vul je later een sleutel in en start je
 opnieuw op met `npx expo start -c`, dan staat Google Maps er.
 
 De kaart zonder sleutel wordt getekend door MapLibre, uit de vectorgegevens
-van [OpenFreeMap](https://openfreemap.org) in de stijl *positron*: rustig,
-bijna wit en zonder de drukte van de gewone OpenStreetMap-plaatjes. Er gaat een
-heel dun warm waasje overheen zodat hij bij de rest van de app past. Ligt
-OpenFreeMap er een keer uit, dan valt de kaart vanzelf terug op de gewone
-OpenStreetMap-plaatjes, flink ontkleurd. Je pins, de fotostapel en de live
-locatie werken in alle gevallen hetzelfde.
+van [OpenFreeMap](https://openfreemap.org) in de stijl *positron*: rustig en
+zonder de drukte van de gewone OpenStreetMap-plaatjes.
+
+Positron is alleen grijs — letterlijk een grijstintenkaart. Daarom kleurt de
+app hem na het laden om: grijs wordt warme grond, water blijft blauw maar
+zachter, parken krijgen net genoeg groen terug en de letters krijgen de
+inktkleur van de app. Wit blijft wit, want juist het verschil tussen witte
+wegen en warme grond houdt de kaart leesbaar. Dat recept staat in
+`verwarmKleur()` in `src/components/kaart/kaartHtml.js`; wil je een ander
+gevoel, dan draai je daar aan de tinten.
+
+Ligt OpenFreeMap er een keer uit, dan valt de kaart terug op de gewone
+OpenStreetMap-plaatjes, getemperd en warm gehouden. Een losse tegel die niet
+laadt telt daar niet voor mee — dat gebeurt op een telefoon te vaak om er de
+hele kaart voor om te gooien. Je pins, de fotostapel en de live locatie werken
+in alle gevallen hetzelfde.
 
 ---
 
